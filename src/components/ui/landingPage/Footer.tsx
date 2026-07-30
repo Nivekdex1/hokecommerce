@@ -3,181 +3,100 @@ import Link from "next/link";
 import React from "react";
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="mx-0 text-white lg:mx-12">
-      <div className="container mx-auto rounded-xl bg-[#2D1801] p-12">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-3 lg:grid-cols-4">
-          {/* Logo and Mailing List */}
-          <div className="space-y-3">
-            <Link href="/" className="inline-block">
+    <footer className="w-full bg-hok-espresso text-hok-ivory">
+      {/* Main Footer Content */}
+      <div className="max-w-7xl mx-auto px-6 py-16 lg:py-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8">
+          
+          {/* Column 1: Brand & Socials (takes up 2 columns on lg screens) */}
+          <div className="lg:col-span-2 flex flex-col items-start">
+            <Link href="/" className="mb-6 block">
               <Image
-                src="/hok-logo-white.svg"
-                alt="HOKBeauty footer logo"
-                width={100}
-                height={100}
-                className="size-full"
+                src="/brand/new-hok-logo-white.svg"
+                alt="Home of Korean Beauty Logo"
+                width={120}
+                height={120}
+                className="w-auto h-20"
               />
             </Link>
-            <p className="font-playfair text-lg text-white">
-              Subscribe to our mailing list to get the new updates!
+            <p className="font-manrope text-sm text-hok-mist/80 mb-8 max-w-xs leading-relaxed">
+              Nigeria's #1 destination for authentic, dermatologist-backed Korean skincare. Discover your perfect glow with our curated collection of K-beauty essentials.
             </p>
-            <div className="flex flex-wrap gap-2">
-              <Link
-                href="https://www.facebook.com/share/1EK81bfAFp/"
-                className="flex size-7 items-center justify-center rounded-full bg-white"
-                aria-label="Facebook"
-              >
-                <Image
-                  src="/facebook.svg"
-                  alt="Facebook"
-                  width={20}
-                  height={20}
-                  className="size-3.5"
-                />
+            
+            <div className="flex gap-4">
+              <Link href="https://www.instagram.com/thehomeofkoreanproducts/" aria-label="Instagram" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-hok-champagne transition-colors group">
+                <Image src="/instagram.svg" alt="" width={20} height={20} className="w-5 h-5 opacity-80 group-hover:opacity-100 group-hover:brightness-0 group-hover:invert" />
               </Link>
-
-              <Link
-                href="https://www.instagram.com/thehomeofkoreanproducts/"
-                className="flex size-7 items-center justify-center rounded-full bg-white"
-                aria-label="Instagram"
-              >
-                <Image
-                  src="/instagram.svg"
-                  alt="Instagram"
-                  width={20}
-                  height={20}
-                  className="size-3.5"
-                />
+              <Link href="https://www.tiktok.com/@thehomeofkoreanproducts" aria-label="TikTok" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-hok-champagne transition-colors group">
+                <Image src="/tiktok.svg" alt="" width={20} height={20} className="w-5 h-5 opacity-80 group-hover:opacity-100 group-hover:brightness-0 group-hover:invert" />
               </Link>
-
-              <Link
-                href="https://whatsapp.com/channel/0029VbAMxdn9hXF5cKnHxz12"
-                className="flex size-7 items-center justify-center rounded-full bg-white"
-                aria-label="WhatsApp"
-              >
-                <Image
-                  src="/whatsapp.svg"
-                  alt="WhatsApp"
-                  width={20}
-                  height={20}
-                  className="size-3.5"
-                />
+              <Link href="https://www.facebook.com/share/1EK81bfAFp/" aria-label="Facebook" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-hok-champagne transition-colors group">
+                <Image src="/facebook.svg" alt="" width={20} height={20} className="w-5 h-5 opacity-80 group-hover:opacity-100 group-hover:brightness-0 group-hover:invert" />
               </Link>
-
-              <Link
-                href="https://www.tiktok.com/@thehomeofkoreanproducts"
-                className="flex size-7 items-center justify-center rounded-full bg-white"
-                aria-label="TikTok"
-              >
-                <Image
-                  src="/tiktok.svg"
-                  alt="TikTok"
-                  width={20}
-                  height={20}
-                  className="size-3.5"
-                />
-              </Link>
-
-              <Link
-                href="https://t.me/HOKBeauty"
-                className="flex size-7 items-center justify-center rounded-full bg-white"
-                aria-label="Telegram"
-              >
-                <Image
-                  src="/telegram.svg"
-                  alt="Telegram"
-                  width={20}
-                  height={20}
-                  className="size-3.5 text-white"
-                />
+              <Link href="https://whatsapp.com/channel/0029VbAMxdn9hXF5cKnHxz12" aria-label="WhatsApp" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-hok-champagne transition-colors group">
+                <Image src="/whatsapp.svg" alt="" width={20} height={20} className="w-5 h-5 opacity-80 group-hover:opacity-100 group-hover:brightness-0 group-hover:invert" />
               </Link>
             </div>
           </div>
 
-          {/* Information Column */}
-          <div className="font-playfair space-y-6 md:mx-auto md:pl-10 lg:pl-20">
-            <h2 className="text-2xl font-medium">INFORMATION</h2>
-            <ul className="space-y-4">
-              <li className="text-lg font-medium">
-                <Link href="/about" className="hover:underline">
-                  About Us
-                </Link>
-              </li>
-              <li className="text-lg font-medium">
-                <Link href="/brands" className="hover:underline">
-                  Brands
-                </Link>
-              </li>
-              <li className="text-lg font-medium">
-                <Link href="/shop" className="hover:underline">
-                  Shop
-                </Link>
-              </li>
-              <li className="text-lg font-medium">
-                <Link href="/skin-algorithm" className="hover:underline">
-                  Skin Algorithm
-                </Link>
-              </li>
+          {/* Column 2: Shop */}
+          <div className="flex flex-col">
+            <h3 className="font-playfair text-xl font-medium mb-6 text-hok-champagne">Shop</h3>
+            <ul className="space-y-4 font-manrope text-sm text-hok-mist/80">
+              <li><Link href="/shop" className="hover:text-white transition-colors">All Products</Link></li>
+              <li><Link href="/shop?tags=new" className="hover:text-white transition-colors">New Arrivals</Link></li>
+              <li><Link href="/shop?tags=best-seller" className="hover:text-white transition-colors">Best Sellers</Link></li>
+              <li><Link href="/skin-algorithm" className="hover:text-white transition-colors">Skin Quiz</Link></li>
+              <li><Link href="/brands" className="hover:text-white transition-colors">Brands</Link></li>
             </ul>
           </div>
 
-          {/* Our Services Column */}
-          <div className="font-playfair space-y-6 md:mx-auto">
-            <h2 className="text-2xl font-medium">WHOLESALE</h2>
-            <ul className="space-y-4">
-              <li className="text-lg font-medium">
-                <Link href="/wholesale" className="hover:underline">
-                  Shop Wholesale
-                </Link>
-              </li>
-              <li className="text-lg font-medium">
-                <Link href="/wholesale" className="hover:underline">
-                  Wholesaler Terms
-                </Link>
-              </li>
-              <li className="text-lg font-medium">
-                <Link href="/wholesale" className="hover:underline">
-                  Join The HOK Tribe
-                </Link>
-              </li>
+          {/* Column 3: About & Support */}
+          <div className="flex flex-col">
+            <h3 className="font-playfair text-xl font-medium mb-6 text-hok-champagne">Information</h3>
+            <ul className="space-y-4 font-manrope text-sm text-hok-mist/80">
+              <li><Link href="/about" className="hover:text-white transition-colors">Our Story</Link></li>
+              <li><Link href="/quality-guarantee" className="hover:text-white transition-colors">Authenticity Guarantee</Link></li>
+              <li><Link href="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
+              <li><Link href="/wholesale" className="hover:text-white transition-colors">Wholesale Program</Link></li>
             </ul>
           </div>
 
-          {/* Contact Column */}
-          <div className="font-playfair space-y-6 md:mx-auto">
-            <h2 className="text-2xl font-medium">CONTACT</h2>
-            <ul className="space-y-4">
-              <li className="text-lg font-medium">
-                <Link href="/contact" className="hover:underline">
-                  Contact Us
-                </Link>
+          {/* Column 4: Contact Info */}
+          <div className="flex flex-col">
+            <h3 className="font-playfair text-xl font-medium mb-6 text-hok-champagne">Contact</h3>
+            <ul className="space-y-4 font-manrope text-sm text-hok-mist/80">
+              <li>
+                <span className="block text-white font-medium mb-1">Email</span>
+                <a href="mailto:shop@homeofkoreanbeauty.com" className="hover:text-white transition-colors">shop@homeofkoreanbeauty.com</a>
+              </li>
+              <li>
+                <span className="block text-white font-medium mb-1">WhatsApp</span>
+                <span>Available Mon - Sat</span>
+              </li>
+              <li>
+                <span className="block text-white font-medium mb-1">Location</span>
+                <span>Lagos, Nigeria</span>
               </li>
             </ul>
           </div>
         </div>
-
-        {/* Bottom Bar */}
       </div>
-      <div className="mt-6 flex flex-col items-center justify-between py-6 text-black md:flex-row">
-        <p className="font-playfair mb-4 text-base md:mb-0">
-          © HOKBeauty 2025
-        </p>
-        <div className="flex gap-8">
-          <Link
-            href="/privacy"
-            className="font-playfair text-sm hover:underline"
-          >
-            Privacy
-          </Link>
-          <Link href="/terms" className="font-playfair text-sm hover:underline">
-            Terms
-          </Link>
-          <Link
-            href="/sitemap"
-            className="font-playfair text-sm hover:underline"
-          >
-            Sitemap
-          </Link>
+
+      {/* Bottom Bar */}
+      <div className="border-t border-white/10 bg-black/20">
+        <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="font-manrope text-sm text-hok-mist/60">
+            &copy; {currentYear} Home of Korean Beauty. All rights reserved.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-6 text-sm font-manrope text-hok-mist/60">
+            <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+            <Link href="/returns-policy" className="hover:text-white transition-colors">Returns & Refunds</Link>
+          </div>
         </div>
       </div>
     </footer>

@@ -1,109 +1,204 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import FaqAccordion from "@/components/ui/faqAccordion";
 import { Input } from "@/components/ui/input";
 import Newsletter from "@/components/ui/landingPage/Newsletter";
 import { Textarea } from "@/components/ui/textarea";
-import { Asterisk } from "lucide-react";
-import React from "react";
+import { Asterisk, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import React, { useState } from "react";
+import { toast } from "sonner";
+import SectionHeading from "@/components/ui/SectionHeading";
 
-const Contact = () => {
+export default function Contact() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      firstName: formData.get("firstName"),
+      lastName: formData.get("lastName"),
+      email: formData.get("email"),
+      message: formData.get("message"),
+    };
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        toast.success("Message sent successfully! We'll get back to you soon.");
+        (e.target as HTMLFormElement).reset();
+      } else {
+        const result = await response.json();
+        toast.error(result.error || "Failed to send message. Please try again.");
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again later.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
-    <div className="px-6 lg:px-0">
-      <div className="container mx-auto mt-22">
-        <h2 className="font-playfair text-center text-6xl">Contact</h2>
+    <main className="bg-hok-linen min-h-screen pb-16">
+      <div className="bg-hok-ivory border-b border-hok-mist py-10 md:py-16">
+        <div className="container-narrow text-center">
+          <h1 className="font-playfair text-4xl md:text-5xl text-hok-espresso font-semibold mb-4">Contact Us</h1>
+          <p className="font-manrope text-hok-stone text-lg max-w-2xl mx-auto">
+            We're here to help you on your skincare journey. Reach out with any questions or concerns.
+          </p>
+        </div>
+      </div>
+      
+      <div className="container-narrow py-12 md:py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
+          
+          {/* Contact Info Sidebar */}
+          <div className="lg:col-span-4 order-2 lg:order-1">
+            <div className="bg-white border border-hok-mist rounded-md p-8 h-full">
+              <h3 className="font-playfair text-2xl text-hok-espresso font-medium mb-8">Get in Touch</h3>
+              
+              <div className="space-y-8 font-manrope">
+                <div className="flex gap-4">
+                  <div className="w-10 h-10 rounded-full bg-hok-champagne/20 flex items-center justify-center flex-shrink-0">
+                    <Mail className="w-5 h-5 text-hok-caramel" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-hok-espresso mb-1">Email Us</h4>
+                    <a href="mailto:shop@homeofkoreanbeauty.com" className="text-sm text-hok-stone hover:text-hok-walnut transition-colors">
+                      shop@homeofkoreanbeauty.com
+                    </a>
+                  </div>
+                </div>
+                
+                <div className="flex gap-4">
+                  <div className="w-10 h-10 rounded-full bg-hok-champagne/20 flex items-center justify-center flex-shrink-0">
+                    <MessageCircle className="w-5 h-5 text-hok-caramel" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-hok-espresso mb-1">WhatsApp</h4>
+                    <p className="text-sm text-hok-stone mb-1">Available Mon - Sat, 9am - 6pm</p>
+                    <a href="https://whatsapp.com/channel/0029VbAMxdn9hXF5cKnHxz12" className="text-sm font-semibold text-hok-walnut hover:text-hok-caramel transition-colors">
+                      Chat with us
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <div className="w-10 h-10 rounded-full bg-hok-champagne/20 flex items-center justify-center flex-shrink-0">
+                    <MapPin className="w-5 h-5 text-hok-caramel" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-hok-espresso mb-1">Location</h4>
+                    <p className="text-sm text-hok-stone">
+                      Lagos, Nigeria<br/>
+                      (Online Store Only)
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Contact Form */}
+          <div className="lg:col-span-8 order-1 lg:order-2">
+            <div className="bg-white border border-hok-mist rounded-md p-8 md:p-12">
+              <h2 className="font-playfair text-3xl text-hok-espresso font-medium mb-2">Send a Message</h2>
+              <p className="font-manrope text-hok-stone mb-8">
+                Use the form below to send us a message and we'll get back to you as soon as possible.
+              </p>
+
+              <form onSubmit={handleSubmit} className="font-manrope space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label htmlFor="firstName" className="text-sm font-medium text-hok-espresso">
+                      First Name
+                    </label>
+                    <Input
+                      id="firstName"
+                      name="firstName"
+                      type="text"
+                      placeholder="Jane"
+                      className="border-hok-mist focus-visible:ring-hok-champagne bg-hok-linen/50 h-12"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label htmlFor="lastName" className="text-sm font-medium text-hok-espresso">
+                      Last Name
+                    </label>
+                    <Input
+                      id="lastName"
+                      name="lastName"
+                      type="text"
+                      placeholder="Doe"
+                      className="border-hok-mist focus-visible:ring-hok-champagne bg-hok-linen/50 h-12"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="email" className="text-sm font-medium text-hok-espresso flex items-center gap-1">
+                    Email Address <Asterisk className="w-3 h-3 text-hok-error" />
+                  </label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="jane@example.com"
+                    className="border-hok-mist focus-visible:ring-hok-champagne bg-hok-linen/50 h-12"
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="message" className="text-sm font-medium text-hok-espresso flex items-center gap-1">
+                    Your Message <Asterisk className="w-3 h-3 text-hok-error" />
+                  </label>
+                  <Textarea
+                    id="message"
+                    name="message"
+                    placeholder="How can we help you today?"
+                    className="border-hok-mist focus-visible:ring-hok-champagne bg-hok-linen/50 min-h-[150px] resize-y"
+                    required
+                  />
+                </div>
+
+                <Button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="w-full sm:w-auto min-w-[200px] h-14 rounded-none bg-hok-espresso hover:bg-hok-walnut text-white font-semibold tracking-wide transition-colors"
+                >
+                  {isSubmitting ? "Sending..." : "Send Message"}
+                </Button>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <section className="relative container mx-auto mt-16 md:mt-36 lg:px-[119px]">
-        <h2 className="font-playfair text-4xl md:text-6xl">Have a question or comment?</h2>
-        <p className="font-montserrat mt-2 md:text-lg">
-          Use the form below to send us a message or contact us by mail
-        </p>
-
-        <form action="" className="font-montserrat mt-8 space-y-5">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-10">
-            <div className="flex flex-col gap-2">
-              <label htmlFor="">First name</label>
-              <Input
-                type="text"
-                placeholder="John"
-                className="border-stone-400"
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label htmlFor="">Last name</label>
-              <Input
-                type="text"
-                placeholder="Doe"
-                className="border-stone-400"
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label htmlFor="" className="flex">
-                Email Address <Asterisk className="size-4 text-[#FB0D0D]" />
-              </label>
-              <Input
-                type="email"
-                placeholder="0909999999"
-                className="border-stone-400"
-                required
-              />
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label htmlFor="" className="flex">
-              Comment <Asterisk className="size-4 text-[#FB0D0D]" />
-            </label>
-            <Textarea
-              placeholder="What is your request"
-              className="h-40 border-stone-400"
-              required
-            />
-          </div>
-
-          <Button
-            size="lg"
-            className="font-montserrat mt-5 bg-[#2D1801] text-white uppercase"
-          >
-            Submit
-          </Button>
-        </form>
-      </section>
-
-      <section className="font-montserrat container mx-auto mt-16 lg:mt-36 space-y-5 lg:space-y-10 lg:px-[119px]">
-        <h3 className="text-4xl font-medium text-black">Get in Touch!</h3>
-        <div className="grid grid-cols-1 gap-3 text-black/70 lg:grid-cols-2 lg:gap-6">
-          <div className="flex flex-col gap-y-4">
-            <span className="md:text-lg font-medium">Call: +234 9164036455</span>
-            <span className="md:text-lg font-medium">
-              Mail: homeofkoreanbeautyng@gmail.com
-            </span>
-          </div>
-          <div>
-            <p className="font-medium md:text-lg">
-              Address: SHOP 043 GRACE OF GOD PLAZA, OPPOSITE KADUNA PLAZA,
-              BALOGUN MARKET, OFF LAGOS BADAGRY EXPRESS WAY, TRADE FAIR
-              COMPLEX, LAGOS STATE.
-            </p>
+      {/* FAQ Section */}
+      <section className="bg-hok-ivory py-16 md:py-24 border-y border-hok-mist">
+        <div className="container-narrow">
+          <SectionHeading title="Frequently Asked Questions" subtitle="Find quick answers to common questions" />
+          <div className="max-w-3xl mx-auto bg-white border border-hok-mist rounded-md p-6 md:p-10">
+            <FaqAccordion />
           </div>
         </div>
       </section>
 
-      <section className="container mx-auto mt-24 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:px-[119px]">
-        <div className="col-span-1">
-          <h2 className="font-playfair text-6xl lg:text-[82px] text-[#201E1C]">FAQ</h2>
-          <span className="font-inter md:text-lg text-black/70">
-            We’ve got answers!
-          </span>
-        </div>
-        <div className="col-span-2">
-          <FaqAccordion />
-        </div>
+      {/* Newsletter */}
+      <section className="bg-white py-12 border-t border-hok-mist">
+        <Newsletter />
       </section>
-
-      <Newsletter />
-    </div>
+    </main>
   );
-};
-
-export default Contact;
+}

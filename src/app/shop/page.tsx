@@ -2,13 +2,15 @@ import Filters from "@/components/shop/filters";
 import Pagination from "@/components/ui/pagination";
 import ProductGridSkeleton from "@/components/ui/ProductGridSkeleton";
 import { getProducts } from "@/lib/shopify";
-import { Products } from "@/lib/shopify/types";
-import { formatPrice } from "@/utils/formatPrice";
-import Image from "next/image";
-import Link from "next/link";
+import ProductCard from "@/components/ui/ProductCard";
+import { Metadata } from "next";
 import { Suspense } from "react";
 
-// Updated search params interface
+export const metadata: Metadata = {
+  title: "Shop Skincare",
+  description: "Browse our complete collection of authentic Korean skincare products.",
+};
+
 interface ShopPageSearchParams {
   minPrice?: string;
   maxPrice?: string;
@@ -17,32 +19,27 @@ interface ShopPageSearchParams {
   productType?: string | string[];
   tags?: string | string[];
   category?: string | string[];
-  after?: string; // Cursor for forward pagination
-  before?: string; // Cursor for backward pagination
+  after?: string;
+  before?: string;
 }
 
 export default async function ShopPage(props: {
   searchParams?: Promise<ShopPageSearchParams>;
 }) {
   const searchParams = await props.searchParams;
-  // No need to extract cursor here, getProducts handles searchParams directly
   const pageSize = 20;
 
-  // Get products with pagination (getProducts now reads after/before from searchParams)
   const { products, pageInfo } = await getProducts({
     searchParams,
     pageSize,
   });
 
-  // Build URLs for pagination, preserving existing search params
-  // It now generates ?before=... or ?after=...
   const buildPaginationUrl = (
     cursor: string,
     type: "before" | "after",
   ): string => {
     const params = new URLSearchParams();
 
-    // Add all existing search params *except* cursor params
     if (searchParams) {
       Object.entries(searchParams).forEach(([key, value]) => {
         if (key !== "before" && key !== "after") {
@@ -55,84 +52,61 @@ export default async function ShopPage(props: {
       });
     }
 
-    // Add the new cursor parameter based on type
     params.set(type, cursor);
-
     return `/shop?${params.toString()}`;
   };
 
-  // Function to get the URL for the base page (no cursors)
-  const getBasePageUrl = (): string => {
-    const params = new URLSearchParams();
-    if (searchParams) {
-      Object.entries(searchParams).forEach(([key, value]) => {
-        if (key !== "before" && key !== "after") {
-          if (Array.isArray(value)) {
-            value.forEach((v) => params.append(key, v));
-          } else if (value) {
-            params.append(key, value);
-          }
-        }
-      });
-    }
-    const paramString = params.toString();
-    return paramString ? `/shop?${paramString}` : "/shop";
-  };
+  const mapProduct = (p: any) => ({
+    id: p.id,
+    title: p.title,
+    handle: p.handle,
+    price: p.price,
+    currencyCode: p.currencyCode || "NGN",
+    image: p.featuredImage?.url || "/placeholder.jpg",
+    vendor: p.vendor,
+  });
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      {/* Use container for better spacing */}
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
-        <div className="md:col-span-1">
-          {/* Render the Filters component */}
-          <Filters />
+    <div className="bg-hok-linen min-h-screen">
+      <div className="bg-hok-ivory border-b border-hok-mist py-10 md:py-16">
+        <div className="container-narrow">
+          <h1 className="font-playfair text-4xl md:text-5xl text-hok-espresso font-semibold mb-4">Shop Skincare</h1>
+          <p className="font-manrope text-hok-stone text-lg max-w-2xl">Authentic K-beauty essentials for every skin concern. Sourced directly from Korea for your perfect glow.</p>
         </div>
-        <div className="md:col-span-3">
-          <Suspense fallback={<ProductGridSkeleton />}>
-            {/* Render the filtered products directly */}
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {products && products.length > 0 ? (
-                products.map((product: Products) => (
-                  <Link
-                    key={product.id}
-                    href={`/shop/${product.handle}`}
-                    className="group"
-                  >
-                    <div className="rounded border border-[#2D1801]/20 p-4 transition-shadow duration-200 group-hover:shadow-md">
-                      {product.featuredImage && (
-                        <Image
-                          src={product.featuredImage.url}
-                          alt={product.featuredImage.altText || product.title}
-                          width={product.featuredImage.width}
-                          height={product.featuredImage.height}
-                          className="mb-2 h-48 w-full object-cover"
-                        />
-                      )}
-                      <h3 className="font-montserrat font-semibold">
-                        {product.title}
-                      </h3>
-                      <p className="font-montserrat font-medium text-gray-700">
-                        {formatPrice(product.price, {
-                          currencyCode: product.currencyCode,
-                        })}
-                      </p>
-                    </div>
-                  </Link>
-                ))
-              ) : (
-                <p>No products found matching your filters.</p>
+      </div>
+      
+      <div className="container-narrow py-12">
+        <div className="flex flex-col md:flex-row gap-8 lg:gap-12">
+          <div className="w-full md:w-1/4">
+            <Filters />
+          </div>
+          <div className="w-full md:w-3/4">
+            <Suspense fallback={<ProductGridSkeleton />}>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-6">
+                {products && products.length > 0 ? (
+                  products.map((product: any) => (
+                    <ProductCard key={product.id} product={mapProduct(product)} />
+                  ))
+                ) : (
+                  <div className="col-span-full py-20 text-center text-hok-stone bg-white rounded-md border border-hok-mist">
+                    <p className="text-xl font-playfair mb-2">No products found</p>
+                    <p className="text-sm">Try adjusting your filters or search criteria.</p>
+                  </div>
+                )}
+              </div>
+
+              {pageInfo && (pageInfo.hasNextPage || pageInfo.hasPreviousPage) && (
+                <div className="mt-12 flex justify-center">
+                  <Pagination
+                    hasNextPage={pageInfo.hasNextPage}
+                    hasPreviousPage={pageInfo.hasPreviousPage}
+                    nextUrl={pageInfo.hasNextPage ? buildPaginationUrl(pageInfo.endCursor!, "after") : undefined}
+                    previousUrl={pageInfo.hasPreviousPage ? buildPaginationUrl(pageInfo.startCursor!, "before") : undefined}
+                  />
+                </div>
               )}
-            </div>
-            {/* Pass correct props and adjusted buildUrl */}
-            <Pagination
-              hasNextPage={pageInfo.hasNextPage}
-              hasPreviousPage={pageInfo.hasPreviousPage}
-              startCursor={pageInfo.startCursor}
-              endCursor={pageInfo.endCursor}
-              buildUrl={buildPaginationUrl}
-              getBaseUrl={getBasePageUrl} // Pass function to get base URL
-            />
-          </Suspense>
+            </Suspense>
+          </div>
         </div>
       </div>
     </div>
