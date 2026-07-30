@@ -47,17 +47,19 @@ export default async function Home() {
           <p className="text-center text-xs text-hok-stone font-semibold tracking-widest uppercase mb-6">
             Official distributors of Nigeria's favorite brands
           </p>
-          <div className="flex justify-between items-center gap-8 md:gap-12 opacity-60 overflow-x-auto hide-scrollbar">
-            {["cerave", "eucerin", "posay", "cosrx", "anua", "12grabs"].map((brand) => (
-              <div key={brand} className="relative w-24 h-12 md:w-32 md:h-16 flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300">
-                <Image
-                  src={`/${brand}.jpg`}
-                  alt={`${brand} logo`}
-                  fill
-                  className="object-contain"
-                />
-              </div>
-            ))}
+          <div className="relative w-full opacity-60 overflow-hidden py-4">
+            <div className="flex items-center gap-8 md:gap-12 w-max animate-marquee">
+              {[...["cerave", "eucerin", "posay", "cosrx", "anua", "12grabs"], ...["cerave", "eucerin", "posay", "cosrx", "anua", "12grabs"], ...["cerave", "eucerin", "posay", "cosrx", "anua", "12grabs"]].map((brand, idx) => (
+                <div key={`${brand}-${idx}`} className="relative w-24 h-12 md:w-32 md:h-16 flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300">
+                  <Image
+                    src={`/${brand}.jpg`}
+                    alt={`${brand} logo`}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>

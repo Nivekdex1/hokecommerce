@@ -18,8 +18,8 @@ const Footer = () => {
                 src="/brand/new-hok-logo-white.svg"
                 alt="Home of Korean Beauty Logo"
                 width={120}
-                height={120}
-                className="w-auto h-20"
+                height={40}
+                className="w-auto h-10 hover:opacity-90 transition-opacity"
               />
             </Link>
             <p className="font-manrope text-sm text-hok-mist/80 mb-8 max-w-xs leading-relaxed">
@@ -27,16 +27,16 @@ const Footer = () => {
             </p>
             
             <div className="flex gap-4">
-              <Link href="https://www.instagram.com/thehomeofkoreanproducts/" aria-label="Instagram" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-hok-champagne transition-colors group">
+              <Link href="https://www.instagram.com/thehomeofkoreanproducts/" aria-label="Instagram" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-hok-champagne hover:scale-110 hover:-translate-y-1 transition-all duration-300 group">
                 <Image src="/instagram.svg" alt="" width={20} height={20} className="w-5 h-5 filter brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity" />
               </Link>
-              <Link href="https://www.tiktok.com/@thehomeofkoreanproducts" aria-label="TikTok" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-hok-champagne transition-colors group">
+              <Link href="https://www.tiktok.com/@thehomeofkoreanproducts" aria-label="TikTok" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-hok-champagne hover:scale-110 hover:-translate-y-1 transition-all duration-300 group">
                 <Image src="/tiktok.svg" alt="" width={20} height={20} className="w-5 h-5 filter brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity" />
               </Link>
-              <Link href="https://www.facebook.com/share/1EK81bfAFp/" aria-label="Facebook" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-hok-champagne transition-colors group">
+              <Link href="https://www.facebook.com/share/1EK81bfAFp/" aria-label="Facebook" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-hok-champagne hover:scale-110 hover:-translate-y-1 transition-all duration-300 group">
                 <Image src="/facebook.svg" alt="" width={20} height={20} className="w-5 h-5 filter brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity" />
               </Link>
-              <Link href="https://whatsapp.com/channel/0029VbAMxdn9hXF5cKnHxz12" aria-label="WhatsApp" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-hok-champagne transition-colors group">
+              <Link href="https://whatsapp.com/channel/0029VbAMxdn9hXF5cKnHxz12" aria-label="WhatsApp" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-hok-champagne hover:scale-110 hover:-translate-y-1 transition-all duration-300 group">
                 <Image src="/whatsapp.svg" alt="" width={20} height={20} className="w-5 h-5 filter brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity" />
               </Link>
             </div>

@@ -113,7 +113,7 @@ const SkinQuiz = () => {
   }
 
   return (
-    <div className="my-8">
+    <div className="my-8 px-6 md:px-12 py-8">
       <h2 className="font-playfair text-5xl lg:text-6xl">
         Personalized <br /> Skincare Quiz
       </h2>

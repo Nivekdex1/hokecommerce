@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetClose } from "@/components/ui/sheet";
 import { useCartStore } from "@/store/useCartStore";
 import { Menu, ShoppingCart, ChevronDown } from "lucide-react";
 import Image from "next/image";
@@ -37,7 +37,6 @@ const NavLinks = [
 ];
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { totalItems } = useCartStore();
@@ -66,63 +65,76 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex w-full items-center justify-between">
             
-            {/* Mobile Menu & Search */}
-            <div className="flex items-center gap-4 lg:hidden">
-              <Sheet open={open} onOpenChange={setOpen}>
-                <SheetTrigger asChild>
-                  <Button variant="ghost" size="icon" className="text-hok-espresso -ml-2">
-                    <Menu className="w-6 h-6" />
-                    <span className="sr-only">Toggle menu</span>
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="left" className="w-[300px] border-r-0 bg-hok-linen p-0">
-                  <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-                  <div className="flex flex-col h-full p-6">
-                    <Link href="/" onClick={() => setOpen(false)} className="mb-8">
-                      <Image src="/brand/new-hok-logo-black.svg" alt="HOK Logo" width={80} height={80} />
-                    </Link>
-                    <div className="mb-8">
-                      <ProductSearch />
-                    </div>
-                    <nav className="flex flex-col gap-6 font-manrope">
-                      {NavLinks.map((link) => (
-                        <div key={link.title} className="flex flex-col">
-                          <Link
-                            href={link.href}
-                            className="text-lg font-semibold text-hok-espresso uppercase tracking-wide mb-2"
-                            onClick={() => !link.submenu && setOpen(false)}
-                          >
-                            {link.title}
-                          </Link>
-                          {link.submenu && (
-                            <div className="flex flex-col gap-3 pl-4 border-l-2 border-hok-champagne/30">
-                              {link.submenu.map((subItem) => (
+            {/* Left Nav (Mobile Menu + Desktop Links) */}
+            <div className="flex flex-1 items-center justify-start lg:gap-6 xl:gap-8">
+              {/* Mobile Menu */}
+              <div className="lg:hidden">
+                <Sheet>
+                  <SheetTrigger asChild>
+                    <button 
+                      className="p-2 -ml-2 text-hok-espresso rounded-md hover:bg-black/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-hok-espresso relative z-50 pointer-events-auto"
+                      aria-label="Toggle menu"
+                    >
+                      <Menu className="w-6 h-6 pointer-events-none" />
+                    </button>
+                  </SheetTrigger>
+                  <SheetContent side="left" className="w-[300px] border-r-0 bg-hok-linen p-0">
+                    <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                    <div className="flex flex-col h-full p-6">
+                      <SheetClose asChild>
+                        <Link href="/" className="mb-8 block w-fit">
+                          <Image src="/brand/new-hok-logo-black.svg" alt="HOK Logo" width={80} height={80} className="w-20 h-auto" />
+                        </Link>
+                      </SheetClose>
+                      <div className="mb-8">
+                        <ProductSearch />
+                      </div>
+                      <nav className="flex flex-col gap-6 font-manrope">
+                        {NavLinks.map((link) => (
+                          <div key={link.title} className="flex flex-col">
+                            {link.submenu ? (
+                              <span className="text-lg font-semibold text-hok-espresso uppercase tracking-wide mb-2">
+                                {link.title}
+                              </span>
+                            ) : (
+                              <SheetClose asChild>
                                 <Link
-                                  key={subItem.title}
-                                  href={subItem.href}
-                                  className="text-sm font-medium text-hok-stone hover:text-hok-walnut transition-colors"
-                                  onClick={() => setOpen(false)}
+                                  href={link.href}
+                                  className="text-lg font-semibold text-hok-espresso uppercase tracking-wide mb-2 block"
                                 >
-                                  {subItem.title}
+                                  {link.title}
                                 </Link>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </nav>
-                  </div>
-                </SheetContent>
-              </Sheet>
-            </div>
+                              </SheetClose>
+                            )}
+                            {link.submenu && (
+                              <div className="flex flex-col gap-3 pl-4 border-l-2 border-hok-champagne/30">
+                                {link.submenu.map((subItem) => (
+                                  <SheetClose asChild key={subItem.title}>
+                                    <Link
+                                      href={subItem.href}
+                                      className="text-sm font-medium text-hok-stone hover:text-hok-walnut transition-colors block py-1"
+                                    >
+                                      {subItem.title}
+                                    </Link>
+                                  </SheetClose>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </nav>
+                    </div>
+                  </SheetContent>
+                </Sheet>
+              </div>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-8 w-1/3">
-              {NavLinks.slice(0, 2).map((link) => (
+              {/* Desktop Navigation */}
+              <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
+                {NavLinks.slice(0, 2).map((link) => (
                 <div key={link.title} className="relative group">
                   <Link 
                     href={link.href}
-                    className="flex items-center gap-1 font-manrope text-sm font-semibold tracking-wider text-hok-espresso hover:text-hok-walnut uppercase py-2"
+                    className="flex items-center gap-1 font-manrope text-sm font-semibold tracking-wider text-hok-espresso hover:text-hok-walnut uppercase py-2 whitespace-nowrap"
                   >
                     {link.title}
                     {link.submenu && <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />}
@@ -144,29 +156,31 @@ export default function Navbar() {
                   )}
                 </div>
               ))}
-            </nav>
+              </nav>
+            </div>
 
             {/* Logo */}
-            <div className="flex justify-center w-1/3">
+            <div className="flex shrink-0 items-center justify-center">
               <Link href="/">
                 <Image
                   src="/brand/new-hok-logo-black.svg"
                   alt="HOK Logo"
-                  width={scrolled ? 50 : 64}
-                  height={scrolled ? 50 : 64}
+                  width={scrolled ? 110 : 130}
+                  height={scrolled ? 35 : 44}
                   className="transition-all duration-300"
+                  priority
                 />
               </Link>
             </div>
 
             {/* Right Desktop Nav & Utilities */}
-            <div className="flex items-center justify-end gap-6 w-1/3">
-              <div className="hidden lg:flex items-center gap-8 mr-4">
+            <div className="flex flex-1 items-center justify-end gap-3 md:gap-4 lg:gap-6">
+              <div className="hidden lg:flex items-center gap-4 xl:gap-8 mr-2">
                 {NavLinks.slice(2).map((link) => (
                   <div key={link.title} className="relative group">
                     <Link 
                       href={link.href}
-                      className="flex items-center gap-1 font-manrope text-sm font-semibold tracking-wider text-hok-espresso hover:text-hok-walnut uppercase py-2"
+                      className="flex items-center gap-1 font-manrope text-sm font-semibold tracking-wider text-hok-espresso hover:text-hok-walnut uppercase py-2 whitespace-nowrap"
                     >
                       {link.title}
                       {link.submenu && <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />}
