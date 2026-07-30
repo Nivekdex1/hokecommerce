@@ -32,11 +32,11 @@ const TrustBar = () => {
           {benefits.map((benefit, index) => (
             <div
               key={index}
-              className={`flex flex-col items-center text-center ${
-                index > 0 ? "pt-6 md:pt-0" : ""
-              } md:px-4`}
+              className={`group flex flex-col items-center text-center p-4 rounded-md transition-all duration-300 hover:bg-white/5 hover:-translate-y-1 cursor-default ${
+                index > 0 ? "md:pt-4 pt-6" : "pt-4"
+              }`}
             >
-              <div className="bg-white/10 p-3 rounded-full mb-3">
+              <div className="bg-white/10 p-3 rounded-full mb-3 transition-transform duration-300 group-hover:scale-110 group-hover:bg-white/20">
                 {benefit.icon}
               </div>
               <h4 className="font-playfair font-medium text-sm md:text-base tracking-wide mb-1">

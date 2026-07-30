@@ -127,8 +127,8 @@ export default async function Home() {
       <section className="py-20 md:py-32 bg-hok-espresso text-white relative overflow-hidden">
         <div className="container-narrow">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div className="order-2 md:order-1 relative h-[500px] w-full rounded-t-full overflow-hidden border-4 border-hok-champagne/20">
-              <Image src="/lizare-image-2.png" alt="Glass skin model" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
+            <div className="group order-2 md:order-1 relative h-[500px] w-full rounded-t-full overflow-hidden border-4 border-hok-champagne/20">
+              <Image src="/lizare-image-2.png" alt="Glass skin model" fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 50vw" />
             </div>
             <div className="order-1 md:order-2">
               <h2 className="font-playfair text-4xl md:text-5xl font-semibold mb-6">

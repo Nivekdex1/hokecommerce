@@ -5,33 +5,21 @@ import React from "react";
 interface PaginationProps {
   hasNextPage: boolean;
   hasPreviousPage: boolean;
-  startCursor: string | null;
-  endCursor: string | null;
-  buildUrl: (cursor: string, type: "before" | "after") => string | null;
-  getBaseUrl: () => string | null;
+  nextUrl?: string;
+  previousUrl?: string;
 }
 
 const Pagination = ({
   hasNextPage,
   hasPreviousPage,
-  startCursor,
-  endCursor,
-  buildUrl,
-  getBaseUrl,
+  nextUrl,
+  previousUrl,
 }: PaginationProps) => {
-  // Determine the href for the Previous button, falling back to #
-  const prevHref = startCursor
-    ? (buildUrl(startCursor, "before") ?? "#")
-    : (getBaseUrl() ?? "#");
-
-  // Determine the href for the Next button, falling back to #
-  const nextHref = endCursor ? (buildUrl(endCursor, "after") ?? "#") : "#";
-
   return (
     <div className="mt-8 flex items-center justify-center gap-2">
-      {hasPreviousPage && (
+      {hasPreviousPage && previousUrl && (
         <Link
-          href={prevHref}
+          href={previousUrl}
           className="flex items-center rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm ring-1 ring-gray-300 hover:bg-gray-50"
         >
           <ChevronLeft className="mr-1 h-4 w-4" />
@@ -39,9 +27,9 @@ const Pagination = ({
         </Link>
       )}
 
-      {hasNextPage && endCursor && (
+      {hasNextPage && nextUrl && (
         <Link
-          href={nextHref}
+          href={nextUrl}
           className="flex items-center rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm ring-1 ring-gray-300 hover:bg-gray-50"
         >
           Next

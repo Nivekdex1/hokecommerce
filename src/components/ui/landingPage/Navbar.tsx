@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { useCartStore } from "@/store/useCartStore";
 import { Menu, ShoppingCart, ChevronDown } from "lucide-react";
 import Image from "next/image";
@@ -76,6 +76,7 @@ export default function Navbar() {
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="left" className="w-[300px] border-r-0 bg-hok-linen p-0">
+                  <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                   <div className="flex flex-col h-full p-6">
                     <Link href="/" onClick={() => setOpen(false)} className="mb-8">
                       <Image src="/brand/new-hok-logo-black.svg" alt="HOK Logo" width={80} height={80} />

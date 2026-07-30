@@ -28,16 +28,16 @@ const Footer = () => {
             
             <div className="flex gap-4">
               <Link href="https://www.instagram.com/thehomeofkoreanproducts/" aria-label="Instagram" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-hok-champagne transition-colors group">
-                <Image src="/instagram.svg" alt="" width={20} height={20} className="w-5 h-5 opacity-80 group-hover:opacity-100 group-hover:brightness-0 group-hover:invert" />
+                <Image src="/instagram.svg" alt="" width={20} height={20} className="w-5 h-5 filter brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity" />
               </Link>
               <Link href="https://www.tiktok.com/@thehomeofkoreanproducts" aria-label="TikTok" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-hok-champagne transition-colors group">
-                <Image src="/tiktok.svg" alt="" width={20} height={20} className="w-5 h-5 opacity-80 group-hover:opacity-100 group-hover:brightness-0 group-hover:invert" />
+                <Image src="/tiktok.svg" alt="" width={20} height={20} className="w-5 h-5 filter brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity" />
               </Link>
               <Link href="https://www.facebook.com/share/1EK81bfAFp/" aria-label="Facebook" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-hok-champagne transition-colors group">
-                <Image src="/facebook.svg" alt="" width={20} height={20} className="w-5 h-5 opacity-80 group-hover:opacity-100 group-hover:brightness-0 group-hover:invert" />
+                <Image src="/facebook.svg" alt="" width={20} height={20} className="w-5 h-5 filter brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity" />
               </Link>
               <Link href="https://whatsapp.com/channel/0029VbAMxdn9hXF5cKnHxz12" aria-label="WhatsApp" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-hok-champagne transition-colors group">
-                <Image src="/whatsapp.svg" alt="" width={20} height={20} className="w-5 h-5 opacity-80 group-hover:opacity-100 group-hover:brightness-0 group-hover:invert" />
+                <Image src="/whatsapp.svg" alt="" width={20} height={20} className="w-5 h-5 filter brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity" />
               </Link>
             </div>
           </div>

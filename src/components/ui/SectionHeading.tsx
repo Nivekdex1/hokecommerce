@@ -9,6 +9,7 @@ interface SectionHeadingProps {
   ctaText?: string;
   ctaHref?: string;
   className?: string;
+  lightText?: boolean;
 }
 
 const SectionHeading: React.FC<SectionHeadingProps> = ({
@@ -18,6 +19,7 @@ const SectionHeading: React.FC<SectionHeadingProps> = ({
   ctaText,
   ctaHref,
   className = "",
+  lightText = false,
 }) => {
   return (
     <div
@@ -27,11 +29,11 @@ const SectionHeading: React.FC<SectionHeadingProps> = ({
     >
       <div className={`flex w-full items-end justify-between gap-4 ${align === "center" ? "justify-center" : ""}`}>
         <div className={align === "center" ? "mx-auto" : ""}>
-          <h2 className="font-playfair text-3xl md:text-4xl lg:text-5xl font-semibold text-hok-espresso mb-3">
+          <h2 className={`font-playfair text-3xl md:text-4xl lg:text-5xl font-semibold mb-3 ${lightText ? "text-white" : "text-hok-espresso"}`}>
             {title}
           </h2>
           {subtitle && (
-            <p className="text-hok-stone md:text-lg max-w-2xl font-light">
+            <p className={`md:text-lg max-w-2xl font-light ${lightText ? "text-hok-mist" : "text-hok-stone"}`}>
               {subtitle}
             </p>
           )}

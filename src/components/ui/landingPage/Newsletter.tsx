@@ -73,7 +73,7 @@ const Newsletter = () => {
             </Button>
           </form>
           
-          <p className="font-manrope text-xs text-hok-mist/80 mt-6">
+          <p className="font-manrope text-xs text-hok-stone/80 mt-6">
             By subscribing, you agree to our Terms of Service and Privacy Policy.
           </p>
         </div>
