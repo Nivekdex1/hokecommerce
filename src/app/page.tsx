@@ -27,6 +27,8 @@ export default function Home() {
             src="/lizare-image-2.png"
             alt="Lizara Korean Skincare Products"
             fill
+
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover"
             priority
           />
@@ -83,6 +85,8 @@ export default function Home() {
                   src="/lizare-image-2.png"
                   alt="Lizara Korean Skincare Products"
                   fill
+
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-contain"
                   priority
                 />
@@ -139,6 +143,8 @@ export default function Home() {
           src={item.src}
           alt={item.alt}
           fill
+
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           priority={index === 0}
           className="object-cover"
           sizes="60vw"

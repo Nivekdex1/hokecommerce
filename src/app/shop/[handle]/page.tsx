@@ -4,12 +4,13 @@ import { Suspense } from "react";
 import ProductClient from "./product-client";
 
 interface ProductPageProps {
-  params: {
+  params: Promise<{
     handle: string;
-  };
+  }>;
 }
 
-export default async function ProductPage({ params }: ProductPageProps) {
+export default async function ProductPage(props: ProductPageProps) {
+  const params = await props.params;
   // Fetch initial data on the server
   const product = await getProduct(params.handle);
 

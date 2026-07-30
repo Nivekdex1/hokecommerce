@@ -78,6 +78,8 @@ export default function EnhancedCarousel() {
                       src={collection.image.url}
                       alt={collection.image.altText || collection.title}
                       fill
+
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="rounded-lg object-cover"
                     />
                   ) : (
@@ -133,6 +135,8 @@ export default function EnhancedCarousel() {
                           src={collection.image.url}
                           alt={collection.image.altText || collection.title}
                           fill
+
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           className="rounded-lg object-cover"
                         />
                       ) : (

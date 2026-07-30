@@ -160,6 +160,8 @@ const QuizResults: React.FC<QuizResultsProps> = ({
                             src={node.media.edges[0].node.image.src}
                             alt={node.media.edges[0].node.alt || node.title}
                             fill
+
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             className="object-cover"
                           />
                         </div>

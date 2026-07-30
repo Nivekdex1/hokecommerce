@@ -17,6 +17,8 @@ export default function ProductCategories() {
                   src="/cleaners.png"
                   alt="COSRX Low pH Good Morning Gel Cleanser"
                   fill
+
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
                   priority
                 />
@@ -48,6 +50,8 @@ export default function ProductCategories() {
                   src="/toner.jpeg"
                   alt="COSRX Low pH Good Morning Gel Cleanser"
                   fill
+
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
                   priority
                 />

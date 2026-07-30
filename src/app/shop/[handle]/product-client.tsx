@@ -280,6 +280,8 @@ export default function ProductClient({
                       src={image.url || "/placeholder.svg"}
                       alt={`${product.title} - Image ${index + 1}`}
                       fill
+
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       sizes="(min-width: 640px) 300px, 100vw"
                       className="object-cover"
                     />
@@ -459,6 +461,8 @@ export default function ProductClient({
                           relatedProduct.title
                         }
                         fill
+
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         sizes="(min-width: 640px) 300px, 100vw"
                         className="object-cover transition-transform duration-300 group-hover:scale-105"
                       />

@@ -21,11 +21,10 @@ interface ShopPageSearchParams {
   before?: string; // Cursor for backward pagination
 }
 
-export default async function ShopPage({
-  searchParams,
-}: {
-  searchParams?: ShopPageSearchParams;
+export default async function ShopPage(props: {
+  searchParams?: Promise<ShopPageSearchParams>;
 }) {
+  const searchParams = await props.searchParams;
   // No need to extract cursor here, getProducts handles searchParams directly
   const pageSize = 20;
 

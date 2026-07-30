@@ -22,11 +22,10 @@ interface WholesaleShopPageSearchParams {
   before?: string; // Cursor for backward pagination
 }
 
-const WholesaleShop = async ({
-  searchParams,
-}: {
-  searchParams?: WholesaleShopPageSearchParams;
+const WholesaleShop = async (props: {
+  searchParams?: Promise<WholesaleShopPageSearchParams>;
 }) => {
+  const searchParams = await props.searchParams;
   // getProducts now handles reading before/after cursors from searchParams
   const pageSize = 15;
 
