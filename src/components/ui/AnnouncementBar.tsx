@@ -11,7 +11,7 @@ const AnnouncementBar = async () => {
 
   return (
     <div className="w-full bg-hok-walnut text-white text-xs md:text-sm py-2 relative z-50 overflow-hidden flex whitespace-nowrap">
-      <div className="flex w-max animate-marquee-ltr hover:[animation-play-state:paused]">
+      <div className="flex w-max animate-marquee hover:[animation-play-state:paused]">
         {[...Array(6)].map((_, i) => (
           <div key={i} className="flex items-center justify-center px-8 md:px-16">
             <p className="font-medium tracking-wide">
