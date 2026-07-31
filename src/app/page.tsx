@@ -2,23 +2,24 @@ import HeroCarousel from "@/components/ui/landingPage/HeroCarousel";
 import TrustBar from "@/components/ui/TrustBar";
 import SectionHeading from "@/components/ui/SectionHeading";
 import ProductCard from "@/components/ui/ProductCard";
-import { getProducts } from "@/lib/shopify";
+import { getProducts, getMetaobject } from "@/lib/shopify";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
 export default async function Home() {
-  // Fetch best sellers 
-  const bestSellersData = await getProducts({
+  // Fetch best sellers (with fallback if no tag matches)
+  let bestSellersData = await getProducts({
     pageSize: 4,
-    // Assuming tags feature is used for best-sellers, otherwise this fetches 4 random
-    searchParams: { tags: "best-seller" } 
+    searchParams: { tags: "best-seller" }
   });
+  if (!bestSellersData?.products?.length) {
+    bestSellersData = await getProducts({ pageSize: 4 });
+  }
 
   // Fetch new arrivals
-  const newArrivalsData = await getProducts({
+  let newArrivalsData = await getProducts({
     pageSize: 4,
-    // searchParams: { tags: "new" } 
   });
 
   // Helper to map Shopify product to ProductCard props
@@ -35,9 +36,59 @@ export default async function Home() {
   const bestSellers = bestSellersData?.products?.map(mapProduct) || [];
   const newArrivals = newArrivalsData?.products?.map(mapProduct) || [];
 
+  const heroConfig = await getMetaobject("hero_section", "home_hero");
+
+  const fallbackSlides = [
+    {
+      id: 1,
+      title: "Discover Your Glass Skin Era",
+      subtitle: "Authentic, dermatologist-backed Korean skincare tailored to bring out your natural, luminous glow.",
+      cta: "Shop Skincare",
+      href: "/shop",
+      image: "/hero-products.png",
+      bgColor: "bg-hok-ivory",
+    },
+    {
+      id: 2,
+      title: "Our Best Sellers",
+      subtitle: "The holy grail products everyone is talking about. Grab them before they sell out again.",
+      cta: "Shop Best Sellers",
+      href: "/shop?tags=best-seller",
+      image: "/best-selling-img2.png",
+      bgColor: "bg-hok-cream",
+    },
+    {
+      id: 3,
+      title: "Wholesale Partner Program",
+      subtitle: "Grow your beauty business with genuine K-beauty products at competitive wholesale prices.",
+      cta: "Join HOK Pro",
+      href: "/wholesale",
+      image: "/our-brand.png",
+      bgColor: "bg-hok-linen",
+    }
+  ];
+
+  let slides = fallbackSlides;
+  if (heroConfig && heroConfig.fields) {
+    // Override the first slide if the dynamic config is present
+    slides = [
+      {
+        id: "dynamic-hero",
+        title: heroConfig.fields.hero_title || fallbackSlides[0].title,
+        subtitle: heroConfig.fields.hero_subtitle || fallbackSlides[0].subtitle,
+        cta: heroConfig.fields.hero_cta_text || fallbackSlides[0].cta,
+        href: heroConfig.fields.hero_cta_link || fallbackSlides[0].href,
+        image: heroConfig.fields.hero_image?.url || fallbackSlides[0].image,
+        bgColor: "bg-hok-ivory",
+      },
+      fallbackSlides[1],
+      fallbackSlides[2],
+    ];
+  }
+
   return (
     <div className="flex flex-col w-full bg-hok-linen">
-      <HeroCarousel />
+      <HeroCarousel slides={slides} />
       <TrustBar />
 
       {/* Brand Carousel / Logos */}
@@ -66,10 +117,10 @@ export default async function Home() {
       {/* Featured Collections */}
       <section className="section-padding bg-hok-linen">
         <div className="container-narrow">
-          <SectionHeading title="Curated for You" subtitle="Shop our most popular skincare categories" />
-          
+          <SectionHeading title="Curated just for You" subtitle="Shop our most popular skincare categories" />
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Link href="/shop?productType=cleanser" className="group relative h-[400px] overflow-hidden rounded-md block">
+            <Link href="/shop?productType=cleanser" className="group relative h-[400px] overflow-hidden rounded-none block">
               <Image src="/cleaners.png" alt="Cleansers" fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-hok-espresso/80 via-hok-espresso/20 to-transparent"></div>
               <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between">
@@ -79,8 +130,8 @@ export default async function Home() {
                 </span>
               </div>
             </Link>
-            
-            <Link href="/shop?productType=serum" className="group relative h-[400px] overflow-hidden rounded-md block">
+
+            <Link href="/shop?productType=serum" className="group relative h-[400px] overflow-hidden rounded-none block">
               <Image src="/hero-products.png" alt="Serums & Treatments" fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-hok-espresso/80 via-hok-espresso/20 to-transparent"></div>
               <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between">
@@ -91,7 +142,7 @@ export default async function Home() {
               </div>
             </Link>
 
-            <Link href="/shop?productType=moisturizer" className="group relative h-[400px] overflow-hidden rounded-md block">
+            <Link href="/shop?productType=moisturizer" className="group relative h-[400px] overflow-hidden rounded-none block">
               <Image src="/specialist.png" alt="Moisturizers" fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-hok-espresso/80 via-hok-espresso/20 to-transparent"></div>
               <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between">
@@ -109,7 +160,7 @@ export default async function Home() {
       <section className="section-padding bg-white">
         <div className="container-narrow">
           <SectionHeading title="Best Sellers" subtitle="The holy grail products everyone is talking about" ctaText="Shop All" ctaHref="/shop?tags=best-seller" align="left" />
-          
+
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {bestSellers.length > 0 ? (
               bestSellers.map((product: any) => (
@@ -138,7 +189,7 @@ export default async function Home() {
               <p className="font-manrope text-lg text-hok-mist mb-10 font-light leading-relaxed">
                 We believe in authentic, dermatologist-backed skincare that brings out your natural glow. No counterfeits, no shortcuts.
               </p>
-              
+
               <div className="space-y-8">
                 <div className="flex gap-4">
                   <div className="mt-1 bg-hok-walnut/50 p-2 rounded-full h-fit">
@@ -149,7 +200,7 @@ export default async function Home() {
                     <p className="text-hok-mist text-sm leading-relaxed">We partner with official distributors to guarantee 100% authenticity for every product.</p>
                   </div>
                 </div>
-                
+
                 <div className="flex gap-4">
                   <div className="mt-1 bg-hok-walnut/50 p-2 rounded-full h-fit">
                     <CheckIcon />
@@ -179,7 +230,7 @@ export default async function Home() {
       <section className="section-padding bg-hok-linen">
         <div className="container-narrow">
           <SectionHeading title="New Arrivals" subtitle="Fresh from Seoul, just landed" ctaText="Discover More" ctaHref="/shop?tags=new" align="left" />
-          
+
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {newArrivals.length > 0 ? (
               newArrivals.map((product: any) => (
@@ -195,23 +246,45 @@ export default async function Home() {
       </section>
 
       {/* Skin Quiz CTA */}
-      <section className="relative py-24 md:py-32 bg-hok-ivory border-y border-hok-mist overflow-hidden">
-        <div className="absolute right-0 top-0 w-1/2 h-full opacity-10 pointer-events-none hidden md:block">
-           <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-             <path fill="#D4A853" d="M42.7,-73.4C55.9,-67.9,67.6,-57.3,76.5,-44.5C85.3,-31.6,91.3,-15.8,91.1,-0.1C90.9,15.6,84.4,31.2,74.7,43.5C65,55.8,52.2,64.8,38.3,71.5C24.4,78.2,9.4,82.5,-5.2,85.5C-19.8,88.5,-34.1,90.2,-46.8,84.3C-59.5,78.4,-70.6,64.8,-78.9,50C-87.3,35.1,-93,17.5,-93,0C-93,-17.5,-87.3,-35.1,-78.9,-50C-70.6,-64.8,-59.5,-78.4,-46.8,-84.3C-34.1,-90.2,-19.8,-88.5,-5.2,-85.5C9.4,-82.5,24.4,-78.2,38.3,-71.5C52.2,-64.8,65,-55.8,74.7,-43.5C84.4,-31.2,90.9,-15.6,91.1,-0.1C91.3,-15.8,85.3,-31.6,76.5,-44.5C67.6,-57.3,55.9,-67.9,42.7,-73.4Z" transform="translate(100 100) scale(1.1)" />
-           </svg>
+      <section className="relative py-20 lg:py-28 bg-hok-ivory border-y border-hok-mist overflow-hidden flex items-center justify-center min-h-[450px] lg:min-h-[500px]">
+        
+        {/* Left Subject Image (Absolute, Full Height, Far Left) */}
+        <div className="absolute left-0 bottom-0 top-0 w-[45%] md:w-[35%] lg:w-[28%] pointer-events-none z-0 opacity-40 sm:opacity-100">
+          <Image
+            src="/co-founder-1.png"
+            alt="Personalized Skincare Consultation"
+            fill
+            className="object-contain object-left-bottom"
+            sizes="(max-width: 768px) 45vw, 28vw"
+          />
         </div>
-        <div className="container-narrow text-center relative z-10">
-          <span className="text-hok-champagne font-semibold tracking-widest uppercase mb-4 block">Take the guesswork out</span>
-          <h2 className="font-playfair text-4xl md:text-5xl lg:text-6xl text-hok-espresso font-semibold mb-6 max-w-3xl mx-auto leading-tight">
+
+        {/* Right Subject Image (Absolute, Full Height, Far Right) */}
+        <div className="absolute right-0 bottom-0 top-0 w-[45%] md:w-[35%] lg:w-[28%] pointer-events-none z-0 opacity-40 sm:opacity-100">
+          <Image
+            src="/co-founder-2.png"
+            alt="K-Beauty Skincare Specialist"
+            fill
+            className="object-contain object-right-bottom"
+            sizes="(max-width: 768px) 45vw, 28vw"
+          />
+        </div>
+
+        {/* Center Text Content */}
+        <div className="relative z-10 w-full max-w-3xl mx-auto px-4 sm:px-6 text-center flex flex-col items-center justify-center">
+          <span className="text-hok-champagne font-semibold tracking-widest uppercase mb-4 text-xs sm:text-sm block">
+            Take the guesswork out
+          </span>
+          <h2 className="font-playfair text-4xl sm:text-5xl md:text-6xl text-hok-espresso font-semibold mb-6 leading-[1.1] text-balance">
             Not sure where to start? Find your perfect routine.
           </h2>
-          <p className="font-manrope text-hok-stone text-lg mb-10 max-w-xl mx-auto">
+          <p className="font-manrope text-hok-stone text-base sm:text-lg md:text-xl mb-10 max-w-xl mx-auto leading-relaxed text-balance">
             Take our 2-minute personalized skin algorithm quiz to get expert recommendations tailored to your unique skin type and concerns.
           </p>
-          <Button asChild className="bg-hok-espresso hover:bg-hok-walnut text-white rounded-none px-10 py-7 text-lg font-semibold tracking-wide">
-            <Link href="/skin-algorithm">
-              Start the Skin Quiz
+          <Button asChild className="btn-shimmer bg-hok-walnut hover:bg-hok-espresso text-white rounded-none px-12 py-7 text-lg font-semibold tracking-wide transition-all duration-300 active:scale-95 shadow-xl mt-2">
+            <Link href="/skin-algorithm" className="flex items-center gap-3">
+              <span>Start the Skin Quiz</span>
+              <ArrowRightIcon />
             </Link>
           </Button>
         </div>
@@ -233,6 +306,18 @@ function CheckIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4A853" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
       <polyline points="20 6 9 17 4 12"></polyline>
+    </svg>
+  );
+}
+
+function SparklesIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D4A853" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="animate-pulse">
+      <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path>
+      <path d="M5 3v4"></path>
+      <path d="M19 17v4"></path>
+      <path d="M3 5h4"></path>
+      <path d="M17 19h4"></path>
     </svg>
   );
 }

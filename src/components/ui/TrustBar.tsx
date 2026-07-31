@@ -1,53 +1,101 @@
+"use client";
+
 import { ShieldCheck, Truck, Lock, Sparkles } from "lucide-react";
-import React from "react";
+import React, { useState, useEffect } from "react";
+
+const benefits = [
+  {
+    icon: <Sparkles className="w-5 h-5 text-hok-walnut" />,
+    title: "Clear Skin & Glow",
+    subtitle: "Dermatologist Formulas",
+  },
+  {
+    icon: <ShieldCheck className="w-5 h-5 text-hok-walnut" />,
+    title: "100% Authentic",
+    subtitle: "Sourced Direct from Korea",
+  },
+  {
+    icon: <Truck className="w-5 h-5 text-hok-walnut" />,
+    title: "Fast Delivery",
+    subtitle: "Nationwide Across Nigeria",
+  },
+  {
+    icon: <Lock className="w-5 h-5 text-hok-walnut" />,
+    title: "Secure Checkout",
+    subtitle: "Safe & Encrypted Payments",
+  },
+];
 
 const TrustBar = () => {
-  const benefits = [
-    {
-      icon: <Sparkles className="w-5 h-5 text-hok-champagne" />,
-      title: "Clear Skin & Instant Glow",
-      subtitle: "Dermatologist-backed formulas",
-    },
-    {
-      icon: <ShieldCheck className="w-5 h-5 text-hok-champagne" />,
-      title: "100% Authentic",
-      subtitle: "Sourced directly from Korea",
-    },
-    {
-      icon: <Truck className="w-5 h-5 text-hok-champagne" />,
-      title: "Fast Delivery",
-      subtitle: "Nationwide across Nigeria",
-    },
-    {
-      icon: <Lock className="w-5 h-5 text-hok-champagne" />,
-      title: "Secure Checkout",
-      subtitle: "Safe & encrypted payments",
-    },
-  ];
+  const [activeMobileIndex, setActiveMobileIndex] = useState(0);
+
+  // Auto-slide loop for mobile
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveMobileIndex((prev) => (prev + 1) % benefits.length);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <div className="dark-section w-full bg-hok-espresso text-white py-6 md:py-8">
+    <section className="w-full bg-white border-y border-hok-mist/60 py-6 text-hok-espresso">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-0">
+
+        {/* DESKTOP LAYOUT: Horizontal Icon + Text with Vertical Line Dividers */}
+        <div className="hidden md:grid md:grid-cols-4 divide-x divide-hok-mist/80">
           {benefits.map((benefit, index) => (
             <div
               key={index}
-              className="group flex flex-col items-center text-center p-4 rounded-md transition-all duration-300 hover:bg-white/5 hover:-translate-y-1 cursor-default"
+              className={`group flex items-center gap-4 px-6 py-2 transition-all duration-300 ${index === 0 ? "pl-2" : ""
+                }`}
             >
-              <div className="bg-white/10 p-3 rounded-full mb-3 transition-transform duration-300 group-hover:scale-110 group-hover:bg-white/20">
+              {/* Circular White Badge with Icon */}
+              <div className="w-12 h-12 rounded-full bg-hok-ivory/50 border border-hok-mist/50 shadow-xs flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110 group-hover:border-hok-champagne">
                 {benefit.icon}
               </div>
-              <h4 className="font-playfair font-medium text-sm md:text-base tracking-wide mb-1 text-white">
-                {benefit.title}
-              </h4>
-              <p className="text-xs text-hok-mist/80 font-light hidden md:block">
-                {benefit.subtitle}
-              </p>
+
+              {/* Title & Subtitle */}
+              <div className="flex flex-col text-left">
+                <h4 className="font-playfair text-base lg:text-lg font-medium text-hok-espresso tracking-wide leading-tight group-hover:text-hok-walnut transition-colors">
+                  {benefit.title}
+                </h4>
+                <p className="font-manrope text-[10px] lg:text-[11px] font-bold text-hok-stone/80 tracking-[0.15em] uppercase mt-0.5">
+                  {benefit.subtitle}
+                </p>
+              </div>
             </div>
           ))}
         </div>
+
+        {/* MOBILE LAYOUT: Infinite sliding feature row */}
+        <div className="md:hidden relative w-full overflow-hidden py-1">
+          <div
+            className="flex transition-transform duration-500 ease-in-out"
+            style={{ transform: `translateX(-${activeMobileIndex * 100}%)` }}
+          >
+            {benefits.map((benefit, index) => (
+              <div
+                key={index}
+                className="min-w-full flex items-center justify-center gap-4 px-4 py-2"
+              >
+                <div className="w-12 h-12 rounded-full bg-white border border-hok-mist/50 shadow-sm flex items-center justify-center shrink-0">
+                  {benefit.icon}
+                </div>
+                <div className="flex flex-col text-left">
+                  <h4 className="font-playfair text-base font-medium text-hok-espresso tracking-wide leading-tight">
+                    {benefit.title}
+                  </h4>
+                  <p className="font-manrope text-[10px] font-bold text-hok-stone/80 tracking-[0.15em] uppercase mt-0.5">
+                    {benefit.subtitle}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
       </div>
-    </div>
+    </section>
   );
 };
 

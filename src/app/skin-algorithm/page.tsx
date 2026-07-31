@@ -1,6 +1,5 @@
 import React from "react";
 import SkinQuiz from "../../components/ui/SkinQuiz";
-import Newsletter from "@/components/ui/landingPage/Newsletter";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -26,9 +25,6 @@ const SkinAlgorithmPage = () => {
         </div>
       </div>
 
-      <section className="bg-white py-12 border-t border-hok-mist mt-10">
-        <Newsletter />
-      </section>
     </main>
   );
 };

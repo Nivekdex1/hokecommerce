@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import FaqAccordion from "@/components/ui/faqAccordion";
 import { Input } from "@/components/ui/input";
-import Newsletter from "@/components/ui/landingPage/Newsletter";
 import { Textarea } from "@/components/ui/textarea";
 import { Asterisk, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import React, { useState } from "react";
@@ -195,10 +194,6 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Newsletter */}
-      <section className="bg-white py-12 border-t border-hok-mist">
-        <Newsletter />
-      </section>
     </main>
   );
 }

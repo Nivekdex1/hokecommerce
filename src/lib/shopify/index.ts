@@ -39,7 +39,8 @@ const isShopifyConfigured = domain && storefrontAccessToken;
 export async function shopifyFetch<T>({
   query,
   variables,
-}: ShopifyRequestOptions): Promise<{ status: number; body: T }> {
+  tags,
+}: ShopifyRequestOptions & { tags?: string[] }): Promise<{ status: number; body: T }> {
   if (!isShopifyConfigured) {
     console.error("Shopify environment variables are not configured");
     throw new Error(
@@ -57,6 +58,7 @@ export async function shopifyFetch<T>({
         "X-Shopify-Storefront-Access-Token": storefrontAccessToken,
       },
       body: JSON.stringify({ query, variables }),
+      ...(tags && { next: { tags } }),
     });
 
     return {
@@ -122,6 +124,17 @@ export async function getProducts({
   if (tags.length > 0) {
     filterQueries.push(`(${tags.map((t) => `tag:'${t}'`).join(" OR ")})`);
   }
+  // --- Price Filtering ---
+  const minPrice = searchParams?.minPrice ? parseFloat(searchParams.minPrice) : undefined;
+  const maxPrice = searchParams?.maxPrice ? parseFloat(searchParams.maxPrice) : undefined;
+  
+  if (minPrice !== undefined && !isNaN(minPrice)) {
+    filterQueries.push(`variants.price:>=${minPrice}`);
+  }
+  if (maxPrice !== undefined && !isNaN(maxPrice)) {
+    filterQueries.push(`variants.price:<=${maxPrice}`);
+  }
+
   const filterString = filterQueries.join(" AND ");
   // ---------------------------------
 
@@ -143,15 +156,6 @@ export async function getProducts({
     };
   }
   // -------------------------------------
-
-  // --- Price Filtering (needs to be done post-fetch) ---
-  const minPrice = searchParams?.minPrice
-    ? parseFloat(searchParams.minPrice)
-    : undefined;
-  const maxPrice = searchParams?.maxPrice
-    ? parseFloat(searchParams.maxPrice)
-    : undefined;
-  // ---------------------------------
 
   // Update GraphQL query to accept all pagination parameters
   const query = `
@@ -477,4 +481,62 @@ export async function getCollections() {
   });
 
   return collections;
+}
+
+/**
+ * Fetches a single Metaobject by type and handle
+ */
+export async function getMetaobject(type: string, handle: string) {
+  const query = `
+    query GetMetaobject($type: String!, $handle: String!) {
+      metaobject(handle: {type: $type, handle: $handle}) {
+        id
+        handle
+        type
+        fields {
+          key
+          value
+          reference {
+            ... on MediaImage {
+              image {
+                url
+                altText
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  // We can use a tag based on the metaobject type for revalidation
+  const response = await shopifyFetch<import('./types').ShopifyMetaobjectResponse>({
+    query,
+    variables: { type, handle },
+    tags: [`metaobject:${type}`]
+  });
+
+  if (!response?.body?.data?.metaobject) {
+    return null;
+  }
+
+  const { metaobject } = response.body.data;
+  
+  // Convert fields array into a key-value record for easier usage
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const fields: Record<string, any> = {};
+  metaobject.fields.forEach((field) => {
+    if (field.reference?.image) {
+      fields[field.key] = field.reference.image; // { url, altText }
+    } else {
+      fields[field.key] = field.value;
+    }
+  });
+
+  return {
+    id: metaobject.id,
+    handle: metaobject.handle,
+    type: metaobject.type,
+    fields,
+  };
 }

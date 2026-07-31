@@ -126,6 +126,26 @@ export type ShopifyCollectionsResponse = {
   };
 };
 
+export type ShopifyMetaobjectResponse = {
+  data: {
+    metaobject: {
+      id: string;
+      handle: string;
+      type: string;
+      fields: Array<{
+        key: string;
+        value: string | null;
+        reference: {
+          image?: {
+            url: string;
+            altText: string | null;
+          };
+        } | null;
+      }>;
+    } | null;
+  };
+};
+
 // Simplified types for use in components
 export type Products = {
   id: string;
@@ -194,4 +214,12 @@ export type CartItem = {
   quantity: number;
   image: string;
   handle: string;
+};
+
+export type MetaobjectData = {
+  id: string;
+  handle: string;
+  type: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  fields: Record<string, any>;
 };

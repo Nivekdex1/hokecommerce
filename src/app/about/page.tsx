@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import Newsletter from "@/components/ui/landingPage/Newsletter";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Image from "next/image";
 import Link from "next/link";
@@ -131,10 +130,6 @@ export default function About() {
         </div>
       </section>
       
-      {/* Newsletter */}
-      <section className="bg-white py-12 border-t border-hok-mist">
-        <Newsletter />
-      </section>
     </main>
   );
 }

@@ -6,39 +6,19 @@ import Link from "next/link";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const slides = [
-  {
-    id: 1,
-    title: "Discover Your Glass Skin Era",
-    subtitle: "Authentic, dermatologist-backed Korean skincare tailored to bring out your natural, luminous glow.",
-    cta: "Shop Skincare",
-    href: "/shop",
-    image: "/hero-products.png",
-    bgColor: "bg-hok-ivory",
-  },
-  {
-    id: 2,
-    title: "Our Best Sellers",
-    subtitle: "The holy grail products everyone is talking about. Grab them before they sell out again.",
-    cta: "Shop Best Sellers",
-    href: "/shop?tags=best-seller",
-    image: "/best-selling-img2.png",
-    bgColor: "bg-hok-cream",
-  },
-  {
-    id: 3,
-    title: "Wholesale Partner Program",
-    subtitle: "Grow your beauty business with genuine K-beauty products at competitive wholesale prices.",
-    cta: "Join HOK Pro",
-    href: "/wholesale",
-    image: "/our-brand.png",
-    bgColor: "bg-hok-linen",
-  }
-];
+export type HeroSlide = {
+  id: string | number;
+  title: string;
+  subtitle: string;
+  cta: string;
+  href: string;
+  image: string;
+  bgColor: string;
+};
 
 const SLIDE_DURATION = 6000;
 
-export default function HeroCarousel() {
+export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -63,6 +43,7 @@ export default function HeroCarousel() {
   }, []);
 
   const onTouchStart = (e: React.TouchEvent) => {
+    setIsHovered(true);
     setTouchEnd(null);
     setTouchStart(e.targetTouches[0].clientX);
   };
@@ -72,10 +53,13 @@ export default function HeroCarousel() {
   };
 
   const onTouchEndHandler = () => {
-    if (!touchStart || !touchEnd) return;
-    const distance = touchStart - touchEnd;
-    if (distance > minSwipeDistance) nextSlide();
-    else if (distance < -minSwipeDistance) prevSlide();
+    if (touchStart && touchEnd) {
+      const distance = touchStart - touchEnd;
+      if (distance > minSwipeDistance) nextSlide();
+      else if (distance < -minSwipeDistance) prevSlide();
+    }
+    // Reset hover state after touch interaction so auto-slide resumes on mobile
+    setTimeout(() => setIsHovered(false), 2000);
   };
 
   useEffect(() => {
@@ -87,7 +71,12 @@ export default function HeroCarousel() {
   return (
     <div 
       className="relative w-full overflow-hidden group"
-      onMouseEnter={() => setIsHovered(true)}
+      onMouseEnter={() => {
+        // Only hover-pause on desktop mice, not mobile touch taps
+        if (window.matchMedia('(hover: hover)').matches) {
+          setIsHovered(true);
+        }
+      }}
       onMouseLeave={() => setIsHovered(false)}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}

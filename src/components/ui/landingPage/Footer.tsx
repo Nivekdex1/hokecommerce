@@ -62,12 +62,12 @@ const Footer = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="h-12 bg-white/10 border-white/20 text-white placeholder:text-hok-mist/50 focus-visible:ring-hok-champagne text-sm"
+                className="h-12 bg-white/10 border-white/20 text-white placeholder:text-hok-mist/50 focus-visible:ring-hok-champagne text-sm rounded-none"
               />
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="h-12 px-6 bg-hok-champagne hover:bg-hok-champagne/90 text-hok-espresso font-semibold tracking-wide transition-all duration-300 hover:shadow-lg active:scale-[0.97] whitespace-nowrap rounded-md"
+                className="h-12 px-6 bg-hok-champagne hover:bg-hok-champagne/90 text-hok-espresso font-semibold tracking-wide transition-all duration-300 hover:shadow-lg active:scale-[0.97] whitespace-nowrap rounded-none"
               >
                 {isSubmitting ? "Subscribing..." : "Subscribe"}
               </Button>
@@ -79,22 +79,22 @@ const Footer = () => {
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-6 py-14 lg:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8">
-          
+
           {/* Column 1: Brand & Socials */}
           <div className="lg:col-span-2 flex flex-col items-start">
             <Link href="/" className="mb-5 block hover:opacity-80 transition-opacity duration-300">
               <Image
                 src="/brand/new-hok-logo-white.svg"
                 alt="Home of Korean Beauty Logo"
-                width={80}
-                height={27}
-                className="w-auto h-7"
+                width={120}
+                height={40}
+                className="w-auto h-10"
               />
             </Link>
             <p className="font-manrope text-sm text-hok-mist/80 mb-6 max-w-xs leading-relaxed">
               Nigeria's #1 destination for authentic, dermatologist-backed Korean skincare. Discover your perfect glow with our curated collection of K-beauty essentials.
             </p>
-            
+
             <div className="flex gap-3">
               {[
                 { href: "https://www.instagram.com/thehomeofkoreanproducts/", label: "Instagram", icon: "/instagram.svg" },

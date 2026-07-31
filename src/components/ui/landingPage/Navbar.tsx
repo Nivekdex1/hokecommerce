@@ -112,8 +112,8 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex w-full items-center justify-between">
             
-            {/* Left: Mobile Menu + Desktop Links */}
-            <div className="flex flex-1 items-center justify-start gap-6 xl:gap-8">
+            {/* Left: Mobile Menu + Desktop Logo */}
+            <div className="flex flex-1 lg:flex-none items-center justify-start gap-6 xl:gap-8">
               {/* Mobile Menu */}
               <div className="lg:hidden">
                 <Sheet>
@@ -130,7 +130,7 @@ export default function Navbar() {
                     <div className="flex flex-col h-full p-6">
                       <SheetClose asChild>
                         <Link href="/" className="mb-8 block w-fit">
-                          <Image src="/brand/new-hok-logo-black.svg" alt="HOK Logo" width={90} height={30} className="w-auto h-8" />
+                          <Image src="/brand/new-hok-logo-black.svg" alt="HOK Logo" width={135} height={45} className="w-auto h-12" />
                         </Link>
                       </SheetClose>
                       <div className="mb-8">
@@ -175,21 +175,28 @@ export default function Navbar() {
                 </Sheet>
               </div>
 
-              {/* Desktop Left Navigation */}
-              <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
-                {LeftNavLinks.map((link) => renderDesktopLink(link))}
-              </nav>
+              {/* Desktop Left Logo */}
+              <Link href="/" className="hidden lg:block hover:opacity-80 transition-opacity duration-300">
+                <Image
+                  src="/brand/new-hok-logo-black.svg"
+                  alt="HOK Logo"
+                  width={120}
+                  height={40}
+                  className="transition-all duration-500 w-auto h-10 md:h-12"
+                  priority
+                />
+              </Link>
             </div>
 
-            {/* Center: Logo */}
-            <div className="flex shrink-0 items-center justify-center px-4">
+            {/* Center: Mobile Logo */}
+            <div className="flex lg:hidden shrink-0 items-center justify-center px-4">
               <Link href="/" className="block hover:opacity-80 transition-opacity duration-300">
                 <Image
                   src="/brand/new-hok-logo-black.svg"
                   alt="HOK Logo"
-                  width={80}
-                  height={27}
-                  className="transition-all duration-500 w-auto h-7 md:h-8"
+                  width={120}
+                  height={40}
+                  className="transition-all duration-500 w-auto h-10 md:h-12"
                   priority
                 />
               </Link>
@@ -197,9 +204,9 @@ export default function Navbar() {
 
             {/* Right: Desktop Nav + Utilities */}
             <div className="flex flex-1 items-center justify-end gap-4 lg:gap-6">
-              {/* Desktop Right Navigation */}
-              <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
-                {RightNavLinks.map((link) => renderDesktopLink(link, true))}
+              {/* Desktop Right Navigation (All Links) */}
+              <nav className="hidden lg:flex items-center gap-6 xl:gap-8 mr-2 xl:mr-4">
+                {AllNavLinks.map((link) => renderDesktopLink(link))}
               </nav>
 
               {/* Search Icon (Desktop) */}
