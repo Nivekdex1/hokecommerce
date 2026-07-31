@@ -57,7 +57,9 @@ export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const searchRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const { totalItems } = useCartStore();
   const totalItemsCount = totalItems();
 
@@ -86,40 +88,59 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [searchOpen]);
 
-  const renderDesktopLink = (link: typeof LeftNavLinks[0], alignRight = false) => (
-    <div key={link.title} className="relative group">
-      {link.submenu ? (
-        <button 
-          className="nav-link-underline flex items-center gap-1 font-manrope text-[13px] font-semibold tracking-[0.15em] text-hok-espresso hover:text-hok-walnut uppercase py-2 whitespace-nowrap transition-colors duration-300"
-        >
-          {link.title}
-          <ChevronDown className="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
-        </button>
-      ) : (
-        <Link 
-          href={link.href}
-          className="nav-link-underline flex items-center gap-1 font-manrope text-[13px] font-semibold tracking-[0.15em] text-hok-espresso hover:text-hok-walnut uppercase py-2 whitespace-nowrap transition-colors duration-300"
-        >
-          {link.title}
-        </Link>
-      )}
-      {link.submenu && (
-        <div className={`absolute top-full ${alignRight ? 'right-0' : 'left-0'} pt-3 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 z-50`}>
-          <div className="bg-white border border-hok-mist/60 shadow-xl rounded-lg py-2 w-52 flex flex-col">
-            {link.submenu.map((subItem) => (
-              <Link
-                key={subItem.title}
-                href={subItem.href}
-                className="px-5 py-2.5 text-sm font-medium text-hok-stone hover:text-hok-espresso hover:bg-hok-linen/80 transition-colors duration-200"
-              >
-                {subItem.title}
-              </Link>
-            ))}
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setOpenDropdown(null);
+      }
+    };
+    if (openDropdown) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [openDropdown]);
+
+  const renderDesktopLink = (link: typeof LeftNavLinks[0], alignRight = false) => {
+    const isOpen = openDropdown === link.title;
+    
+    return (
+      <div key={link.title} className="relative">
+        {link.submenu ? (
+          <button 
+            onClick={() => setOpenDropdown(isOpen ? null : link.title)}
+            className="nav-link-underline flex items-center gap-1 font-manrope text-[13px] font-semibold tracking-[0.15em] text-hok-espresso hover:text-hok-walnut uppercase py-2 whitespace-nowrap transition-colors duration-300"
+          >
+            {link.title}
+            <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+          </button>
+        ) : (
+          <Link 
+            href={link.href}
+            className="nav-link-underline flex items-center gap-1 font-manrope text-[13px] font-semibold tracking-[0.15em] text-hok-espresso hover:text-hok-walnut uppercase py-2 whitespace-nowrap transition-colors duration-300"
+          >
+            {link.title}
+          </Link>
+        )}
+        {link.submenu && (
+          <div className={`absolute top-full ${alignRight ? 'right-0' : 'left-0'} pt-3 transition-all duration-300 z-50 ${isOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-2 pointer-events-none'}`}>
+            <div className="bg-white border border-hok-mist/60 shadow-xl rounded-lg py-2 w-52 flex flex-col">
+              {link.submenu.map((subItem) => (
+                <Link
+                  key={subItem.title}
+                  href={subItem.href}
+                  onClick={() => setOpenDropdown(null)}
+                  className="px-5 py-2.5 text-sm font-medium text-hok-stone hover:text-hok-espresso hover:bg-hok-linen/80 transition-colors duration-200"
+                >
+                  {subItem.title}
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
-    </div>
-  );
+        )}
+      </div>
+    );
+  };
 
   return (
     <>
@@ -229,7 +250,7 @@ export default function Navbar() {
             {/* Right: Desktop Nav + Utilities */}
             <div className="flex flex-1 items-center justify-end gap-4 lg:gap-6">
               {/* Desktop Right Navigation (All Links) */}
-              <nav className="hidden lg:flex items-center gap-6 xl:gap-8 mr-2 xl:mr-4">
+              <nav className="hidden lg:flex items-center gap-6 xl:gap-8 mr-2 xl:mr-4" ref={dropdownRef}>
                 {AllNavLinks.map((link) => renderDesktopLink(link))}
               </nav>
 
