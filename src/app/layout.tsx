@@ -1,6 +1,7 @@
 import QueryProvider from "@/components/QueryProvider";
 import Footer from "@/components/ui/landingPage/Footer";
 import Navbar from "@/components/ui/landingPage/Navbar";
+import AnnouncementBar from "@/components/ui/AnnouncementBar";
 import { Toaster } from "@/components/ui/sonner";
 import CookieConsent from "@/components/ui/CookieConsent";
 import BackToTop from "@/components/ui/BackToTop";
@@ -94,7 +95,10 @@ export default function RootLayout({
       </head>
       <body className={`${playfair.variable} ${manrope.variable} antialiased min-h-screen flex flex-col`}>
         <QueryProvider>
-          <Navbar />
+          <div className="sticky top-0 z-50">
+            <AnnouncementBar />
+            <Navbar />
+          </div>
           <main className="flex-grow">
             {children}
           </main>

@@ -93,7 +93,7 @@ export default async function Home() {
 
       {/* Brand Carousel / Logos */}
       <section className="border-b border-hok-mist py-8 bg-white overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="container-narrow">
           <p className="text-center text-xs text-hok-stone font-semibold tracking-widest uppercase mb-6">
             Official distributors of Nigeria's favorite brands
           </p>

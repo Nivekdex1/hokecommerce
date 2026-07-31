@@ -10,15 +10,19 @@ const AnnouncementBar = async () => {
   const linkUrl = config?.fields?.announcement_link_url || "/shop";
 
   return (
-    <div className="w-full bg-hok-walnut text-white text-xs md:text-sm py-2 px-4 relative z-50">
-      <div className="max-w-7xl mx-auto flex items-center justify-center">
-        <p className="text-center font-medium tracking-wide">
-          <span className="hidden sm:inline">{text}</span>
-          {" "}
-          <Link href={linkUrl} className="underline underline-offset-2 hover:text-hok-champagne transition-colors ml-1 font-semibold">
-            {linkText}
-          </Link>
-        </p>
+    <div className="w-full bg-hok-walnut text-white text-xs md:text-sm py-2 relative z-50 overflow-hidden flex whitespace-nowrap">
+      <div className="flex w-max animate-marquee-ltr hover:[animation-play-state:paused]">
+        {[...Array(6)].map((_, i) => (
+          <div key={i} className="flex items-center justify-center px-8 md:px-16">
+            <p className="font-medium tracking-wide">
+              <span>{text}</span>
+              {" "}
+              <Link href={linkUrl} className="underline underline-offset-2 hover:text-hok-champagne transition-colors ml-1 font-semibold">
+                {linkText}
+              </Link>
+            </p>
+          </div>
+        ))}
       </div>
     </div>
   );

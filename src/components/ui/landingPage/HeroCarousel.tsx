@@ -145,7 +145,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
       </button>
 
       {/* Bottom Navigation: Dots + Progress */}
-      <div className="absolute bottom-5 left-1/2 md:left-[22.5%] -translate-x-1/2 flex items-center gap-2.5 z-10">
+      <div className="absolute top-[calc(40vh-2rem)] sm:top-[calc(45vh-2rem)] md:top-auto md:bottom-5 left-1/2 md:left-[72.5%] -translate-x-1/2 flex items-center gap-2.5 z-10">
         {slides.map((_, idx) => (
           <button
             key={idx}

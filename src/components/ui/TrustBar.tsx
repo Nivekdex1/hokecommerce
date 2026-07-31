@@ -39,7 +39,7 @@ const TrustBar = () => {
 
   return (
     <section className="w-full bg-white border-y border-hok-mist/60 py-6 text-hok-espresso">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <div className="container-narrow">
 
         {/* DESKTOP LAYOUT: Horizontal Icon + Text with Vertical Line Dividers */}
         <div className="hidden md:grid md:grid-cols-4 divide-x divide-hok-mist/80">

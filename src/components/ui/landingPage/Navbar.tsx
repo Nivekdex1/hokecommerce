@@ -8,7 +8,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
 import ProductSearch from "../product-search";
-import AnnouncementBar from "../AnnouncementBar";
 
 const LeftNavLinks = [
   { title: "SHOP", href: "/shop" },
@@ -103,13 +102,12 @@ export default function Navbar() {
 
   return (
     <>
-      <AnnouncementBar />
       <header 
-        className={`sticky top-0 z-50 w-full transition-all duration-500 ${
+        className={`w-full transition-all duration-500 ${
           scrolled ? "bg-white/95 backdrop-blur-md shadow-sm py-2" : "bg-white py-3 lg:py-4"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="w-full px-6 md:px-12 lg:px-20">
           <div className="flex w-full items-center justify-between">
             
             {/* Left: Mobile Menu + Desktop Logo */}
