@@ -42,7 +42,7 @@ const Footer = () => {
     <footer className="dark-section w-full bg-hok-espresso text-hok-ivory">
       {/* Newsletter Band */}
       <div className="border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-6 py-12 md:py-16">
+        <div className="w-full px-6 md:px-12 lg:px-20 py-12 md:py-16">
           <div className="flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="text-center md:text-left max-w-md">
               <div className="flex items-center gap-3 justify-center md:justify-start mb-3">
@@ -77,7 +77,7 @@ const Footer = () => {
       </div>
 
       {/* Main Footer Content */}
-      <div className="max-w-7xl mx-auto px-6 py-14 lg:py-20">
+      <div className="w-full px-6 md:px-12 lg:px-20 py-14 lg:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8">
 
           {/* Column 1: Brand & Socials */}
@@ -166,7 +166,7 @@ const Footer = () => {
 
       {/* Bottom Bar */}
       <div className="border-t border-white/10 bg-black/20">
-        <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="w-full px-6 md:px-12 lg:px-20 py-5 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="font-manrope text-sm text-hok-mist/60">
             &copy; {currentYear} Home of Korean Beauty. All rights reserved.
           </p>
