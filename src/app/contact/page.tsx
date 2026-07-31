@@ -15,7 +15,7 @@ export default function Contact() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     const formData = new FormData(e.currentTarget);
     const data = {
       firstName: formData.get("firstName"),
@@ -55,15 +55,15 @@ export default function Contact() {
           </p>
         </div>
       </div>
-      
+
       <div className="container-narrow py-12 md:py-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
-          
+
           {/* Contact Info Sidebar */}
           <div className="lg:col-span-4 order-2 lg:order-1">
             <div className="bg-white border border-hok-mist rounded-md p-8 h-full">
               <h3 className="font-playfair text-2xl text-hok-espresso font-medium mb-8">Get in Touch</h3>
-              
+
               <div className="space-y-8 font-manrope">
                 <div className="flex gap-4">
                   <div className="w-10 h-10 rounded-full bg-hok-champagne/20 flex items-center justify-center flex-shrink-0">
@@ -76,7 +76,19 @@ export default function Contact() {
                     </a>
                   </div>
                 </div>
-                
+
+                <div className="flex gap-4">
+                  <div className="w-10 h-10 rounded-full bg-hok-champagne/20 flex items-center justify-center flex-shrink-0">
+                    <Phone className="w-5 h-5 text-hok-caramel" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-hok-espresso mb-1">Call Us</h4>
+                    <a href="tel:+2349164036455" className="text-sm text-hok-stone hover:text-hok-walnut transition-colors">
+                      +234 916 403 6455
+                    </a>
+                  </div>
+                </div>
+
                 <div className="flex gap-4">
                   <div className="w-10 h-10 rounded-full bg-hok-champagne/20 flex items-center justify-center flex-shrink-0">
                     <MessageCircle className="w-5 h-5 text-hok-caramel" />
@@ -84,7 +96,7 @@ export default function Contact() {
                   <div>
                     <h4 className="font-semibold text-hok-espresso mb-1">WhatsApp</h4>
                     <p className="text-sm text-hok-stone mb-1">Available Mon - Sat, 9am - 6pm</p>
-                    <a href="https://whatsapp.com/channel/0029VbAMxdn9hXF5cKnHxz12" className="text-sm font-semibold text-hok-walnut hover:text-hok-caramel transition-colors">
+                    <a href="https://wa.me/2347065095024" className="text-sm font-semibold text-hok-walnut hover:text-hok-caramel transition-colors">
                       Chat with us
                     </a>
                   </div>
@@ -95,10 +107,12 @@ export default function Contact() {
                     <MapPin className="w-5 h-5 text-hok-caramel" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-hok-espresso mb-1">Location</h4>
-                    <p className="text-sm text-hok-stone">
-                      Lagos, Nigeria<br/>
-                      (Online Store Only)
+                    <h4 className="font-semibold text-hok-espresso mb-1">Visit Our Store</h4>
+                    <p className="text-sm text-hok-stone leading-relaxed">
+                      Shop 043 Grace of God Plaza,<br />
+                      Opposite Kaduna Plaza,<br />
+                      Balogun Market, off Lagos Badagry Expressway,<br />
+                      Trade Fair Complex, Lagos State
                     </p>
                   </div>
                 </div>
@@ -171,14 +185,44 @@ export default function Contact() {
                   />
                 </div>
 
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   disabled={isSubmitting}
                   className="w-full sm:w-auto min-w-[200px] h-14 rounded-none bg-hok-espresso hover:bg-hok-walnut text-white font-semibold tracking-wide transition-colors"
                 >
                   {isSubmitting ? "Sending..." : "Send Message"}
                 </Button>
               </form>
+            </div>
+          </div>
+        </div>
+
+        {/* Map Section */}
+        <div className="mt-16">
+          <div className="bg-white border border-hok-mist rounded-md overflow-hidden">
+            <div className="p-6 md:p-8 border-b border-hok-mist">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-full bg-hok-champagne/20 flex items-center justify-center flex-shrink-0">
+                  <MapPin className="w-5 h-5 text-hok-caramel" />
+                </div>
+                <div>
+                  <h3 className="font-playfair text-2xl text-hok-espresso font-medium">Find Our Store</h3>
+                  <p className="font-manrope text-sm text-hok-stone">Trade Fair Complex, Lagos Badagry Expressway, Lagos State</p>
+                </div>
+              </div>
+            </div>
+            <div className="relative w-full h-[350px] md:h-[450px]">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.4877516028228!2d3.2505500999999994!3d6.4597183!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b8980611c074d%3A0x3aa3d4021fced42d!2sHome%20of%20Korean%20Products%20(HOK)!5e0!3m2!1sen!2sng!4v1785501876907!5m2!1sen!2sng"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="HOK Store Location — Trade Fair Complex, Lagos"
+                className="absolute inset-0"
+              />
             </div>
           </div>
         </div>

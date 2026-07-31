@@ -18,10 +18,7 @@ const ProductSearch = () => {
   const isFirstRun = useRef(true);
   const router = useRouter();
 
-  useEffect(() => {
-    // Auto-focus when the component mounts (e.g., when the search icon is clicked on desktop)
-    inputRef.current?.focus();
-  }, []);
+  // No auto-focus on mount — prevents mobile menu from jumping to search
 
   useEffect(() => {
     if (isFirstRun.current) {
@@ -68,7 +65,7 @@ const ProductSearch = () => {
             ref={inputRef}
             type="text"
             placeholder="type to search..."
-            className="h-full w-full border-none bg-transparent text-xl font-bold text-gray-700 shadow-none placeholder:font-semibold placeholder:italic focus:border-none focus:shadow-none focus:ring-0 focus:outline-none focus-visible:ring-0"
+            className="h-full w-full border-none bg-transparent text-sm text-gray-700 shadow-none placeholder:text-sm placeholder:font-normal placeholder:italic focus:border-none focus:shadow-none focus:ring-0 focus:outline-none focus-visible:ring-0"
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
             value={query}

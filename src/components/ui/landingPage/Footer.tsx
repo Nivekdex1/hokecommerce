@@ -148,12 +148,16 @@ const Footer = () => {
                 <a href="mailto:shop@homeofkoreanbeauty.com" className="footer-link hover:text-white transition-colors duration-200">shop@homeofkoreanbeauty.com</a>
               </li>
               <li>
-                <span className="block text-white/90 font-medium mb-1 text-xs uppercase tracking-wider">WhatsApp</span>
-                <span>Available Mon - Sat</span>
+                <span className="block text-white/90 font-medium mb-1 text-xs uppercase tracking-wider">Opening Hours </span>
+                <span>Mon - Sat: 9am - 5pm</span>
+              </li>
+              <li>
+                <span className="block text-white/90 font-medium mb-1 text-xs uppercase tracking-wider">Phone</span>
+                <a href="tel:+2349164036455" className="footer-link hover:text-white transition-colors duration-200">+234 916 403 6455</a>
               </li>
               <li>
                 <span className="block text-white/90 font-medium mb-1 text-xs uppercase tracking-wider">Location</span>
-                <span>Lagos, Nigeria</span>
+                <span>Shop 043 Grace of God Plaza, Opp. Kaduna Plaza, Balogun Market, Trade Fair Complex, Lagos</span>
               </li>
             </ul>
           </div>
