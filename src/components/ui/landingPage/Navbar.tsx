@@ -10,7 +10,18 @@ import { useEffect, useState, useRef } from "react";
 import ProductSearch from "../product-search";
 
 const LeftNavLinks = [
-  { title: "SHOP", href: "/shop" },
+  { 
+    title: "SHOP", 
+    href: "/shop",
+    submenu: [
+      { title: "Cleansers", href: "/shop?category=cleansers" },
+      { title: "Toners", href: "/shop?category=toner" },
+      { title: "Dark Spots & Hyperpigmentation", href: "/shop?collections=hyperpigmentation" },
+      { title: "Acne & Blemishes", href: "/shop?collections=acne" },
+      { title: "Dullness & Radiance", href: "/shop?collections=glow" },
+      { title: "Firming & Anti-Aging", href: "/shop?collections=anti-aging" },
+    ]
+  },
   {
     title: "BRANDS",
     href: "/brands",
@@ -138,9 +149,14 @@ export default function Navbar() {
                         {AllNavLinks.map((link) => (
                           <div key={link.title} className="flex flex-col">
                             {link.submenu ? (
-                              <span className="text-sm font-bold text-hok-espresso uppercase tracking-wider py-3 border-b border-hok-mist/50">
-                                {link.title}
-                              </span>
+                              <SheetClose asChild>
+                                <Link
+                                  href={link.href}
+                                  className="text-sm font-bold text-hok-espresso uppercase tracking-wider py-3 border-b border-hok-mist/50 block hover:text-hok-walnut transition-colors flex items-center justify-between"
+                                >
+                                  {link.title}
+                                </Link>
+                              </SheetClose>
                             ) : (
                               <SheetClose asChild>
                                 <Link
