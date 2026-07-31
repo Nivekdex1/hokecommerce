@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import SectionHeading from "@/components/ui/landingPage/SectionHeading";
+import SectionHeading from "@/components/ui/SectionHeading";
 
 const BRANDS = [
   { name: "Cosrx", slug: "cosrx", desc: "Minimalist skincare tailored for your specific skin needs.", image: "/brand/new-hok-logo-black.svg" },

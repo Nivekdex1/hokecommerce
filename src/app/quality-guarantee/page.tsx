@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import SectionHeading from "@/components/ui/landingPage/SectionHeading";
+import SectionHeading from "@/components/ui/SectionHeading";
 import { ShieldCheck, Award, ThumbsUp, SearchCheck } from "lucide-react";
 
 export default function QualityGuaranteePage() {
