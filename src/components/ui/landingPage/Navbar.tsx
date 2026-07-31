@@ -14,6 +14,7 @@ const LeftNavLinks = [
     title: "SHOP", 
     href: "/shop",
     submenu: [
+      { title: "All Products", href: "/shop" },
       { title: "Cleansers", href: "/shop?category=cleansers" },
       { title: "Toners", href: "/shop?category=toner" },
       { title: "Dark Spots & Hyperpigmentation", href: "/shop?collections=hyperpigmentation" },
@@ -26,6 +27,7 @@ const LeftNavLinks = [
     title: "BRANDS",
     href: "/brands",
     submenu: [
+      { title: "All Brands", href: "/brands" },
       { title: "Cosrx", href: "/shop?vendors=cosrx" },
       { title: "Derma Factory", href: "/shop?vendors=derma-factory" },
       { title: "Lizara", href: "/shop?vendors=lizara" },
@@ -86,13 +88,21 @@ export default function Navbar() {
 
   const renderDesktopLink = (link: typeof LeftNavLinks[0], alignRight = false) => (
     <div key={link.title} className="relative group">
-      <Link 
-        href={link.href}
-        className="nav-link-underline flex items-center gap-1 font-manrope text-[13px] font-semibold tracking-[0.15em] text-hok-espresso hover:text-hok-walnut uppercase py-2 whitespace-nowrap transition-colors duration-300"
-      >
-        {link.title}
-        {link.submenu && <ChevronDown className="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />}
-      </Link>
+      {link.submenu ? (
+        <button 
+          className="nav-link-underline flex items-center gap-1 font-manrope text-[13px] font-semibold tracking-[0.15em] text-hok-espresso hover:text-hok-walnut uppercase py-2 whitespace-nowrap transition-colors duration-300"
+        >
+          {link.title}
+          <ChevronDown className="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
+        </button>
+      ) : (
+        <Link 
+          href={link.href}
+          className="nav-link-underline flex items-center gap-1 font-manrope text-[13px] font-semibold tracking-[0.15em] text-hok-espresso hover:text-hok-walnut uppercase py-2 whitespace-nowrap transition-colors duration-300"
+        >
+          {link.title}
+        </Link>
+      )}
       {link.submenu && (
         <div className={`absolute top-full ${alignRight ? 'right-0' : 'left-0'} pt-3 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 z-50`}>
           <div className="bg-white border border-hok-mist/60 shadow-xl rounded-lg py-2 w-52 flex flex-col">

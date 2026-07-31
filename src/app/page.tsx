@@ -65,6 +65,15 @@ export default async function Home() {
       href: "/wholesale",
       image: "/our-brand.png",
       bgColor: "bg-hok-linen",
+    },
+    {
+      id: 4,
+      title: "Targeted Solutions for Every Concern",
+      subtitle: "From hyperpigmentation to acne, find the perfect active ingredients to transform your skin.",
+      cta: "Shop by Concern",
+      href: "/shop?collections=hyperpigmentation",
+      image: "/specialist.png",
+      bgColor: "bg-hok-ivory",
     }
   ];
 
@@ -83,6 +92,7 @@ export default async function Home() {
       },
       fallbackSlides[1],
       fallbackSlides[2],
+      fallbackSlides[3],
     ];
   }
 
