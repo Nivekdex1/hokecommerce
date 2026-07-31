@@ -26,20 +26,18 @@ const TrustBar = () => {
   ];
 
   return (
-    <div className="w-full bg-hok-espresso text-white py-6 md:py-8">
+    <div className="dark-section w-full bg-hok-espresso text-white py-6 md:py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-4 divide-y md:divide-y-0 md:divide-x divide-hok-walnut">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-0">
           {benefits.map((benefit, index) => (
             <div
               key={index}
-              className={`group flex flex-col items-center text-center p-4 rounded-md transition-all duration-300 hover:bg-white/5 hover:-translate-y-1 cursor-default ${
-                index > 0 ? "md:pt-4 pt-6" : "pt-4"
-              }`}
+              className="group flex flex-col items-center text-center p-4 rounded-md transition-all duration-300 hover:bg-white/5 hover:-translate-y-1 cursor-default"
             >
               <div className="bg-white/10 p-3 rounded-full mb-3 transition-transform duration-300 group-hover:scale-110 group-hover:bg-white/20">
                 {benefit.icon}
               </div>
-              <h4 className="font-playfair font-medium text-sm md:text-base tracking-wide mb-1">
+              <h4 className="font-playfair font-medium text-sm md:text-base tracking-wide mb-1 text-white">
                 {benefit.title}
               </h4>
               <p className="text-xs text-hok-mist/80 font-light hidden md:block">

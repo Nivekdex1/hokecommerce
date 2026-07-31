@@ -3,6 +3,7 @@ import Footer from "@/components/ui/landingPage/Footer";
 import Navbar from "@/components/ui/landingPage/Navbar";
 import { Toaster } from "@/components/ui/sonner";
 import CookieConsent from "@/components/ui/CookieConsent";
+import BackToTop from "@/components/ui/BackToTop";
 import type { Metadata, Viewport } from "next";
 import { Manrope, Playfair_Display } from "next/font/google";
 import "./globals.css";
@@ -99,6 +100,7 @@ export default function RootLayout({
           </main>
           <Footer />
           <CookieConsent />
+          <BackToTop />
           <Toaster position="top-right" />
         </QueryProvider>
       </body>

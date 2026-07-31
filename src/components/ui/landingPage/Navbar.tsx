@@ -3,14 +3,14 @@
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetClose } from "@/components/ui/sheet";
 import { useCartStore } from "@/store/useCartStore";
-import { Menu, ShoppingCart, ChevronDown } from "lucide-react";
+import { Menu, ShoppingCart, ChevronDown, Search, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import ProductSearch from "../product-search";
 import AnnouncementBar from "../AnnouncementBar";
 
-const NavLinks = [
+const LeftNavLinks = [
   { title: "SHOP", href: "/shop" },
   {
     title: "BRANDS",
@@ -23,6 +23,9 @@ const NavLinks = [
       { title: "Anua", href: "/shop?vendors=anua" },
     ],
   },
+];
+
+const RightNavLinks = [
   {
     title: "HOK PRO",
     href: "/wholesale",
@@ -36,9 +39,13 @@ const NavLinks = [
   { title: "ABOUT US", href: "/about" },
 ];
 
+const AllNavLinks = [...LeftNavLinks, ...RightNavLinks];
+
 export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
   const { totalItems } = useCartStore();
   const totalItemsCount = totalItems();
 
@@ -54,28 +61,68 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close search on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setSearchOpen(false);
+      }
+    };
+    if (searchOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [searchOpen]);
+
+  const renderDesktopLink = (link: typeof LeftNavLinks[0], alignRight = false) => (
+    <div key={link.title} className="relative group">
+      <Link 
+        href={link.href}
+        className="nav-link-underline flex items-center gap-1 font-manrope text-[13px] font-semibold tracking-[0.15em] text-hok-espresso hover:text-hok-walnut uppercase py-2 whitespace-nowrap transition-colors duration-300"
+      >
+        {link.title}
+        {link.submenu && <ChevronDown className="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />}
+      </Link>
+      {link.submenu && (
+        <div className={`absolute top-full ${alignRight ? 'right-0' : 'left-0'} pt-3 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 z-50`}>
+          <div className="bg-white border border-hok-mist/60 shadow-xl rounded-lg py-2 w-52 flex flex-col">
+            {link.submenu.map((subItem) => (
+              <Link
+                key={subItem.title}
+                href={subItem.href}
+                className="px-5 py-2.5 text-sm font-medium text-hok-stone hover:text-hok-espresso hover:bg-hok-linen/80 transition-colors duration-200"
+              >
+                {subItem.title}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <>
       <AnnouncementBar />
       <header 
-        className={`sticky top-0 z-50 w-full transition-all duration-300 ${
-          scrolled ? "bg-white/95 backdrop-blur-md shadow-sm py-2" : "bg-white py-4"
+        className={`sticky top-0 z-50 w-full transition-all duration-500 ${
+          scrolled ? "bg-white/95 backdrop-blur-md shadow-sm py-2" : "bg-white py-3 lg:py-4"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex w-full items-center justify-between">
             
-            {/* Left Nav (Mobile Menu + Desktop Links) */}
-            <div className="flex flex-1 items-center justify-start lg:gap-6 xl:gap-8">
+            {/* Left: Mobile Menu + Desktop Links */}
+            <div className="flex flex-1 items-center justify-start gap-6 xl:gap-8">
               {/* Mobile Menu */}
               <div className="lg:hidden">
                 <Sheet>
                   <SheetTrigger asChild>
                     <button 
-                      className="p-2 -ml-2 text-hok-espresso rounded-md hover:bg-black/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-hok-espresso relative z-50 pointer-events-auto"
+                      className="p-2 -ml-2 text-hok-espresso rounded-md hover:bg-hok-linen active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-hok-champagne"
                       aria-label="Toggle menu"
                     >
-                      <Menu className="w-6 h-6 pointer-events-none" />
+                      <Menu className="w-6 h-6" />
                     </button>
                   </SheetTrigger>
                   <SheetContent side="left" className="w-[300px] border-r-0 bg-hok-linen p-0">
@@ -83,36 +130,36 @@ export default function Navbar() {
                     <div className="flex flex-col h-full p-6">
                       <SheetClose asChild>
                         <Link href="/" className="mb-8 block w-fit">
-                          <Image src="/brand/new-hok-logo-black.svg" alt="HOK Logo" width={80} height={80} className="w-20 h-auto" />
+                          <Image src="/brand/new-hok-logo-black.svg" alt="HOK Logo" width={90} height={30} className="w-auto h-8" />
                         </Link>
                       </SheetClose>
                       <div className="mb-8">
                         <ProductSearch />
                       </div>
-                      <nav className="flex flex-col gap-6 font-manrope">
-                        {NavLinks.map((link) => (
+                      <nav className="flex flex-col gap-1 font-manrope">
+                        {AllNavLinks.map((link) => (
                           <div key={link.title} className="flex flex-col">
                             {link.submenu ? (
-                              <span className="text-lg font-semibold text-hok-espresso uppercase tracking-wide mb-2">
+                              <span className="text-sm font-bold text-hok-espresso uppercase tracking-wider py-3 border-b border-hok-mist/50">
                                 {link.title}
                               </span>
                             ) : (
                               <SheetClose asChild>
                                 <Link
                                   href={link.href}
-                                  className="text-lg font-semibold text-hok-espresso uppercase tracking-wide mb-2 block"
+                                  className="text-sm font-bold text-hok-espresso uppercase tracking-wider py-3 border-b border-hok-mist/50 block hover:text-hok-walnut transition-colors"
                                 >
                                   {link.title}
                                 </Link>
                               </SheetClose>
                             )}
                             {link.submenu && (
-                              <div className="flex flex-col gap-3 pl-4 border-l-2 border-hok-champagne/30">
+                              <div className="flex flex-col py-2 pl-4 mb-1">
                                 {link.submenu.map((subItem) => (
                                   <SheetClose asChild key={subItem.title}>
                                     <Link
                                       href={subItem.href}
-                                      className="text-sm font-medium text-hok-stone hover:text-hok-walnut transition-colors block py-1"
+                                      className="text-sm text-hok-stone hover:text-hok-walnut transition-colors block py-2"
                                     >
                                       {subItem.title}
                                     </Link>
@@ -128,94 +175,57 @@ export default function Navbar() {
                 </Sheet>
               </div>
 
-              {/* Desktop Navigation */}
+              {/* Desktop Left Navigation */}
               <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
-                {NavLinks.slice(0, 2).map((link) => (
-                <div key={link.title} className="relative group">
-                  <Link 
-                    href={link.href}
-                    className="flex items-center gap-1 font-manrope text-sm font-semibold tracking-wider text-hok-espresso hover:text-hok-walnut uppercase py-2 whitespace-nowrap"
-                  >
-                    {link.title}
-                    {link.submenu && <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />}
-                  </Link>
-                  {link.submenu && (
-                    <div className="absolute top-full left-0 pt-2 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 z-50">
-                      <div className="bg-white border border-hok-mist shadow-xl rounded-md py-3 w-48 flex flex-col">
-                        {link.submenu.map((subItem) => (
-                          <Link
-                            key={subItem.title}
-                            href={subItem.href}
-                            className="px-5 py-2 text-sm font-medium text-hok-stone hover:text-hok-espresso hover:bg-hok-linen transition-colors"
-                          >
-                            {subItem.title}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ))}
+                {LeftNavLinks.map((link) => renderDesktopLink(link))}
               </nav>
             </div>
 
-            {/* Logo */}
-            <div className="flex shrink-0 items-center justify-center">
-              <Link href="/">
+            {/* Center: Logo */}
+            <div className="flex shrink-0 items-center justify-center px-4">
+              <Link href="/" className="block hover:opacity-80 transition-opacity duration-300">
                 <Image
                   src="/brand/new-hok-logo-black.svg"
                   alt="HOK Logo"
-                  width={scrolled ? 110 : 130}
-                  height={scrolled ? 35 : 44}
-                  className="transition-all duration-300"
+                  width={80}
+                  height={27}
+                  className="transition-all duration-500 w-auto h-7 md:h-8"
                   priority
                 />
               </Link>
             </div>
 
-            {/* Right Desktop Nav & Utilities */}
-            <div className="flex flex-1 items-center justify-end gap-3 md:gap-4 lg:gap-6">
-              <div className="hidden lg:flex items-center gap-4 xl:gap-8 mr-2">
-                {NavLinks.slice(2).map((link) => (
-                  <div key={link.title} className="relative group">
-                    <Link 
-                      href={link.href}
-                      className="flex items-center gap-1 font-manrope text-sm font-semibold tracking-wider text-hok-espresso hover:text-hok-walnut uppercase py-2 whitespace-nowrap"
-                    >
-                      {link.title}
-                      {link.submenu && <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />}
-                    </Link>
-                    {link.submenu && (
-                      <div className="absolute top-full right-0 pt-2 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200 z-50">
-                        <div className="bg-white border border-hok-mist shadow-xl rounded-md py-3 w-56 flex flex-col">
-                          {link.submenu.map((subItem) => (
-                            <Link
-                              key={subItem.title}
-                              href={subItem.href}
-                              className="px-5 py-2 text-sm font-medium text-hok-stone hover:text-hok-espresso hover:bg-hok-linen transition-colors"
-                            >
-                              {subItem.title}
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+            {/* Right: Desktop Nav + Utilities */}
+            <div className="flex flex-1 items-center justify-end gap-4 lg:gap-6">
+              {/* Desktop Right Navigation */}
+              <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
+                {RightNavLinks.map((link) => renderDesktopLink(link, true))}
+              </nav>
+
+              {/* Search Icon (Desktop) */}
+              <div className="hidden lg:block relative" ref={searchRef}>
+                {searchOpen ? (
+                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-72 animate-in fade-in slide-in-from-right-4 duration-300">
+                    <ProductSearch />
                   </div>
-                ))}
+                ) : (
+                  <button
+                    onClick={() => setSearchOpen(true)}
+                    className="p-2 text-hok-espresso hover:text-hok-walnut hover:bg-hok-linen rounded-md transition-all duration-200 active:scale-95"
+                    aria-label="Search products"
+                  >
+                    <Search className="w-5 h-5" />
+                  </button>
+                )}
               </div>
 
-              {/* Desktop Search */}
-              <div className="hidden lg:block">
-                <ProductSearch />
-              </div>
-
-              {/* Cart icon */}
+              {/* Cart Icon */}
               <div className="relative">
-                <Link href="/cart" className="relative text-hok-espresso hover:text-hok-walnut transition-colors group p-2 block">
-                  <ShoppingCart className="w-6 h-6 transition-transform group-hover:scale-110" />
+                <Link href="/cart" className="relative text-hok-espresso hover:text-hok-walnut transition-all duration-200 active:scale-95 group p-2 block">
+                  <ShoppingCart className="w-5 h-5 lg:w-[22px] lg:h-[22px] transition-transform duration-300 group-hover:scale-110" />
                   <span className="sr-only">Cart</span>
                   {mounted && totalItemsCount > 0 && (
-                    <span className="absolute top-0 right-0 w-4 h-4 bg-hok-champagne text-white text-[10px] font-bold flex items-center justify-center rounded-full animate-in zoom-in">
+                    <span className="absolute -top-0.5 -right-0.5 w-[18px] h-[18px] bg-hok-champagne text-white text-[10px] font-bold flex items-center justify-center rounded-full animate-in zoom-in">
                       {totalItemsCount}
                     </span>
                   )}

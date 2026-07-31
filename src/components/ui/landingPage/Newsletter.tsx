@@ -43,7 +43,7 @@ const Newsletter = () => {
         <div className="absolute bottom-0 right-0 w-32 h-32 bg-hok-walnut/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
         
         <div className="relative z-10">
-          <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm border border-hok-mist">
+          <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm border border-hok-mist animate-gentle-pulse">
             <Mail className="w-6 h-6 text-hok-champagne" />
           </div>
           
@@ -67,7 +67,7 @@ const Newsletter = () => {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="h-14 px-8 rounded-none bg-hok-walnut hover:bg-hok-espresso text-white font-semibold tracking-wide transition-colors whitespace-nowrap"
+              className="h-14 px-8 rounded-none bg-hok-walnut hover:bg-hok-espresso text-white font-semibold tracking-wide transition-all duration-300 whitespace-nowrap hover:shadow-md active:scale-[0.97]"
             >
               {isSubmitting ? "Subscribing..." : "Subscribe"}
             </Button>

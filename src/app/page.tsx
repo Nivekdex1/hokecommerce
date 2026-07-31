@@ -6,7 +6,6 @@ import { getProducts } from "@/lib/shopify";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import Newsletter from "@/components/ui/landingPage/Newsletter";
 
 export default async function Home() {
   // Fetch best sellers 
@@ -49,7 +48,7 @@ export default async function Home() {
           </p>
           <div className="relative w-full opacity-60 overflow-hidden py-4">
             <div className="flex items-center gap-8 md:gap-12 w-max animate-marquee">
-              {[...["cerave", "eucerin", "posay", "cosrx", "anua", "12grabs"], ...["cerave", "eucerin", "posay", "cosrx", "anua", "12grabs"], ...["cerave", "eucerin", "posay", "cosrx", "anua", "12grabs"]].map((brand, idx) => (
+              {[...["cerave", "eucerin", "posay", "corsx", "anua", "12grabs"], ...["cerave", "eucerin", "posay", "corsx", "anua", "12grabs"], ...["cerave", "eucerin", "posay", "corsx", "anua", "12grabs"]].map((brand, idx) => (
                 <div key={`${brand}-${idx}`} className="relative w-24 h-12 md:w-32 md:h-16 flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300">
                   <Image
                     src={`/${brand}.jpg`}
@@ -126,17 +125,17 @@ export default async function Home() {
       </section>
 
       {/* Why HOK Value Proposition */}
-      <section className="py-20 md:py-32 bg-hok-espresso text-white relative overflow-hidden">
+      <section className="dark-section py-20 md:py-32 bg-hok-espresso text-white relative overflow-hidden">
         <div className="container-narrow">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div className="group order-2 md:order-1 relative h-[500px] w-full rounded-t-full overflow-hidden border-4 border-hok-champagne/20">
               <Image src="/lizare-image-2.png" alt="Glass skin model" fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 50vw" />
             </div>
             <div className="order-1 md:order-2">
-              <h2 className="font-playfair text-4xl md:text-5xl font-semibold mb-6">
+              <h2 className="font-playfair text-4xl md:text-5xl font-semibold mb-6 text-white">
                 Why Choose <span className="text-hok-champagne italic">HOK Beauty?</span>
               </h2>
-              <p className="font-manrope text-lg text-hok-mist/80 mb-10 font-light">
+              <p className="font-manrope text-lg text-hok-mist mb-10 font-light leading-relaxed">
                 We believe in authentic, dermatologist-backed skincare that brings out your natural glow. No counterfeits, no shortcuts.
               </p>
               
@@ -146,8 +145,8 @@ export default async function Home() {
                     <CheckIcon />
                   </div>
                   <div>
-                    <h4 className="font-playfair text-xl font-medium mb-1 text-hok-ivory">Sourced Directly from Korea</h4>
-                    <p className="text-hok-mist/70 text-sm">We partner with official distributors to guarantee 100% authenticity for every product.</p>
+                    <h4 className="font-playfair text-xl font-medium mb-1 text-white">Sourced Directly from Korea</h4>
+                    <p className="text-hok-mist text-sm leading-relaxed">We partner with official distributors to guarantee 100% authenticity for every product.</p>
                   </div>
                 </div>
                 
@@ -156,8 +155,8 @@ export default async function Home() {
                     <CheckIcon />
                   </div>
                   <div>
-                    <h4 className="font-playfair text-xl font-medium mb-1 text-hok-ivory">Nigeria's #1 K-Beauty Store</h4>
-                    <p className="text-hok-mist/70 text-sm">Trusted by thousands of beauty lovers nationwide for fast, reliable delivery.</p>
+                    <h4 className="font-playfair text-xl font-medium mb-1 text-white">Nigeria's #1 K-Beauty Store</h4>
+                    <p className="text-hok-mist text-sm leading-relaxed">Trusted by thousands of beauty lovers nationwide for fast, reliable delivery.</p>
                   </div>
                 </div>
 
@@ -166,8 +165,8 @@ export default async function Home() {
                     <CheckIcon />
                   </div>
                   <div>
-                    <h4 className="font-playfair text-xl font-medium mb-1 text-hok-ivory">Expert Guidance</h4>
-                    <p className="text-hok-mist/70 text-sm">Our personalized skin algorithm helps you find the perfect routine for your skin type.</p>
+                    <h4 className="font-playfair text-xl font-medium mb-1 text-white">Expert Guidance</h4>
+                    <p className="text-hok-mist text-sm leading-relaxed">Our personalized skin algorithm helps you find the perfect routine for your skin type.</p>
                   </div>
                 </div>
               </div>
@@ -216,11 +215,6 @@ export default async function Home() {
             </Link>
           </Button>
         </div>
-      </section>
-
-      {/* Newsletter */}
-      <section className="py-20 bg-hok-cream">
-        <Newsletter />
       </section>
     </div>
   );

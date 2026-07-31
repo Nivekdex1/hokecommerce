@@ -56,7 +56,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       }`}
     >
       {badge && (
-        <div className="absolute top-3 left-3 z-10 bg-hok-espresso text-white text-[10px] font-bold px-2 py-1 tracking-wider uppercase rounded-sm">
+        <div className="absolute top-3 left-3 z-10 bg-hok-espresso text-white text-[10px] font-bold px-2.5 py-1 tracking-wider uppercase rounded-sm badge-shine">
           {badge}
         </div>
       )}
@@ -74,7 +74,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 ease-out z-10">
             <button
               onClick={handleQuickAdd}
-              className="w-full bg-hok-espresso/90 backdrop-blur-sm text-white font-medium py-3 rounded-md hover:bg-hok-espresso transition-colors"
+              className="w-full bg-hok-espresso/90 backdrop-blur-sm text-white font-medium py-3 rounded-md hover:bg-hok-espresso transition-all duration-200 active:scale-[0.97]"
             >
               Quick Add
             </button>

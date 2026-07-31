@@ -32,6 +32,7 @@ const SectionHeading: React.FC<SectionHeadingProps> = ({
           <h2 className={`font-playfair text-3xl md:text-4xl lg:text-5xl font-semibold mb-3 ${lightText ? "text-white" : "text-hok-espresso"}`}>
             {title}
           </h2>
+          <div className={`w-12 h-0.5 ${lightText ? "bg-white/40" : "bg-hok-champagne"} mb-3 ${align === "center" ? "mx-auto" : ""}`} />
           {subtitle && (
             <p className={`md:text-lg max-w-2xl font-light ${lightText ? "text-hok-mist" : "text-hok-stone"}`}>
               {subtitle}
