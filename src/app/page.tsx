@@ -73,7 +73,7 @@ export default async function Home() {
     // Override the first slide if the dynamic config is present
     slides = [
       {
-        id: "dynamic-hero",
+        id: 1,
         title: heroConfig.fields.hero_title || fallbackSlides[0].title,
         subtitle: heroConfig.fields.hero_subtitle || fallbackSlides[0].subtitle,
         cta: heroConfig.fields.hero_cta_text || fallbackSlides[0].cta,
@@ -117,7 +117,7 @@ export default async function Home() {
       {/* Featured Collections */}
       <section className="section-padding bg-hok-linen">
         <div className="container-narrow">
-          <SectionHeading title="Curated just for You" subtitle="Shop our most popular skincare categories" />
+          <SectionHeading title="Curated Just For You" subtitle="Shop our most popular skincare categories" />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Link href="/shop?productType=cleanser" className="group relative h-[400px] overflow-hidden rounded-none block">
@@ -247,7 +247,7 @@ export default async function Home() {
 
       {/* Skin Quiz CTA */}
       <section className="relative py-20 lg:py-28 bg-hok-ivory border-y border-hok-mist overflow-hidden flex items-center justify-center min-h-[450px] lg:min-h-[500px]">
-        
+
         {/* Left Subject Image (Absolute, Full Height, Far Left) */}
         <div className="absolute left-0 bottom-0 top-0 w-[45%] md:w-[35%] lg:w-[28%] pointer-events-none z-0 opacity-40 sm:opacity-100">
           <Image

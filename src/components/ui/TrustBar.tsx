@@ -56,7 +56,7 @@ const TrustBar = () => {
 
               {/* Title & Subtitle */}
               <div className="flex flex-col text-left">
-                <h4 className="font-playfair text-base lg:text-lg font-medium text-hok-espresso tracking-wide leading-tight group-hover:text-hok-walnut transition-colors">
+                <h4 className="font-playfair text-base lg:text-lg font-medium text-hok-espresso tracking-wide leading-tight group-hover:text-hok-walnut transition-colors whitespace-nowrap">
                   {benefit.title}
                 </h4>
                 <p className="font-manrope text-[10px] lg:text-[11px] font-bold text-hok-stone/80 tracking-[0.15em] uppercase mt-0.5">
@@ -82,7 +82,7 @@ const TrustBar = () => {
                   {benefit.icon}
                 </div>
                 <div className="flex flex-col text-left">
-                  <h4 className="font-playfair text-base font-medium text-hok-espresso tracking-wide leading-tight">
+                  <h4 className="font-playfair text-base font-medium text-hok-espresso tracking-wide leading-tight whitespace-nowrap">
                     {benefit.title}
                   </h4>
                   <p className="font-manrope text-[10px] font-bold text-hok-stone/80 tracking-[0.15em] uppercase mt-0.5">

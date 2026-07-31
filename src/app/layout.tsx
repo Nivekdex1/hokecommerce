@@ -5,8 +5,10 @@ import AnnouncementBar from "@/components/ui/AnnouncementBar";
 import { Toaster } from "@/components/ui/sonner";
 import CookieConsent from "@/components/ui/CookieConsent";
 import BackToTop from "@/components/ui/BackToTop";
+import WhatsAppWidget from "@/components/ui/WhatsAppWidget";
 import type { Metadata, Viewport } from "next";
 import { Manrope, Playfair_Display } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -105,8 +107,10 @@ export default function RootLayout({
           <Footer />
           <CookieConsent />
           <BackToTop />
+          <WhatsAppWidget />
           <Toaster position="top-right" />
         </QueryProvider>
+        <Analytics />
       </body>
     </html>
   );
