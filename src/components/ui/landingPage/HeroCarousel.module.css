@@ -310,6 +310,29 @@
   }
 }
 
+@media (max-width: 768px) {
+  .navControls {
+    flex-wrap: wrap;
+    width: 100%;
+    bottom: 6rem; /* Move up to avoid WhatsApp widget entirely */
+    gap: 1.5rem;
+    padding: 0 1rem;
+  }
+
+  .ctaBtn {
+    margin-left: 0;
+    width: 100%; /* Take full width on mobile */
+    order: -1; /* Move above the dots and arrows */
+    padding: 1rem;
+    white-space: nowrap;
+  }
+  
+  .navBtn {
+    width: 40px;
+    height: 40px;
+  }
+}
+
 @media (max-width: 640px) {
   .slideContent {
     padding-bottom: 6rem;
