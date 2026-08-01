@@ -174,7 +174,7 @@ export default function Navbar() {
                   </SheetTrigger>
                   <SheetContent side="left" className="w-[300px] border-r-0 bg-hok-linen p-0">
                     <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-                    <div className="flex flex-col h-full p-6">
+                    <div className="flex flex-col h-full p-6 overflow-y-auto hide-scrollbar">
                       <SheetClose asChild>
                         <Link href="/" className="mb-8 block w-fit">
                           <Image src="/brand/new-hok-logo-black.svg" alt="HOK Logo" width={135} height={45} className="h-12" style={{ width: "auto" }} />
