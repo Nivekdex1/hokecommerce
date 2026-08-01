@@ -10,7 +10,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button } from "./button";
 import { Input } from "./input";
 
-const ProductSearch = () => {
+const ProductSearch = ({ autoFocus = false }: { autoFocus?: boolean }) => {
   const [query, setQuery] = useState("");
   const [focused, setFocused] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -18,7 +18,12 @@ const ProductSearch = () => {
   const isFirstRun = useRef(true);
   const router = useRouter();
 
-  // No auto-focus on mount — prevents mobile menu from jumping to search
+  // Auto-focus on mount if requested
+  useEffect(() => {
+    if (autoFocus && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [autoFocus]);
 
   useEffect(() => {
     if (isFirstRun.current) {
@@ -50,22 +55,22 @@ const ProductSearch = () => {
       <div className="relative z-50">
         <div
           className={cn(
-            "flex h-10 w-full items-center rounded-xs bg-neutral-400/40 p-2 lg:w-96",
+            "flex h-11 w-full items-center rounded-full border border-hok-mist/60 bg-white/70 backdrop-blur-md p-2 transition-all duration-300 shadow-sm",
             {
-              "bg-white": focused,
+              "bg-white border-hok-champagne shadow-md ring-1 ring-hok-champagne/20": focused,
             },
           )}
         >
           {isLoading && query.length > 0 ? (
-            <LoaderCircle className="ml-2 size-5 animate-spin text-black" />
+            <LoaderCircle className="ml-3 size-4 animate-spin text-hok-espresso/70" />
           ) : (
-            <Search className="ml-2 size-5 text-black" />
+            <Search className="ml-3 size-4 text-hok-espresso/70" />
           )}
           <Input
             ref={inputRef}
             type="text"
-            placeholder="type to search..."
-            className="h-full w-full border-none bg-transparent text-sm text-gray-700 shadow-none placeholder:text-sm placeholder:font-normal placeholder:italic focus:border-none focus:shadow-none focus:ring-0 focus:outline-none focus-visible:ring-0"
+            placeholder="Search for your favorite K-Beauty..."
+            className="h-full w-full border-none bg-transparent px-3 text-sm font-outfit text-hok-charcoal shadow-none placeholder:text-sm placeholder:font-outfit placeholder:text-hok-stone focus:border-none focus:shadow-none focus:ring-0 focus:outline-none focus-visible:ring-0"
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
             value={query}

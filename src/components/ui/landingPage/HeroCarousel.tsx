@@ -25,7 +25,7 @@ const SLIDE_THEMES = [
   { bg: "linear-gradient(135deg, #F0FFF4 0%, #D4F5DC 40%, #B8EBCA 100%)", accent: "#5CB87A", badge: "PURE & GENTLE" },
 ];
 
-const SHOW_PRODUCT_CARDS = true; // We need to show the text in HOK!
+const SHOW_PRODUCT_CARDS = false; // We need to show the text in HOK!
 
 export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
   const [current, setCurrent] = useState(0);
@@ -180,9 +180,8 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
           {slides.map((_, i) => (
             <button
               key={i}
-              className={`${styles.dot} ${
-                i === current ? styles.dotActive : ""
-              }`}
+              className={`${styles.dot} ${i === current ? styles.dotActive : ""
+                }`}
               onClick={() => goTo(i)}
               aria-label={`Go to slide ${i + 1}`}
               id={`carousel-dot-${i}`}

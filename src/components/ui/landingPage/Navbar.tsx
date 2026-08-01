@@ -259,15 +259,15 @@ export default function Navbar() {
             {/* Right: Desktop Nav + Utilities */}
             <div className="flex flex-1 items-center justify-end gap-4 lg:gap-6">
               {/* Desktop Right Navigation (All Links) */}
-              <nav className="hidden lg:flex items-center gap-6 xl:gap-8 mr-2 xl:mr-4" ref={dropdownRef}>
+              <nav className={`hidden lg:flex items-center gap-6 xl:gap-8 mr-2 xl:mr-4 transition-all duration-300 ${searchOpen ? 'opacity-0 w-0 overflow-hidden pointer-events-none' : 'opacity-100'}`} ref={dropdownRef}>
                 {AllNavLinks.map((link) => renderDesktopLink(link))}
               </nav>
 
               {/* Search Icon (Desktop) */}
               <div className="hidden lg:block relative" ref={searchRef}>
                 {searchOpen ? (
-                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-72 animate-in fade-in slide-in-from-right-4 duration-300">
-                    <ProductSearch />
+                  <div className="w-72 lg:w-96 animate-in fade-in zoom-in-95 duration-300">
+                    <ProductSearch autoFocus />
                   </div>
                 ) : (
                   <button
