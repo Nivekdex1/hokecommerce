@@ -104,15 +104,15 @@ export default async function Home() {
       <TrustBar />
       <section className="py-12 bg-white overflow-hidden">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <p className="text-center text-[10px] text-hok-stone font-outfit font-medium tracking-[0.25em] uppercase mb-10">
+          <p className="text-center text-[14px] text-hok-stone font-outfit font-medium tracking-[0.25em] uppercase mb-10">
             Official distributors of Nigeria&apos;s favorite brands
           </p>
           <div className="relative w-full overflow-hidden py-2">
             <div className="flex items-center gap-12 md:gap-20 w-max animate-marquee opacity-40 hover:opacity-60 transition-opacity duration-500">
-              {[...["cerave", "eucerin", "posay", "corsx", "anua", "12grabs"], ...["cerave", "eucerin", "posay", "corsx", "anua", "12grabs"], ...["cerave", "eucerin", "posay", "corsx", "anua", "12grabs"]].map((brand, idx) => (
+              {[...["cerave", "corsx", "eucerin", "anua", "posay", "12grabs"], ...["cerave", "corsx", "eucerin", "anua", "posay", "12grabs"], ...["cerave", "corsx", "eucerin", "anua", "posay", "12grabs"]].map((brand, idx) => (
                 <div key={`${brand}-${idx}`} className="relative w-24 h-12 md:w-32 md:h-14 flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-500 hover:scale-105">
                   <Image
-                    src={`/${brand}.jpg`}
+                    src={`/${brand}.png`}
                     alt={`${brand} logo`}
                     fill
                     sizes="(max-width: 768px) 96px, 128px"
@@ -176,9 +176,9 @@ export default async function Home() {
       <section className="py-20 md:py-28 bg-white relative overflow-hidden">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24 items-center">
-            <div className="group order-2 md:order-1 relative h-[600px] w-full overflow-hidden border border-hok-mist bg-white shadow-sm hover:shadow-xl transition-shadow duration-700 p-4">
+            <div className="group order-2 md:order-1 relative h-[600px] w-[85%] mx-auto overflow-hidden rounded-[150px] md:rounded-[250px] transition-transform duration-[1500ms] hover:scale-[1.02]">
               <div className="relative h-full w-full overflow-hidden">
-                <Image src="/lizare-image-2.png" alt="Glass skin model" fill className="object-cover transition-transform duration-[1500ms] group-hover:scale-105 grayscale-[20%]" sizes="(max-width: 768px) 100vw, 50vw" />
+                <Image src="/lizare-image-2.png" alt="Glass skin model" fill className="object-cover transition-transform duration-[2000ms] group-hover:scale-110 grayscale-[10%]" sizes="(max-width: 768px) 100vw, 50vw" />
               </div>
             </div>
             <div className="order-1 md:order-2">
@@ -186,7 +186,7 @@ export default async function Home() {
                 Our Commitment
               </span>
               <h2 className="font-fondamento text-4xl md:text-5xl lg:text-6xl font-normal mb-8 text-hok-espresso leading-tight">
-                Why Choose <br/><span className="text-hok-champagne">HOK Beauty?</span>
+                Why Choose <br /><span className="text-hok-champagne">HOK Beauty?</span>
               </h2>
               <p className="font-outfit text-lg text-hok-stone mb-12 font-light leading-relaxed">
                 We believe in authentic, dermatologist-backed skincare that brings out your natural glow. No counterfeits, no shortcuts. Just pure, proven formulas.
@@ -286,7 +286,7 @@ export default async function Home() {
           <p className="font-outfit text-hok-stone text-base sm:text-lg mb-10 max-w-lg mx-auto font-light leading-relaxed text-balance">
             Take our 2-minute personalized skin algorithm quiz to receive expert, tailored recommendations for your unique skin type.
           </p>
-          <Link 
+          <Link
             href="/skin-algorithm"
             className="inline-flex items-center gap-4 group/btn"
           >
