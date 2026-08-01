@@ -181,7 +181,7 @@ export default async function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24 items-center">
             <ScrollReveal className="relative">
               {/* Soft Gradient Glow behind the oval */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#E6E1DC]/60 via-hok-champagne/20 to-white blur-3xl -z-10 rounded-full scale-[1.1] md:scale-[1.2]" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#E6E1DC]/80 via-hok-champagne/40 to-transparent blur-3xl rounded-full scale-[1.1] md:scale-[1.2]" />
               <div className="group order-2 md:order-1 relative h-[600px] w-[85%] mx-auto overflow-hidden rounded-[150px] md:rounded-[250px] transition-transform duration-[1500ms] hover:scale-[1.02]">
                 <div className="relative h-full w-full overflow-hidden">
                   <Image src="/lizare-image-2.png" alt="Glass skin model" fill className="object-cover transition-transform duration-[2000ms] group-hover:scale-110 grayscale-[10%]" sizes="(max-width: 768px) 100vw, 50vw" />
@@ -265,7 +265,7 @@ export default async function Home() {
         {/* Left Subject Image */}
         <div className="absolute left-0 bottom-0 top-0 w-[45%] md:w-[35%] lg:w-[25%] pointer-events-none z-0 opacity-20 sm:opacity-40 transition-opacity duration-700 hover:opacity-60">
           <Image
-            src="/co-founder-1.png"
+            src="/model-left.png"
             alt="Personalized Skincare Consultation"
             fill
             className="object-contain object-left-bottom grayscale-[50%]"
@@ -276,7 +276,7 @@ export default async function Home() {
         {/* Right Subject Image */}
         <div className="absolute right-0 bottom-0 top-0 w-[45%] md:w-[35%] lg:w-[25%] pointer-events-none z-0 opacity-20 sm:opacity-40 transition-opacity duration-700 hover:opacity-60">
           <Image
-            src="/co-founder-2.png"
+            src="/model-right.png"
             alt="K-Beauty Skincare Specialist"
             fill
             className="object-contain object-right-bottom grayscale-[50%]"
