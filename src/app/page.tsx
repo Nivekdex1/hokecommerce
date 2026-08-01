@@ -6,6 +6,7 @@ import { getProducts, getMetaobject } from "@/lib/shopify";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import ScrollReveal from "@/components/ui/ScrollReveal";
 
 export default async function Home() {
   // Fetch best sellers (with fallback if no tag matches)
@@ -110,7 +111,7 @@ export default async function Home() {
           <div className="relative w-full overflow-hidden py-2">
             <div className="flex items-center gap-12 md:gap-20 w-max animate-marquee opacity-40 hover:opacity-60 transition-opacity duration-500">
               {[...["cerave", "corsx", "eucerin", "anua", "posay", "12grabs"], ...["cerave", "corsx", "eucerin", "anua", "posay", "12grabs"], ...["cerave", "corsx", "eucerin", "anua", "posay", "12grabs"]].map((brand, idx) => (
-                <div key={`${brand}-${idx}`} className="relative w-24 h-12 md:w-32 md:h-14 flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-500 hover:scale-105">
+                <div key={`${brand}-${idx}`} className="relative w-24 h-12 md:w-32 md:h-14 flex-shrink-0 transition-all duration-500 hover:scale-105">
                   <Image
                     src={`/${brand}.png`}
                     alt={`${brand} logo`}
@@ -158,17 +159,19 @@ export default async function Home() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <SectionHeading title="Best Sellers" subtitle="Most Popular" ctaText="Shop All" ctaHref="/shop?tags=best-seller" align="left" />
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10">
-            {bestSellers.length > 0 ? (
-              bestSellers.map((product: any) => (
-                <ProductCard key={product.id} product={product} badge="BEST SELLER" />
-              ))
-            ) : (
-              <div className="col-span-full py-12 text-center text-hok-stone">
-                Loading products...
-              </div>
-            )}
-          </div>
+          <ScrollReveal>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10">
+              {bestSellers.length > 0 ? (
+                bestSellers.map((product: any) => (
+                  <ProductCard key={product.id} product={product} badge="BEST SELLER" />
+                ))
+              ) : (
+                <div className="col-span-full py-12 text-center text-hok-stone">
+                  No best sellers available.
+                </div>
+              )}
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -176,12 +179,16 @@ export default async function Home() {
       <section className="py-20 md:py-28 bg-white relative overflow-hidden">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24 items-center">
-            <div className="group order-2 md:order-1 relative h-[600px] w-[85%] mx-auto overflow-hidden rounded-[150px] md:rounded-[250px] transition-transform duration-[1500ms] hover:scale-[1.02]">
-              <div className="relative h-full w-full overflow-hidden">
-                <Image src="/lizare-image-2.png" alt="Glass skin model" fill className="object-cover transition-transform duration-[2000ms] group-hover:scale-110 grayscale-[10%]" sizes="(max-width: 768px) 100vw, 50vw" />
+            <ScrollReveal className="relative">
+              {/* Soft Gradient Glow behind the oval */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#E6E1DC]/60 via-hok-champagne/20 to-white blur-3xl -z-10 rounded-full scale-[1.1] md:scale-[1.2]" />
+              <div className="group order-2 md:order-1 relative h-[600px] w-[85%] mx-auto overflow-hidden rounded-[150px] md:rounded-[250px] transition-transform duration-[1500ms] hover:scale-[1.02]">
+                <div className="relative h-full w-full overflow-hidden">
+                  <Image src="/lizare-image-2.png" alt="Glass skin model" fill className="object-cover transition-transform duration-[2000ms] group-hover:scale-110 grayscale-[10%]" sizes="(max-width: 768px) 100vw, 50vw" />
+                </div>
               </div>
-            </div>
-            <div className="order-1 md:order-2">
+            </ScrollReveal>
+            <ScrollReveal delay={0.2} className="order-1 md:order-2">
               <span className="text-hok-champagne font-outfit uppercase tracking-[0.2em] text-xs mb-4 block">
                 Our Commitment
               </span>
@@ -223,7 +230,7 @@ export default async function Home() {
                   </div>
                 </div>
               </div>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
@@ -233,17 +240,19 @@ export default async function Home() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <SectionHeading title="New Arrivals" subtitle="Just Landed" ctaText="Discover More" ctaHref="/shop?tags=new" align="left" />
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10">
-            {newArrivals.length > 0 ? (
-              newArrivals.map((product: any) => (
-                <ProductCard key={product.id} product={product} badge="NEW" />
-              ))
-            ) : (
-              <div className="col-span-full py-12 text-center text-hok-stone">
-                Loading products...
-              </div>
-            )}
-          </div>
+          <ScrollReveal>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10">
+              {newArrivals.length > 0 ? (
+                newArrivals.map((product: any) => (
+                  <ProductCard key={product.id} product={product} badge="NEW" />
+                ))
+              ) : (
+                <div className="col-span-full py-12 text-center text-hok-stone">
+                  No new arrivals available.
+                </div>
+              )}
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 

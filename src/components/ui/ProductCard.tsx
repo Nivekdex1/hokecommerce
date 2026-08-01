@@ -53,7 +53,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <Link
       href={`/shop/${product.handle}`}
-      className={`group flex flex-col relative bg-transparent overflow-hidden transition-all duration-700 hover:-translate-y-2 ${
+      className={`group flex flex-col relative bg-white/40 border-[0.5px] border-hok-mist/60 hover:border-hok-mist/90 p-2 overflow-hidden transition-all duration-700 hover:-translate-y-2 hover:shadow-[0_15px_40px_-20px_rgba(0,0,0,0.05)] ${
         variant === "compact" ? "min-w-[200px]" : "w-full"
       }`}
     >
