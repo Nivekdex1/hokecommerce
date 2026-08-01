@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
-import Image from "next/image";
+import { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import styles from "./HeroCarousel.module.css";
+import Image from "next/image";
 
 export type HeroSlide = {
   id: string | number;
@@ -15,268 +17,207 @@ export type HeroSlide = {
   bgColor?: string;
 };
 
-// Each slide gets its own gradient + glow color for visual impact
+// Define some rich gradients and accents for the HOK slides to emulate renket.org
 const SLIDE_THEMES = [
-  { gradient: "linear-gradient(135deg, #FFF9F0 0%, #FAE8D4 40%, #F5D5B8 100%)", glow: "#D4A853" },
-  { gradient: "linear-gradient(135deg, #F0F4FF 0%, #D6E4FF 40%, #BDD4FF 100%)", glow: "#6B9BFF" },
-  { gradient: "linear-gradient(135deg, #FFF0F0 0%, #FFD6D6 40%, #FFBDBD 100%)", glow: "#FF8A8A" },
-  { gradient: "linear-gradient(135deg, #F0FFF4 0%, #D4F5DC 40%, #B8EBCA 100%)", glow: "#5CB87A" },
-  { gradient: "linear-gradient(135deg, #FFF5F0 0%, #FFE4D4 40%, #FFD0B8 100%)", glow: "#FF9F6B" },
+  { bg: "linear-gradient(135deg, #FFF9F0 0%, #FAE8D4 40%, #F5D5B8 100%)", accent: "#D4A853", badge: "NEW ARRIVAL" },
+  { bg: "linear-gradient(135deg, #F0F4FF 0%, #D6E4FF 40%, #BDD4FF 100%)", accent: "#6B9BFF", badge: "BESTSELLER" },
+  { bg: "linear-gradient(135deg, #FFF0F0 0%, #FFD6D6 40%, #FFBDBD 100%)", accent: "#FF8A8A", badge: "PREMIUM" },
+  { bg: "linear-gradient(135deg, #F0FFF4 0%, #D4F5DC 40%, #B8EBCA 100%)", accent: "#5CB87A", badge: "PURE & GENTLE" },
 ];
 
-const SLIDE_DURATION = 6000;
+const SHOW_PRODUCT_CARDS = true; // We need to show the text in HOK!
 
 export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [prevSlideIdx, setPrevSlideIdx] = useState(-1);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [direction, setDirection] = useState<"next" | "prev">("next");
-  const [isHovered, setIsHovered] = useState(false);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [current, setCurrent] = useState(0);
+  const [direction, setDirection] = useState(1);
+  const [isPaused, setIsPaused] = useState(false);
 
-  const minSwipeDistance = 50;
-
-  const goToSlide = useCallback(
-    (idx: number, dir: "next" | "prev" = "next") => {
-      if (isAnimating || idx === currentSlide) return;
-      setDirection(dir);
-      setPrevSlideIdx(currentSlide);
-      setCurrentSlide(idx);
-      setIsAnimating(true);
-      setTimeout(() => {
-        setIsAnimating(false);
-        setPrevSlideIdx(-1);
-      }, 800);
+  const goTo = useCallback(
+    (index: number) => {
+      setDirection(index > current ? 1 : -1);
+      setCurrent(index);
     },
-    [currentSlide, isAnimating]
+    [current]
   );
 
-  const nextSlide = useCallback(() => {
-    const next = currentSlide === slides.length - 1 ? 0 : currentSlide + 1;
-    goToSlide(next, "next");
-  }, [currentSlide, slides.length, goToSlide]);
+  const next = useCallback(() => {
+    setDirection(1);
+    setCurrent((prev) => (prev + 1) % slides.length);
+  }, [slides.length]);
 
-  const prevSlideAction = useCallback(() => {
-    const prev = currentSlide === 0 ? slides.length - 1 : currentSlide - 1;
-    goToSlide(prev, "prev");
-  }, [currentSlide, slides.length, goToSlide]);
+  const prev = useCallback(() => {
+    setDirection(-1);
+    setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
+  }, [slides.length]);
 
-  // Touch handlers
-  const onTouchStart = (e: React.TouchEvent) => {
-    setIsHovered(true);
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  const onTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  const onTouchEndHandler = () => {
-    if (touchStart && touchEnd) {
-      const distance = touchStart - touchEnd;
-      if (distance > minSwipeDistance) nextSlide();
-      else if (distance < -minSwipeDistance) prevSlideAction();
-    }
-    setTimeout(() => setIsHovered(false), 2000);
-  };
-
-  // Auto-play
   useEffect(() => {
-    if (isHovered || isAnimating) return;
-    const timer = setInterval(nextSlide, SLIDE_DURATION);
+    if (isPaused) return;
+    const timer = setInterval(next, 5500);
     return () => clearInterval(timer);
-  }, [isHovered, isAnimating, nextSlide]);
+  }, [isPaused, next]);
 
-  const getSlideAnimationClass = (index: number) => {
-    if (index === currentSlide && prevSlideIdx !== -1) {
-      // Incoming slide
-      return direction === "next"
-        ? "animate-[slideInRight_0.8s_cubic-bezier(0.25,0.46,0.45,0.94)_forwards]"
-        : "animate-[slideInLeft_0.8s_cubic-bezier(0.25,0.46,0.45,0.94)_forwards]";
-    }
-    if (index === prevSlideIdx) {
-      // Outgoing slide
-      return direction === "next"
-        ? "animate-[slideOutLeft_0.8s_cubic-bezier(0.25,0.46,0.45,0.94)_forwards]"
-        : "animate-[slideOutRight_0.8s_cubic-bezier(0.25,0.46,0.45,0.94)_forwards]";
-    }
-    if (index === currentSlide) {
-      return "translate-x-0 opacity-100";
-    }
-    return "translate-x-full opacity-0 pointer-events-none";
+  const slide = slides[current];
+  const theme = SLIDE_THEMES[current % SLIDE_THEMES.length];
+
+  const slideVariants = {
+    enter: (dir: number) => ({ x: dir > 0 ? "100%" : "-100%", opacity: 0 }),
+    center: { x: 0, opacity: 1 },
+    exit: (dir: number) => ({ x: dir > 0 ? "-100%" : "100%", opacity: 0 }),
   };
 
   return (
-    <>
-      {/* Inject slide animation keyframes */}
-      <style jsx global>{`
-        @keyframes slideInRight {
-          from { transform: translateX(100%); opacity: 0; }
-          to { transform: translateX(0); opacity: 1; }
-        }
-        @keyframes slideOutLeft {
-          from { transform: translateX(0); opacity: 1; }
-          to { transform: translateX(-100%); opacity: 0; }
-        }
-        @keyframes slideInLeft {
-          from { transform: translateX(-100%); opacity: 0; }
-          to { transform: translateX(0); opacity: 1; }
-        }
-        @keyframes slideOutRight {
-          from { transform: translateX(0); opacity: 1; }
-          to { transform: translateX(100%); opacity: 0; }
-        }
-        @keyframes floatProduct {
-          0%, 100% { transform: translateY(0px) scale(1); }
-          50% { transform: translateY(-12px) scale(1.01); }
-        }
-        @keyframes glowPulse {
-          0%, 100% { opacity: 0.4; transform: scale(1); }
-          50% { opacity: 0.7; transform: scale(1.05); }
-        }
-        @keyframes slideTextUp {
-          from { opacity: 0; transform: translateY(30px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
+    <section
+      className={styles.carousel}
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      id="hero-carousel"
+    >
+      <AnimatePresence mode="wait" custom={direction}>
+        <motion.div
+          key={current}
+          className={styles.slide}
+          style={{ background: theme.bg }}
+          custom={direction}
+          variants={slideVariants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+        >
+          <motion.div
+            className={styles.imageSide}
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.7, ease: "easeOut" }}
+          >
+            <div className={styles.imageWrapper}>
+              <Image
+                src={slide.image}
+                alt={slide.title}
+                fill
+                priority={current === 0}
+                className={styles.productImage}
+                style={{
+                  // Because HOK uses transparent PNGs instead of JPEGs like Renket,
+                  // contain works best so we don't awkwardly crop the products.
+                  objectFit: "contain",
+                  objectPosition: "right center",
+                  padding: "4rem", // Give it some breathing room from the edges
+                }}
+                sizes="100vw"
+              />
+              <div
+                className={styles.imageGlow}
+                style={{ background: theme.accent }}
+              />
+            </div>
+          </motion.div>
 
-      <div
-        className="relative w-full h-[100svh] min-h-[600px] overflow-hidden"
-        onMouseEnter={() => {
-          if (window.matchMedia("(hover: hover)").matches) setIsHovered(true);
-        }}
-        onMouseLeave={() => setIsHovered(false)}
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEndHandler}
-      >
-        {/* Slides */}
-        {slides.map((slide, index) => {
-          const theme = SLIDE_THEMES[index % SLIDE_THEMES.length];
-          const isActive = index === currentSlide;
-          const isVisible = index === currentSlide || index === prevSlideIdx;
-
-          if (!isVisible) return null;
-
-          return (
-            <div
-              key={slide.id}
-              className={`absolute inset-0 w-full h-full ${getSlideAnimationClass(index)}`}
-              style={{ background: theme.gradient, zIndex: isActive ? 10 : 5 }}
-            >
-              {/* Content Container */}
-              <div className="relative h-full w-full flex flex-col items-center justify-center px-6 md:px-12 lg:px-20">
-
-                {/* Product Image — Large, Centered, Floating */}
-                <div className="relative w-[280px] h-[280px] sm:w-[340px] sm:h-[340px] md:w-[420px] md:h-[420px] lg:w-[480px] lg:h-[480px] mt-8 md:mt-0">
-                  {/* Glow behind product */}
-                  <div
-                    className="absolute inset-0 rounded-full blur-[80px] md:blur-[120px] -z-10"
-                    style={{
-                      background: theme.glow,
-                      animation: isActive ? "glowPulse 4s ease-in-out infinite" : "none",
-                    }}
-                  />
-                  <div
-                    style={{
-                      animation: isActive ? "floatProduct 6s ease-in-out infinite" : "none",
-                    }}
-                    className="relative w-full h-full"
-                  >
-                    <Image
-                      src={slide.image}
-                      alt={slide.title}
-                      fill
-                      priority={index === 0}
-                      className="object-contain drop-shadow-2xl"
-                      sizes="(max-width: 640px) 280px, (max-width: 768px) 340px, (max-width: 1024px) 420px, 480px"
-                    />
+          <div className={styles.slideContent}>
+            {SHOW_PRODUCT_CARDS && (
+              <motion.div
+                className={styles.textSide}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.6 }}
+              >
+                <span className={styles.badge} style={{ background: theme.accent }}>
+                  {theme.badge}
+                </span>
+                <h1 className={styles.title}>{slide.title}</h1>
+                <p className={styles.subtitle}>{slide.subtitle}</p>
+                <div className={styles.ctaGroup}>
+                  <Link href={slide.href} className={styles.ctaBtn}>
+                    {slide.cta}
+                    <span className={styles.ctaIconWrapper}>
+                      <ArrowRight className={styles.ctaIcon} />
+                    </span>
+                  </Link>
+                  <div className={styles.originBrandWrapper}>
+                    <span className={styles.origin}>
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" />
+                      </svg>
+                      Direct from Korea
+                    </span>
+                    <span className={styles.brandText}>100% AUTHENTIC</span>
                   </div>
                 </div>
-
-                {/* Text Content — Below Image, Centered */}
-                <div
-                  className="text-center mt-6 md:mt-10 max-w-2xl mx-auto"
-                  style={{
-                    animation: isActive && prevSlideIdx !== -1
-                      ? "slideTextUp 0.6s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both"
-                      : isActive ? "none" : undefined,
-                    opacity: isActive && prevSlideIdx === -1 ? 1 : undefined,
-                  }}
-                >
-                  <span className="text-hok-champagne font-outfit uppercase tracking-[0.25em] text-[10px] sm:text-xs mb-3 block font-medium">
-                    Exclusive Collection
-                  </span>
-                  <h1 className="font-fondamento text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] text-hok-espresso font-normal leading-[1.1] mb-4">
-                    {slide.title}
-                  </h1>
-                  <p className="font-outfit text-sm sm:text-base text-hok-stone font-light mb-6 max-w-lg mx-auto leading-relaxed hidden sm:block">
-                    {slide.subtitle}
-                  </p>
-                  <Link
-                    href={slide.href}
-                    className="inline-flex items-center gap-3 group/btn"
-                  >
-                    <span className="font-outfit font-medium text-xs sm:text-sm tracking-[0.2em] uppercase text-hok-espresso border-b border-hok-champagne/60 pb-1 transition-colors hover:text-hok-champagne">
-                      {slide.cta}
-                    </span>
-                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-hok-espresso/20 flex items-center justify-center transition-all duration-300 group-hover/btn:bg-hok-espresso group-hover/btn:text-white group-hover/btn:border-hok-espresso">
-                      <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover/btn:translate-x-0.5" />
-                    </div>
-                  </Link>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-
-        {/* Navigation Controls — Centered Dots with Flanking Arrows */}
-        <div className="absolute bottom-6 sm:bottom-10 left-0 right-0 z-30 flex items-center justify-center gap-4 sm:gap-6 pointer-events-none">
-          <button
-            onClick={prevSlideAction}
-            className="pointer-events-auto w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-full bg-white/60 backdrop-blur-sm border border-white/40 text-hok-espresso hover:bg-white hover:shadow-md transition-all duration-300 active:scale-90"
-            aria-label="Previous slide"
-          >
-            <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
-          </button>
-
-          <div className="pointer-events-auto flex items-center gap-2 sm:gap-2.5">
-            {slides.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() =>
-                  goToSlide(idx, idx > currentSlide ? "next" : "prev")
-                }
-                className={`rounded-full transition-all duration-500 ${
-                  currentSlide === idx
-                    ? "w-8 h-2.5 bg-hok-espresso"
-                    : "w-2.5 h-2.5 bg-hok-espresso/20 hover:bg-hok-espresso/40"
-                }`}
-                aria-label={`Go to slide ${idx + 1}`}
-              />
-            ))}
+              </motion.div>
+            )}
           </div>
+        </motion.div>
+      </AnimatePresence>
 
-          <button
-            onClick={nextSlide}
-            className="pointer-events-auto w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-full bg-white/60 backdrop-blur-sm border border-white/40 text-hok-espresso hover:bg-white hover:shadow-md transition-all duration-300 active:scale-90"
-            aria-label="Next slide"
+      {/* Navigation */}
+      <div className={styles.navControls}>
+        <button
+          onClick={prev}
+          className={styles.navBtn}
+          aria-label="Previous slide"
+          id="carousel-prev"
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
           >
-            <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
-          </button>
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+        <div className={styles.dots}>
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              className={`${styles.dot} ${
+                i === current ? styles.dotActive : ""
+              }`}
+              onClick={() => goTo(i)}
+              aria-label={`Go to slide ${i + 1}`}
+              id={`carousel-dot-${i}`}
+            />
+          ))}
         </div>
-
-        {/* Slide Counter — Bottom Right */}
-        <div className="absolute bottom-6 sm:bottom-10 right-6 sm:right-10 z-30 font-outfit text-sm text-hok-espresso/60 select-none hidden md:flex items-center gap-2">
-          <span className="font-medium text-hok-espresso">
-            {String(currentSlide + 1).padStart(2, "0")}
-          </span>
-          <span className="text-hok-stone/40">/</span>
-          <span>{String(slides.length).padStart(2, "0")}</span>
-        </div>
+        <button
+          onClick={next}
+          className={styles.navBtn}
+          aria-label="Next slide"
+          id="carousel-next"
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </button>
       </div>
-    </>
+
+      {/* Slide counter */}
+      <div className={styles.counter}>
+        <span className={styles.counterCurrent}>
+          {String(current + 1).padStart(2, "0")}
+        </span>
+        <span className={styles.counterSep}>/</span>
+        <span className={styles.counterTotal}>
+          {String(slides.length).padStart(2, "0")}
+        </span>
+      </div>
+    </section>
   );
 }

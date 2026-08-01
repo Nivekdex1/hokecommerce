@@ -158,7 +158,7 @@ export default async function Home() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <SectionHeading title="Best Sellers" subtitle="Most Popular" ctaText="Shop All" ctaHref="/shop?tags=best-seller" align="left" />
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10">
             {bestSellers.length > 0 ? (
               bestSellers.map((product: any) => (
                 <ProductCard key={product.id} product={product} badge="BEST SELLER" />
@@ -233,7 +233,7 @@ export default async function Home() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <SectionHeading title="New Arrivals" subtitle="Just Landed" ctaText="Discover More" ctaHref="/shop?tags=new" align="left" />
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10">
             {newArrivals.length > 0 ? (
               newArrivals.map((product: any) => (
                 <ProductCard key={product.id} product={product} badge="NEW" />
