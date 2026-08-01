@@ -25,40 +25,39 @@ const SectionHeading: React.FC<SectionHeadingProps> = ({
     <div
       className={`flex flex-col ${
         align === "center" ? "items-center text-center" : "items-start text-left"
-      } mb-10 md:mb-14 ${className}`}
+      } mb-12 md:mb-16 ${className}`}
     >
       <div className={`flex w-full items-end justify-between gap-4 ${align === "center" ? "justify-center" : ""}`}>
         <div className={align === "center" ? "mx-auto" : ""}>
-          <h2 className={`font-playfair text-3xl md:text-4xl lg:text-5xl font-semibold mb-3 ${lightText ? "text-white" : "text-hok-espresso"}`}>
+          <span className={`font-outfit uppercase tracking-[0.25em] text-[10px] sm:text-xs block mb-3 font-medium ${lightText ? "text-white/60" : "text-hok-champagne"}`}>
+            {subtitle || ""}
+          </span>
+          <h2 className={`font-fondamento text-3xl md:text-4xl lg:text-5xl font-normal mb-0 ${lightText ? "text-white" : "text-hok-espresso"}`}>
             {title}
           </h2>
-          <div className={`w-12 h-0.5 ${lightText ? "bg-white/40" : "bg-hok-champagne"} mb-3 ${align === "center" ? "mx-auto" : ""}`} />
-          {subtitle && (
-            <p className={`md:text-lg max-w-2xl font-light ${lightText ? "text-hok-mist" : "text-hok-stone"}`}>
-              {subtitle}
-            </p>
-          )}
         </div>
         
         {ctaText && ctaHref && align === "left" && (
           <Link
             href={ctaHref}
-            className="hidden sm:flex items-center gap-2 text-sm font-semibold tracking-wider uppercase text-hok-walnut hover:text-hok-caramel transition-colors group mb-1"
+            className="hidden sm:flex items-center gap-3 group"
           >
-            {ctaText}
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            <span className="font-outfit font-medium text-xs tracking-[0.2em] uppercase text-hok-charcoal hover:text-hok-champagne transition-colors border-b border-hok-champagne/40 pb-0.5">
+              {ctaText}
+            </span>
+            <ArrowRight className="w-4 h-4 text-hok-champagne transition-transform group-hover:translate-x-1" />
           </Link>
         )}
       </div>
 
-      {/* Mobile CTA (centered or left) */}
+      {/* Mobile CTA */}
       {ctaText && ctaHref && (
         <Link
           href={ctaHref}
-          className={`sm:hidden mt-4 inline-flex items-center gap-2 text-sm font-semibold tracking-wider uppercase text-hok-walnut hover:text-hok-caramel transition-colors group`}
+          className={`sm:hidden mt-5 inline-flex items-center gap-2 font-outfit text-xs font-medium tracking-[0.2em] uppercase text-hok-charcoal hover:text-hok-champagne transition-colors group`}
         >
           {ctaText}
-          <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+          <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
         </Link>
       )}
     </div>

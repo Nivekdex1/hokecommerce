@@ -98,11 +98,11 @@ export default function RootLayout({
       </head>
       <body className={`${fondamento.variable} ${outfit.variable} antialiased min-h-screen flex flex-col font-sans`}>
         <QueryProvider>
-          <div className="sticky top-0 z-50">
+          <div className="fixed top-0 left-0 right-0 z-50">
             <AnnouncementBar />
             <Navbar />
           </div>
-          <main className="flex-grow">
+          <main className="flex-grow pt-[100px]">
             {children}
           </main>
           <Footer />

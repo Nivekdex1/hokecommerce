@@ -12,35 +12,57 @@ export type HeroSlide = {
   cta: string;
   href: string;
   image: string;
-  bgColor?: string; 
+  bgColor?: string;
 };
+
+// Each slide gets its own gradient + glow color for visual impact
+const SLIDE_THEMES = [
+  { gradient: "linear-gradient(135deg, #FFF9F0 0%, #FAE8D4 40%, #F5D5B8 100%)", glow: "#D4A853" },
+  { gradient: "linear-gradient(135deg, #F0F4FF 0%, #D6E4FF 40%, #BDD4FF 100%)", glow: "#6B9BFF" },
+  { gradient: "linear-gradient(135deg, #FFF0F0 0%, #FFD6D6 40%, #FFBDBD 100%)", glow: "#FF8A8A" },
+  { gradient: "linear-gradient(135deg, #F0FFF4 0%, #D4F5DC 40%, #B8EBCA 100%)", glow: "#5CB87A" },
+  { gradient: "linear-gradient(135deg, #FFF5F0 0%, #FFE4D4 40%, #FFD0B8 100%)", glow: "#FF9F6B" },
+];
 
 const SLIDE_DURATION = 6000;
 
 export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [prevSlideIdx, setPrevSlideIdx] = useState(-1);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [direction, setDirection] = useState<"next" | "prev">("next");
   const [isHovered, setIsHovered] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
-  const [progressKey, setProgressKey] = useState(0);
 
   const minSwipeDistance = 50;
 
+  const goToSlide = useCallback(
+    (idx: number, dir: "next" | "prev" = "next") => {
+      if (isAnimating || idx === currentSlide) return;
+      setDirection(dir);
+      setPrevSlideIdx(currentSlide);
+      setCurrentSlide(idx);
+      setIsAnimating(true);
+      setTimeout(() => {
+        setIsAnimating(false);
+        setPrevSlideIdx(-1);
+      }, 800);
+    },
+    [currentSlide, isAnimating]
+  );
+
   const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-    setProgressKey((k) => k + 1);
-  }, [slides.length]);
+    const next = currentSlide === slides.length - 1 ? 0 : currentSlide + 1;
+    goToSlide(next, "next");
+  }, [currentSlide, slides.length, goToSlide]);
 
-  const prevSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-    setProgressKey((k) => k + 1);
-  }, [slides.length]);
+  const prevSlideAction = useCallback(() => {
+    const prev = currentSlide === 0 ? slides.length - 1 : currentSlide - 1;
+    goToSlide(prev, "prev");
+  }, [currentSlide, slides.length, goToSlide]);
 
-  const goToSlide = useCallback((idx: number) => {
-    setCurrentSlide(idx);
-    setProgressKey((k) => k + 1);
-  }, []);
-
+  // Touch handlers
   const onTouchStart = (e: React.TouchEvent) => {
     setIsHovered(true);
     setTouchEnd(null);
@@ -55,131 +77,206 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
     if (touchStart && touchEnd) {
       const distance = touchStart - touchEnd;
       if (distance > minSwipeDistance) nextSlide();
-      else if (distance < -minSwipeDistance) prevSlide();
+      else if (distance < -minSwipeDistance) prevSlideAction();
     }
     setTimeout(() => setIsHovered(false), 2000);
   };
 
+  // Auto-play
   useEffect(() => {
-    if (isHovered) return;
+    if (isHovered || isAnimating) return;
     const timer = setInterval(nextSlide, SLIDE_DURATION);
     return () => clearInterval(timer);
-  }, [isHovered, nextSlide]);
+  }, [isHovered, isAnimating, nextSlide]);
+
+  const getSlideAnimationClass = (index: number) => {
+    if (index === currentSlide && prevSlideIdx !== -1) {
+      // Incoming slide
+      return direction === "next"
+        ? "animate-[slideInRight_0.8s_cubic-bezier(0.25,0.46,0.45,0.94)_forwards]"
+        : "animate-[slideInLeft_0.8s_cubic-bezier(0.25,0.46,0.45,0.94)_forwards]";
+    }
+    if (index === prevSlideIdx) {
+      // Outgoing slide
+      return direction === "next"
+        ? "animate-[slideOutLeft_0.8s_cubic-bezier(0.25,0.46,0.45,0.94)_forwards]"
+        : "animate-[slideOutRight_0.8s_cubic-bezier(0.25,0.46,0.45,0.94)_forwards]";
+    }
+    if (index === currentSlide) {
+      return "translate-x-0 opacity-100";
+    }
+    return "translate-x-full opacity-0 pointer-events-none";
+  };
 
   return (
-    <div 
-      className="relative w-full h-[85vh] md:h-[90vh] overflow-hidden group bg-gradient-to-br from-[#FFFCF9] via-[#FAF6EE] to-[#F9F4ED]"
-      onMouseEnter={() => {
-        if (window.matchMedia('(hover: hover)').matches) {
-          setIsHovered(true);
+    <>
+      {/* Inject slide animation keyframes */}
+      <style jsx global>{`
+        @keyframes slideInRight {
+          from { transform: translateX(100%); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
         }
-      }}
-      onMouseLeave={() => setIsHovered(false)}
-      onTouchStart={onTouchStart}
-      onTouchMove={onTouchMove}
-      onTouchEnd={onTouchEndHandler}
-    >
-      {/* Slides */}
-      {slides.map((slide, index) => (
-        <div 
-          key={slide.id} 
-          className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${currentSlide === index ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
-        >
-          <div className="container-narrow h-full relative flex flex-col md:flex-row items-center justify-between pt-24 pb-12">
-            
-            {/* Text Side (Overlaid/Left) */}
-            <div className={`w-full md:w-1/2 z-20 flex flex-col justify-center px-4 md:px-0 transition-transform duration-1000 delay-100 ${currentSlide === index ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
-              <span className="text-hok-champagne font-outfit uppercase tracking-widest text-xs md:text-sm mb-4 block animate-fade-up">
-                Exclusive Collection
-              </span>
-              <h1 className="font-fondamento text-5xl md:text-6xl lg:text-[5rem] text-hok-espresso font-normal leading-[1.05] mb-6 animate-fade-up delay-100 drop-shadow-sm">
-                {slide.title}
-              </h1>
-              <p className="font-outfit text-base md:text-lg text-hok-stone font-light mb-10 max-w-md leading-relaxed animate-fade-up delay-200">
-                {slide.subtitle}
-              </p>
-              <div className="animate-fade-up delay-300">
-                <Link 
-                  href={slide.href}
-                  className="inline-flex items-center gap-4 group/btn"
-                >
-                  <span className="font-outfit font-medium text-sm tracking-[0.2em] uppercase text-hok-espresso border-b border-hok-champagne pb-1 transition-colors hover:text-hok-champagne">
-                    {slide.cta}
-                  </span>
-                  <div className="w-10 h-10 rounded-full border border-hok-champagne/30 flex items-center justify-center transition-all duration-300 group-hover/btn:bg-hok-champagne group-hover/btn:text-white group-hover/btn:border-hok-champagne">
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
+        @keyframes slideOutLeft {
+          from { transform: translateX(0); opacity: 1; }
+          to { transform: translateX(-100%); opacity: 0; }
+        }
+        @keyframes slideInLeft {
+          from { transform: translateX(-100%); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOutRight {
+          from { transform: translateX(0); opacity: 1; }
+          to { transform: translateX(100%); opacity: 0; }
+        }
+        @keyframes floatProduct {
+          0%, 100% { transform: translateY(0px) scale(1); }
+          50% { transform: translateY(-12px) scale(1.01); }
+        }
+        @keyframes glowPulse {
+          0%, 100% { opacity: 0.4; transform: scale(1); }
+          50% { opacity: 0.7; transform: scale(1.05); }
+        }
+        @keyframes slideTextUp {
+          from { opacity: 0; transform: translateY(30px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
+
+      <div
+        className="relative w-full h-[100svh] min-h-[600px] overflow-hidden"
+        onMouseEnter={() => {
+          if (window.matchMedia("(hover: hover)").matches) setIsHovered(true);
+        }}
+        onMouseLeave={() => setIsHovered(false)}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEndHandler}
+      >
+        {/* Slides */}
+        {slides.map((slide, index) => {
+          const theme = SLIDE_THEMES[index % SLIDE_THEMES.length];
+          const isActive = index === currentSlide;
+          const isVisible = index === currentSlide || index === prevSlideIdx;
+
+          if (!isVisible) return null;
+
+          return (
+            <div
+              key={slide.id}
+              className={`absolute inset-0 w-full h-full ${getSlideAnimationClass(index)}`}
+              style={{ background: theme.gradient, zIndex: isActive ? 10 : 5 }}
+            >
+              {/* Content Container */}
+              <div className="relative h-full w-full flex flex-col items-center justify-center px-6 md:px-12 lg:px-20">
+
+                {/* Product Image — Large, Centered, Floating */}
+                <div className="relative w-[280px] h-[280px] sm:w-[340px] sm:h-[340px] md:w-[420px] md:h-[420px] lg:w-[480px] lg:h-[480px] mt-8 md:mt-0">
+                  {/* Glow behind product */}
+                  <div
+                    className="absolute inset-0 rounded-full blur-[80px] md:blur-[120px] -z-10"
+                    style={{
+                      background: theme.glow,
+                      animation: isActive ? "glowPulse 4s ease-in-out infinite" : "none",
+                    }}
+                  />
+                  <div
+                    style={{
+                      animation: isActive ? "floatProduct 6s ease-in-out infinite" : "none",
+                    }}
+                    className="relative w-full h-full"
+                  >
+                    <Image
+                      src={slide.image}
+                      alt={slide.title}
+                      fill
+                      priority={index === 0}
+                      className="object-contain drop-shadow-2xl"
+                      sizes="(max-width: 640px) 280px, (max-width: 768px) 340px, (max-width: 1024px) 420px, 480px"
+                    />
                   </div>
-                </Link>
-              </div>
-            </div>
+                </div>
 
-            {/* Image Side */}
-            <div className={`w-full md:w-[55%] absolute md:relative right-0 h-[50vh] md:h-[70vh] flex items-center justify-center z-10 transition-transform duration-[1500ms] ${currentSlide === index ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
-              {/* Ambient Glow */}
-              <div className="absolute w-[60%] h-[60%] bg-hok-champagne/10 rounded-full blur-[80px] -z-10 mix-blend-multiply"></div>
-              
-              <div className="relative w-full h-full hover-soft-scale">
-                <Image
-                  src={slide.image}
-                  alt={slide.title}
-                  fill
-                  priority={index === 0}
-                  className="object-contain object-center md:object-right drop-shadow-2xl"
-                  sizes="(max-width: 768px) 100vw, 55vw"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      ))}
-
-      {/* Luxury Navigation Overlay */}
-      <div className="absolute bottom-8 left-0 w-full z-30 pointer-events-none">
-        <div className="container-narrow flex items-center justify-between pointer-events-auto px-4 md:px-0">
-          
-          {/* Counter (renket.org style) */}
-          <div className="flex items-center gap-3 font-outfit text-sm text-hok-charcoal">
-            <span className="font-medium">{String(currentSlide + 1).padStart(2, '0')}</span>
-            <div className="w-12 h-[1px] bg-hok-stone/30"></div>
-            <span className="text-hok-stone">{String(slides.length).padStart(2, '0')}</span>
-          </div>
-
-          {/* Dots & Controls */}
-          <div className="flex items-center gap-8">
-            <div className="hidden md:flex items-center gap-3">
-              {slides.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => goToSlide(idx)}
-                  className="group relative py-2"
-                  aria-label={`Go to slide ${idx + 1}`}
+                {/* Text Content — Below Image, Centered */}
+                <div
+                  className="text-center mt-6 md:mt-10 max-w-2xl mx-auto"
+                  style={{
+                    animation: isActive && prevSlideIdx !== -1
+                      ? "slideTextUp 0.6s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both"
+                      : isActive ? "none" : undefined,
+                    opacity: isActive && prevSlideIdx === -1 ? 1 : undefined,
+                  }}
                 >
-                  <div className={`h-[2px] transition-all duration-500 rounded-full ${
-                    currentSlide === idx ? "w-8 bg-hok-espresso" : "w-4 bg-hok-stone/30 group-hover:bg-hok-stone/60"
-                  }`} />
-                </button>
-              ))}
+                  <span className="text-hok-champagne font-outfit uppercase tracking-[0.25em] text-[10px] sm:text-xs mb-3 block font-medium">
+                    Exclusive Collection
+                  </span>
+                  <h1 className="font-fondamento text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] text-hok-espresso font-normal leading-[1.1] mb-4">
+                    {slide.title}
+                  </h1>
+                  <p className="font-outfit text-sm sm:text-base text-hok-stone font-light mb-6 max-w-lg mx-auto leading-relaxed hidden sm:block">
+                    {slide.subtitle}
+                  </p>
+                  <Link
+                    href={slide.href}
+                    className="inline-flex items-center gap-3 group/btn"
+                  >
+                    <span className="font-outfit font-medium text-xs sm:text-sm tracking-[0.2em] uppercase text-hok-espresso border-b border-hok-champagne/60 pb-1 transition-colors hover:text-hok-champagne">
+                      {slide.cta}
+                    </span>
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-hok-espresso/20 flex items-center justify-center transition-all duration-300 group-hover/btn:bg-hok-espresso group-hover/btn:text-white group-hover/btn:border-hok-espresso">
+                      <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover/btn:translate-x-0.5" />
+                    </div>
+                  </Link>
+                </div>
+              </div>
             </div>
+          );
+        })}
 
-            <div className="flex items-center gap-2">
-              <button 
-                onClick={prevSlide}
-                className="w-10 h-10 flex items-center justify-center rounded-full border border-hok-stone/20 text-hok-charcoal hover:bg-white hover:shadow-sm transition-all duration-300 active:scale-90"
-                aria-label="Previous slide"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <button 
-                onClick={nextSlide}
-                className="w-10 h-10 flex items-center justify-center rounded-full border border-hok-stone/20 text-hok-charcoal hover:bg-white hover:shadow-sm transition-all duration-300 active:scale-90"
-                aria-label="Next slide"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
+        {/* Navigation Controls — Centered Dots with Flanking Arrows */}
+        <div className="absolute bottom-6 sm:bottom-10 left-0 right-0 z-30 flex items-center justify-center gap-4 sm:gap-6 pointer-events-none">
+          <button
+            onClick={prevSlideAction}
+            className="pointer-events-auto w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-full bg-white/60 backdrop-blur-sm border border-white/40 text-hok-espresso hover:bg-white hover:shadow-md transition-all duration-300 active:scale-90"
+            aria-label="Previous slide"
+          >
+            <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+          </button>
+
+          <div className="pointer-events-auto flex items-center gap-2 sm:gap-2.5">
+            {slides.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() =>
+                  goToSlide(idx, idx > currentSlide ? "next" : "prev")
+                }
+                className={`rounded-full transition-all duration-500 ${
+                  currentSlide === idx
+                    ? "w-8 h-2.5 bg-hok-espresso"
+                    : "w-2.5 h-2.5 bg-hok-espresso/20 hover:bg-hok-espresso/40"
+                }`}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
           </div>
+
+          <button
+            onClick={nextSlide}
+            className="pointer-events-auto w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-full bg-white/60 backdrop-blur-sm border border-white/40 text-hok-espresso hover:bg-white hover:shadow-md transition-all duration-300 active:scale-90"
+            aria-label="Next slide"
+          >
+            <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+          </button>
+        </div>
+
+        {/* Slide Counter — Bottom Right */}
+        <div className="absolute bottom-6 sm:bottom-10 right-6 sm:right-10 z-30 font-outfit text-sm text-hok-espresso/60 select-none hidden md:flex items-center gap-2">
+          <span className="font-medium text-hok-espresso">
+            {String(currentSlide + 1).padStart(2, "0")}
+          </span>
+          <span className="text-hok-stone/40">/</span>
+          <span>{String(slides.length).padStart(2, "0")}</span>
         </div>
       </div>
-    </div>
+    </>
   );
 }

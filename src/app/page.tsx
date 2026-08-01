@@ -97,20 +97,20 @@ export default async function Home() {
   }
 
   return (
-    <div className="flex flex-col w-full bg-white">
+    <div className="flex flex-col w-full bg-white -mt-[100px]">
       <HeroCarousel slides={slides} />
-      <TrustBar />
 
-      {/* Brand Carousel / Logos */}
-      <section className="border-b border-hok-mist/50 py-10 bg-white overflow-hidden">
-        <div className="container-narrow">
-          <p className="text-center text-xs text-hok-stone font-medium tracking-[0.2em] uppercase mb-8">
-            Official distributors of Nigeria's favorite brands
+      {/* Trust Bar + Brand Carousel */}
+      <TrustBar />
+      <section className="py-12 bg-white overflow-hidden">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <p className="text-center text-[10px] text-hok-stone font-outfit font-medium tracking-[0.25em] uppercase mb-10">
+            Official distributors of Nigeria&apos;s favorite brands
           </p>
-          <div className="relative w-full opacity-60 overflow-hidden py-4">
-            <div className="flex items-center gap-10 md:gap-16 w-max animate-marquee">
+          <div className="relative w-full overflow-hidden py-2">
+            <div className="flex items-center gap-12 md:gap-20 w-max animate-marquee opacity-40 hover:opacity-60 transition-opacity duration-500">
               {[...["cerave", "eucerin", "posay", "corsx", "anua", "12grabs"], ...["cerave", "eucerin", "posay", "corsx", "anua", "12grabs"], ...["cerave", "eucerin", "posay", "corsx", "anua", "12grabs"]].map((brand, idx) => (
-                <div key={`${brand}-${idx}`} className="relative w-24 h-12 md:w-32 md:h-16 flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-500 hover:scale-105">
+                <div key={`${brand}-${idx}`} className="relative w-24 h-12 md:w-32 md:h-14 flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-500 hover:scale-105">
                   <Image
                     src={`/${brand}.jpg`}
                     alt={`${brand} logo`}
@@ -126,57 +126,37 @@ export default async function Home() {
       </section>
 
       {/* Featured Collections */}
-      <section className="section-padding bg-[#FFFCF9]">
-        <div className="container-narrow">
-          <SectionHeading title="Curated Just For You" subtitle="Shop our most popular skincare categories" />
+      <section className="py-20 md:py-28 bg-[#FAFAF8]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <SectionHeading title="Curated Just For You" subtitle="Featured Categories" />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Link href="/shop?productType=cleanser" className="group relative h-[450px] overflow-hidden rounded-none block border border-hok-mist/40 bg-white hover:shadow-xl transition-all duration-500">
-              <div className="absolute inset-0 m-4 overflow-hidden">
-                <Image src="/cleaners.png" alt="Cleansers" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition-transform duration-[1500ms] group-hover:scale-110" />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-white/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500"></div>
-              <div className="absolute bottom-10 left-0 right-0 text-center flex flex-col items-center">
-                <h3 className="text-hok-espresso font-fondamento text-3xl font-normal mb-2">Cleansers</h3>
-                <span className="text-hok-champagne font-outfit text-xs tracking-widest uppercase flex items-center gap-2 opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
-                  Shop Now <ArrowRightIcon />
-                </span>
-              </div>
-            </Link>
-
-            <Link href="/shop?productType=serum" className="group relative h-[450px] overflow-hidden rounded-none block border border-hok-mist/40 bg-white hover:shadow-xl transition-all duration-500">
-              <div className="absolute inset-0 m-4 overflow-hidden">
-                <Image src="/hero-products.png" alt="Serums & Treatments" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition-transform duration-[1500ms] group-hover:scale-110" />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-white/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500"></div>
-              <div className="absolute bottom-10 left-0 right-0 text-center flex flex-col items-center">
-                <h3 className="text-hok-espresso font-fondamento text-3xl font-normal mb-2">Serums</h3>
-                <span className="text-hok-champagne font-outfit text-xs tracking-widest uppercase flex items-center gap-2 opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
-                  Shop Now <ArrowRightIcon />
-                </span>
-              </div>
-            </Link>
-
-            <Link href="/shop?productType=moisturizer" className="group relative h-[450px] overflow-hidden rounded-none block border border-hok-mist/40 bg-white hover:shadow-xl transition-all duration-500">
-              <div className="absolute inset-0 m-4 overflow-hidden">
-                <Image src="/specialist.png" alt="Moisturizers" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition-transform duration-[1500ms] group-hover:scale-110" />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-white/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500"></div>
-              <div className="absolute bottom-10 left-0 right-0 text-center flex flex-col items-center">
-                <h3 className="text-hok-espresso font-fondamento text-3xl font-normal mb-2">Moisturizers</h3>
-                <span className="text-hok-champagne font-outfit text-xs tracking-widest uppercase flex items-center gap-2 opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
-                  Shop Now <ArrowRightIcon />
-                </span>
-              </div>
-            </Link>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+            {[
+              { href: "/shop?productType=cleanser", image: "/cleaners.png", label: "Cleansers" },
+              { href: "/shop?productType=serum", image: "/hero-products.png", label: "Serums" },
+              { href: "/shop?productType=moisturizer", image: "/specialist.png", label: "Moisturizers" },
+            ].map((cat) => (
+              <Link key={cat.label} href={cat.href} className="group relative h-[500px] overflow-hidden block bg-white transition-all duration-700 hover:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.06)]">
+                <div className="absolute inset-0 overflow-hidden">
+                  <Image src={cat.image} alt={cat.label} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition-transform duration-[2s] group-hover:scale-110" />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-white via-white/10 to-transparent opacity-90 group-hover:opacity-70 transition-opacity duration-700" />
+                <div className="absolute bottom-0 left-0 right-0 p-8 flex flex-col items-start">
+                  <h3 className="text-hok-espresso font-fondamento text-2xl md:text-3xl font-normal mb-2">{cat.label}</h3>
+                  <span className="text-hok-champagne font-outfit text-[10px] tracking-[0.25em] uppercase flex items-center gap-2 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                    Shop Now <ArrowRightIcon />
+                  </span>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Best Sellers */}
-      <section className="section-padding bg-white">
-        <div className="container-narrow">
-          <SectionHeading title="Best Sellers" subtitle="The holy grail products everyone is talking about" ctaText="Shop All" ctaHref="/shop?tags=best-seller" align="left" />
+      <section className="py-20 md:py-28 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <SectionHeading title="Best Sellers" subtitle="Most Popular" ctaText="Shop All" ctaHref="/shop?tags=best-seller" align="left" />
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {bestSellers.length > 0 ? (
@@ -193,8 +173,8 @@ export default async function Home() {
       </section>
 
       {/* Why HOK Value Proposition */}
-      <section className="section-padding bg-[#FCFAF8] relative overflow-hidden">
-        <div className="container-narrow">
+      <section className="py-20 md:py-28 bg-white relative overflow-hidden">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24 items-center">
             <div className="group order-2 md:order-1 relative h-[600px] w-full overflow-hidden border border-hok-mist bg-white shadow-sm hover:shadow-xl transition-shadow duration-700 p-4">
               <div className="relative h-full w-full overflow-hidden">
@@ -249,9 +229,9 @@ export default async function Home() {
       </section>
 
       {/* New Arrivals */}
-      <section className="section-padding bg-white">
-        <div className="container-narrow">
-          <SectionHeading title="New Arrivals" subtitle="Fresh from Seoul, just landed" ctaText="Discover More" ctaHref="/shop?tags=new" align="left" />
+      <section className="py-20 md:py-28 bg-[#FAFAF8]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <SectionHeading title="New Arrivals" subtitle="Just Landed" ctaText="Discover More" ctaHref="/shop?tags=new" align="left" />
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {newArrivals.length > 0 ? (
@@ -268,10 +248,10 @@ export default async function Home() {
       </section>
 
       {/* Skin Quiz CTA */}
-      <section className="relative py-24 lg:py-32 bg-white border-y border-hok-mist/30 overflow-hidden flex items-center justify-center min-h-[500px]">
+      <section className="relative py-28 lg:py-36 bg-[#FAFAF8] overflow-hidden flex items-center justify-center min-h-[550px]">
         {/* Soft Decorative Elements */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-hok-champagne/5 rounded-full blur-[100px] pointer-events-none"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-hok-mist/20 rounded-full blur-[100px] pointer-events-none"></div>
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-hok-champagne/4 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-hok-mist/30 rounded-full blur-[120px] pointer-events-none"></div>
 
         {/* Left Subject Image */}
         <div className="absolute left-0 bottom-0 top-0 w-[45%] md:w-[35%] lg:w-[25%] pointer-events-none z-0 opacity-20 sm:opacity-40 transition-opacity duration-700 hover:opacity-60">
