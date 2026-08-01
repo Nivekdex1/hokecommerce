@@ -263,7 +263,7 @@ export default async function Home() {
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-hok-mist/30 rounded-full blur-[120px] pointer-events-none"></div>
 
         {/* Left Subject Image */}
-        <div className="absolute left-0 bottom-0 top-0 w-[45%] md:w-[35%] lg:w-[25%] pointer-events-none z-0 opacity-20 sm:opacity-40 transition-opacity duration-700 hover:opacity-60">
+        <div className="absolute left-0 bottom-0 top-0 w-[45%] md:w-[35%] lg:w-[25%] pointer-events-none z-0 opacity-40 sm:opacity-60 transition-opacity duration-700 hover:opacity-80">
           <Image
             src="/model-left.png"
             alt="Personalized Skincare Consultation"
@@ -274,7 +274,7 @@ export default async function Home() {
         </div>
 
         {/* Right Subject Image */}
-        <div className="absolute right-0 bottom-0 top-0 w-[45%] md:w-[35%] lg:w-[25%] pointer-events-none z-0 opacity-20 sm:opacity-40 transition-opacity duration-700 hover:opacity-60">
+        <div className="absolute right-0 bottom-0 top-0 w-[45%] md:w-[35%] lg:w-[25%] pointer-events-none z-0 opacity-40 sm:opacity-60 transition-opacity duration-700 hover:opacity-80">
           <Image
             src="/model-right.png"
             alt="K-Beauty Skincare Specialist"

@@ -32,7 +32,7 @@ export default function WhatsAppWidget() {
   };
 
   return (
-    <div className={`fixed bottom-6 left-6 z-[60] transition-all duration-500 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+    <div className={`fixed bottom-6 left-6 z-40 transition-all duration-500 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
       }`}>
       {/* Chat Popup */}
       <div className={`absolute bottom-16 left-0 w-[320px] rounded-2xl overflow-hidden shadow-2xl border border-hok-mist/60 transition-all duration-300 origin-bottom-left ${isOpen
