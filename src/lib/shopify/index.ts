@@ -504,6 +504,18 @@ export async function getMetaobject(type: string, handle: string) {
               }
             }
           }
+          references(first: 10) {
+            edges {
+              node {
+                ... on MediaImage {
+                  image {
+                    url
+                    altText
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -526,7 +538,11 @@ export async function getMetaobject(type: string, handle: string) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const fields: Record<string, any> = {};
   metaobject.fields.forEach((field) => {
-    if (field.reference?.image) {
+    if ((field.references?.edges?.length ?? 0) > 0) {
+      fields[field.key] = field.references?.edges
+        .map((edge: any) => edge.node?.image)
+        .filter(Boolean); // Array of { url, altText }
+    } else if (field.reference?.image) {
       fields[field.key] = field.reference.image; // { url, altText }
     } else {
       fields[field.key] = field.value;

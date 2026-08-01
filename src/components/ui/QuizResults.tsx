@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useMemo, useState } from "react";
 import { Button } from "./button";
+import ProductCard from "./ProductCard";
 
 interface QuizResultsProps {
   skinType: string;
@@ -113,18 +114,19 @@ const QuizResults: React.FC<QuizResultsProps> = ({
   }
 
   return (
-    <div className="my-8">
-      <h2 className="font-playfair text-6xl">
-        Personalized <br /> Skincare Quiz
-      </h2>
-      <h3 className="font-playfair my-6 text-3xl">Results</h3>
-
-      <div className="bg-[#73512C] font-montserrat mt-10 mb-8 w-fit max-w-fit rounded-[28px] px-5 py-[10px] text-lg font-semibold text-white">
-        Determing Your Skin Type
+    <div className="px-4 py-6 md:px-8">
+      <div className="mb-10 text-center">
+        <h2 className="font-fondamento mb-4 text-3xl text-hok-espresso md:text-4xl">
+          Your Personalized Routine
+        </h2>
+        <div className="bg-hok-champagne mx-auto h-1 w-16 rounded-full" />
       </div>
 
-      <div className="border-gold mb-8 rounded-lg border bg-white p-4">
-        <p className="font-montserrat text-lg">
+      <div className="mb-10 rounded-2xl border border-hok-champagne/30 bg-hok-ivory p-6 text-center shadow-sm">
+        <span className="font-outfit mb-2 block text-xs font-bold uppercase tracking-[0.2em] text-hok-champagne">
+          Skin Profile
+        </span>
+        <p className="font-outfit text-lg font-light text-hok-espresso">
           {skinTypeDescriptions[skinType as keyof typeof skinTypeDescriptions]}
         </p>
       </div>
@@ -132,67 +134,35 @@ const QuizResults: React.FC<QuizResultsProps> = ({
       {SkinProducts && (
         <>
           <div id="products-section">
-            <h3 className="font-montserrat mb-12 w-fit max-w-fit rounded bg-white px-5 py-[10px] text-lg font-semibold">
-              Recommended Products for{" "}
-              {skinType
-                .split("-")
-                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                .join(" ")}
+            <div className="mb-8 flex items-center justify-between border-b border-hok-mist pb-4">
+              <h3 className="font-outfit text-xl font-medium text-hok-espresso">
+                Recommended Products
+              </h3>
               {totalProducts > 0 && (
-                <span className="ml-2 text-gray-500">
-                  ({totalProducts} products)
+                <span className="rounded-full bg-hok-linen px-3 py-1 text-sm font-light text-hok-stone">
+                  {totalProducts} items
                 </span>
               )}
-            </h3>
+            </div>
 
             {currentProducts.length === 0 ? (
               <p className="font-montserrat text-center text-lg text-gray-600">
                 No products found for your skin type.
               </p>
             ) : (
-              <div className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
+              <div className="grid grid-cols-2 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3">
                 {currentProducts.map(({ node }) => (
-                  <div key={node.handle} className="rounded-lg">
-                    {node.media.edges[0]?.node.image?.src && (
-                      <Link href={`/shop/${node.handle}`}>
-                        <div className="border-hokBlack/20 relative aspect-3/2 w-full overflow-hidden rounded-xl border">
-                          <Image
-                            src={node.media.edges[0].node.image.src}
-                            alt={node.media.edges[0].node.alt || node.title}
-                            fill
-
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            className="object-cover"
-                          />
-                        </div>
-                      </Link>
-                    )}
-                    <div className="mt-4 flex items-start justify-between">
-                      <div className="max-w-[60%]">
-                        <h4 className="font-montserrat mb-1 text-lg font-medium">
-                          {node.title}
-                        </h4>
-                        <div className="flex">
-                          {[1, 2, 3, 4, 5].map((star) => (
-                            <svg
-                              key={star}
-                              className={`h-4 w-4 ${star <= 4 ? "text-yellow-400" : "text-gray-300"}`}
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
-                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                            </svg>
-                          ))}
-                        </div>
-                      </div>
-                      <p className="font-montserrat text-base font-semibold">
-                        {formatPrice(node.priceRange.minVariantPrice.amount, {
-                          currencyCode:
-                            node.priceRange.minVariantPrice.currencyCode,
-                        })}
-                      </p>
-                    </div>
-                  </div>
+                  <ProductCard
+                    key={node.handle}
+                    product={{
+                      id: node.handle,
+                      title: node.title,
+                      handle: node.handle,
+                      price: node.priceRange.minVariantPrice.amount,
+                      currencyCode: node.priceRange.minVariantPrice.currencyCode,
+                      image: node.media.edges[0]?.node.image?.src || "",
+                    }}
+                  />
                 ))}
               </div>
             )}
@@ -215,10 +185,10 @@ const QuizResults: React.FC<QuizResultsProps> = ({
                     <button
                       key={pageNumber}
                       onClick={() => handlePageChange(pageNumber)}
-                      className={`flex h-10 w-10 items-center justify-center rounded border ${
+                      className={`flex h-10 w-10 items-center justify-center rounded-full border transition-colors ${
                         currentPage === pageNumber
-                          ? "border-[#73512C] bg-[#73512C] text-white"
-                          : "border-gray-300 hover:bg-gray-50"
+                          ? "border-hok-champagne bg-hok-champagne text-white"
+                          : "border-hok-mist bg-white text-hok-stone hover:border-hok-stone hover:text-hok-espresso"
                       }`}
                     >
                       {pageNumber}
@@ -230,7 +200,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({
                     size="icon"
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}
-                    className="h-10 w-10"
+                    className="h-10 w-10 rounded-full border-hok-mist text-hok-stone hover:border-hok-stone hover:text-hok-espresso"
                   >
                     <ChevronRight className="h-4 w-4" />
                   </Button>
@@ -241,14 +211,14 @@ const QuizResults: React.FC<QuizResultsProps> = ({
         </>
       )}
 
-      <div className="mt-8">
+      <div className="mt-12 flex justify-center border-t border-hok-mist pt-8">
         <Button
-          variant="ghost"
+          variant="outline"
           onClick={resetQuiz}
-          className="text-burntOrange flex items-center font-medium"
+          className="font-outfit flex items-center rounded-full border-hok-mist px-8 font-medium tracking-[0.1em] text-hok-stone transition-all duration-300 hover:border-hok-stone hover:bg-hok-ivory hover:text-hok-espresso"
         >
-          <ArrowLeft />
-          BACK TO QUIZ
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          RETAKE QUIZ
         </Button>
       </div>
     </div>

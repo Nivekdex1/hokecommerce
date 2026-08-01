@@ -248,6 +248,15 @@
   font-family: var(--font-outfit);
 }
 
+/* Standalone CTA Button */
+.heroCtaWrapper {
+  position: absolute;
+  bottom: 6.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 12;
+}
+
 .counterCurrent {
   font-size: 1.2rem;
   font-weight: 500;

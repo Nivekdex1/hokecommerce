@@ -1,7 +1,8 @@
 import Filters from "@/components/shop/filters";
 import Pagination from "@/components/ui/pagination";
 import ProductGridSkeleton from "@/components/ui/ProductGridSkeleton";
-import { getProducts } from "@/lib/shopify";
+import { getProducts, getMetaobject } from "@/lib/shopify";
+import BrandBannerCarousel from "@/components/ui/BrandBannerCarousel";
 import ProductCard from "@/components/ui/ProductCard";
 import { Metadata } from "next";
 import { Suspense } from "react";
@@ -33,6 +34,15 @@ export default async function ShopPage(props: {
     searchParams,
     pageSize,
   });
+
+  let brandBanners: any[] = [];
+  if (searchParams?.vendors) {
+    const vendorHandle = Array.isArray(searchParams.vendors) ? searchParams.vendors[0] : searchParams.vendors;
+    const bannerData = await getMetaobject("brand_banner", vendorHandle);
+    if (bannerData && bannerData.fields.banners) {
+      brandBanners = bannerData.fields.banners;
+    }
+  }
 
   const buildPaginationUrl = (
     cursor: string,
@@ -81,6 +91,7 @@ export default async function ShopPage(props: {
             <Filters />
           </div>
           <div className="w-full md:w-3/4">
+            {brandBanners.length > 0 && <BrandBannerCarousel banners={brandBanners} />}
             <Suspense fallback={<ProductGridSkeleton />}>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-6">
                 {products && products.length > 0 ? (

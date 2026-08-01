@@ -25,7 +25,7 @@ const SLIDE_THEMES = [
   { bg: "linear-gradient(135deg, #F0FFF4 0%, #D4F5DC 40%, #B8EBCA 100%)", accent: "#5CB87A", badge: "PURE & GENTLE" },
 ];
 
-const SHOW_PRODUCT_CARDS = false; // We need to show the text in HOK!
+
 
 export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
   const [current, setCurrent] = useState(0);
@@ -101,7 +101,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
                   // Because HOK uses transparent PNGs instead of JPEGs like Renket,
                   // contain works best so we don't awkwardly crop the products.
                   objectFit: "contain",
-                  objectPosition: "right center",
+                  objectPosition: "center center",
                   padding: "4rem", // Give it some breathing room from the edges
                 }}
                 sizes="100vw"
@@ -113,47 +113,19 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
             </div>
           </motion.div>
 
-          <div className={styles.slideContent}>
-            {SHOW_PRODUCT_CARDS && (
-              <motion.div
-                className={styles.textSide}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.6 }}
-              >
-                <span className={styles.badge} style={{ background: theme.accent }}>
-                  {theme.badge}
-                </span>
-                <h1 className={styles.title}>{slide.title}</h1>
-                <p className={styles.subtitle}>{slide.subtitle}</p>
-                <div className={styles.ctaGroup}>
-                  <Link href={slide.href} className={styles.ctaBtn}>
-                    {slide.cta}
-                    <span className={styles.ctaIconWrapper}>
-                      <ArrowRight className={styles.ctaIcon} />
-                    </span>
-                  </Link>
-                  <div className={styles.originBrandWrapper}>
-                    <span className={styles.origin}>
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <circle cx="12" cy="12" r="10" />
-                        <path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" />
-                      </svg>
-                      Direct from Korea
-                    </span>
-                    <span className={styles.brandText}>100% AUTHENTIC</span>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </div>
+          <motion.div 
+            className={styles.heroCtaWrapper}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
+            <Link href={slide.href} className={styles.ctaBtn}>
+              {slide.cta}
+              <span className={styles.ctaIconWrapper}>
+                <ArrowRight className={styles.ctaIcon} />
+              </span>
+            </Link>
+          </motion.div>
         </motion.div>
       </AnimatePresence>
 

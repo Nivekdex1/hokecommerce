@@ -141,6 +141,16 @@ export type ShopifyMetaobjectResponse = {
             altText: string | null;
           };
         } | null;
+        references?: {
+          edges: Array<{
+            node: {
+              image?: {
+                url: string;
+                altText: string | null;
+              };
+            };
+          }>;
+        };
       }>;
     } | null;
   };
