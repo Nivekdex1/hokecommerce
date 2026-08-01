@@ -110,10 +110,10 @@ export default async function Home() {
           </p>
           <div className="relative w-full overflow-hidden py-2">
             <div className="flex items-center gap-12 md:gap-20 w-max animate-marquee opacity-60 hover:opacity-80 transition-opacity duration-500">
-              {[...["cerave", "corsx", "eucerin", "anua", "posay", "12grabs"], ...["cerave", "corsx", "eucerin", "anua", "posay", "12grabs"], ...["cerave", "corsx", "eucerin", "anua", "posay", "12grabs"]].map((brand, idx) => (
+              {[...["cerave", "corsx", "eucerin", "anua", "posay", "12grabs", "dermafactory", "lizara"], ...["cerave", "corsx", "eucerin", "anua", "posay", "12grabs", "dermafactory", "lizara"], ...["cerave", "corsx", "eucerin", "anua", "posay", "12grabs", "dermafactory", "lizara"]].map((brand, idx) => (
                 <div key={`${brand}-${idx}`} className="relative w-24 h-12 md:w-32 md:h-14 flex-shrink-0 transition-all duration-500 hover:scale-105">
                   <Image
-                    src={`/${brand}.png`}
+                    src={`/brands/${brand}.png`}
                     alt={`${brand} logo`}
                     fill
                     sizes="(max-width: 768px) 96px, 128px"
