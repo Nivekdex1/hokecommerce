@@ -97,24 +97,25 @@ export default async function Home() {
   }
 
   return (
-    <div className="flex flex-col w-full bg-hok-linen">
+    <div className="flex flex-col w-full bg-white">
       <HeroCarousel slides={slides} />
       <TrustBar />
 
       {/* Brand Carousel / Logos */}
-      <section className="border-b border-hok-mist py-8 bg-white overflow-hidden">
+      <section className="border-b border-hok-mist/50 py-10 bg-white overflow-hidden">
         <div className="container-narrow">
-          <p className="text-center text-xs text-hok-stone font-semibold tracking-widest uppercase mb-6">
+          <p className="text-center text-xs text-hok-stone font-medium tracking-[0.2em] uppercase mb-8">
             Official distributors of Nigeria's favorite brands
           </p>
           <div className="relative w-full opacity-60 overflow-hidden py-4">
-            <div className="flex items-center gap-8 md:gap-12 w-max animate-marquee">
+            <div className="flex items-center gap-10 md:gap-16 w-max animate-marquee">
               {[...["cerave", "eucerin", "posay", "corsx", "anua", "12grabs"], ...["cerave", "eucerin", "posay", "corsx", "anua", "12grabs"], ...["cerave", "eucerin", "posay", "corsx", "anua", "12grabs"]].map((brand, idx) => (
-                <div key={`${brand}-${idx}`} className="relative w-24 h-12 md:w-32 md:h-16 flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-300">
+                <div key={`${brand}-${idx}`} className="relative w-24 h-12 md:w-32 md:h-16 flex-shrink-0 grayscale hover:grayscale-0 transition-all duration-500 hover:scale-105">
                   <Image
                     src={`/${brand}.jpg`}
                     alt={`${brand} logo`}
                     fill
+                    sizes="(max-width: 768px) 96px, 128px"
                     className="object-contain"
                   />
                 </div>
@@ -125,40 +126,46 @@ export default async function Home() {
       </section>
 
       {/* Featured Collections */}
-      <section className="section-padding bg-hok-linen">
+      <section className="section-padding bg-[#FFFCF9]">
         <div className="container-narrow">
           <SectionHeading title="Curated Just For You" subtitle="Shop our most popular skincare categories" />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Link href="/shop?productType=cleanser" className="group relative h-[400px] overflow-hidden rounded-none block">
-              <Image src="/cleaners.png" alt="Cleansers" fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
-              <div className="absolute inset-0 bg-gradient-to-t from-hok-espresso/80 via-hok-espresso/20 to-transparent"></div>
-              <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between">
-                <h3 className="text-white font-playfair text-2xl font-medium">Cleansers</h3>
-                <span className="bg-white text-hok-espresso rounded-full p-2 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all">
-                  <ArrowRightIcon />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <Link href="/shop?productType=cleanser" className="group relative h-[450px] overflow-hidden rounded-none block border border-hok-mist/40 bg-white hover:shadow-xl transition-all duration-500">
+              <div className="absolute inset-0 m-4 overflow-hidden">
+                <Image src="/cleaners.png" alt="Cleansers" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition-transform duration-[1500ms] group-hover:scale-110" />
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-white/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500"></div>
+              <div className="absolute bottom-10 left-0 right-0 text-center flex flex-col items-center">
+                <h3 className="text-hok-espresso font-fondamento text-3xl font-normal mb-2">Cleansers</h3>
+                <span className="text-hok-champagne font-outfit text-xs tracking-widest uppercase flex items-center gap-2 opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+                  Shop Now <ArrowRightIcon />
                 </span>
               </div>
             </Link>
 
-            <Link href="/shop?productType=serum" className="group relative h-[400px] overflow-hidden rounded-none block">
-              <Image src="/hero-products.png" alt="Serums & Treatments" fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
-              <div className="absolute inset-0 bg-gradient-to-t from-hok-espresso/80 via-hok-espresso/20 to-transparent"></div>
-              <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between">
-                <h3 className="text-white font-playfair text-2xl font-medium">Serums</h3>
-                <span className="bg-white text-hok-espresso rounded-full p-2 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all">
-                  <ArrowRightIcon />
+            <Link href="/shop?productType=serum" className="group relative h-[450px] overflow-hidden rounded-none block border border-hok-mist/40 bg-white hover:shadow-xl transition-all duration-500">
+              <div className="absolute inset-0 m-4 overflow-hidden">
+                <Image src="/hero-products.png" alt="Serums & Treatments" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition-transform duration-[1500ms] group-hover:scale-110" />
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-white/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500"></div>
+              <div className="absolute bottom-10 left-0 right-0 text-center flex flex-col items-center">
+                <h3 className="text-hok-espresso font-fondamento text-3xl font-normal mb-2">Serums</h3>
+                <span className="text-hok-champagne font-outfit text-xs tracking-widest uppercase flex items-center gap-2 opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+                  Shop Now <ArrowRightIcon />
                 </span>
               </div>
             </Link>
 
-            <Link href="/shop?productType=moisturizer" className="group relative h-[400px] overflow-hidden rounded-none block">
-              <Image src="/specialist.png" alt="Moisturizers" fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
-              <div className="absolute inset-0 bg-gradient-to-t from-hok-espresso/80 via-hok-espresso/20 to-transparent"></div>
-              <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between">
-                <h3 className="text-white font-playfair text-2xl font-medium">Moisturizers</h3>
-                <span className="bg-white text-hok-espresso rounded-full p-2 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all">
-                  <ArrowRightIcon />
+            <Link href="/shop?productType=moisturizer" className="group relative h-[450px] overflow-hidden rounded-none block border border-hok-mist/40 bg-white hover:shadow-xl transition-all duration-500">
+              <div className="absolute inset-0 m-4 overflow-hidden">
+                <Image src="/specialist.png" alt="Moisturizers" fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition-transform duration-[1500ms] group-hover:scale-110" />
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-white/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500"></div>
+              <div className="absolute bottom-10 left-0 right-0 text-center flex flex-col items-center">
+                <h3 className="text-hok-espresso font-fondamento text-3xl font-normal mb-2">Moisturizers</h3>
+                <span className="text-hok-champagne font-outfit text-xs tracking-widest uppercase flex items-center gap-2 opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+                  Shop Now <ArrowRightIcon />
                 </span>
               </div>
             </Link>
@@ -186,48 +193,53 @@ export default async function Home() {
       </section>
 
       {/* Why HOK Value Proposition */}
-      <section className="dark-section py-20 md:py-32 bg-hok-espresso text-white relative overflow-hidden">
+      <section className="section-padding bg-[#FCFAF8] relative overflow-hidden">
         <div className="container-narrow">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div className="group order-2 md:order-1 relative h-[500px] w-full rounded-t-full overflow-hidden border-4 border-hok-champagne/20">
-              <Image src="/lizare-image-2.png" alt="Glass skin model" fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 768px) 100vw, 50vw" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24 items-center">
+            <div className="group order-2 md:order-1 relative h-[600px] w-full overflow-hidden border border-hok-mist bg-white shadow-sm hover:shadow-xl transition-shadow duration-700 p-4">
+              <div className="relative h-full w-full overflow-hidden">
+                <Image src="/lizare-image-2.png" alt="Glass skin model" fill className="object-cover transition-transform duration-[1500ms] group-hover:scale-105 grayscale-[20%]" sizes="(max-width: 768px) 100vw, 50vw" />
+              </div>
             </div>
             <div className="order-1 md:order-2">
-              <h2 className="font-playfair text-4xl md:text-5xl font-semibold mb-6 text-white">
-                Why Choose <span className="text-hok-champagne italic">HOK Beauty?</span>
+              <span className="text-hok-champagne font-outfit uppercase tracking-[0.2em] text-xs mb-4 block">
+                Our Commitment
+              </span>
+              <h2 className="font-fondamento text-4xl md:text-5xl lg:text-6xl font-normal mb-8 text-hok-espresso leading-tight">
+                Why Choose <br/><span className="text-hok-champagne">HOK Beauty?</span>
               </h2>
-              <p className="font-manrope text-lg text-hok-mist mb-10 font-light leading-relaxed">
-                We believe in authentic, dermatologist-backed skincare that brings out your natural glow. No counterfeits, no shortcuts.
+              <p className="font-outfit text-lg text-hok-stone mb-12 font-light leading-relaxed">
+                We believe in authentic, dermatologist-backed skincare that brings out your natural glow. No counterfeits, no shortcuts. Just pure, proven formulas.
               </p>
 
-              <div className="space-y-8">
-                <div className="flex gap-4">
-                  <div className="mt-1 bg-hok-walnut/50 p-2 rounded-full h-fit">
+              <div className="space-y-10">
+                <div className="flex gap-6 group cursor-default">
+                  <div className="mt-1 text-hok-champagne transition-transform duration-300 group-hover:scale-110">
                     <CheckIcon />
                   </div>
                   <div>
-                    <h4 className="font-playfair text-xl font-medium mb-1 text-white">Sourced Directly from Korea</h4>
-                    <p className="text-hok-mist text-sm leading-relaxed">We partner with official distributors to guarantee 100% authenticity for every product.</p>
+                    <h4 className="font-outfit text-xl font-normal mb-2 text-hok-charcoal">Sourced Directly from Korea</h4>
+                    <p className="text-hok-stone text-sm leading-relaxed font-light">We partner with official distributors to guarantee 100% authenticity for every product.</p>
                   </div>
                 </div>
 
-                <div className="flex gap-4">
-                  <div className="mt-1 bg-hok-walnut/50 p-2 rounded-full h-fit">
+                <div className="flex gap-6 group cursor-default">
+                  <div className="mt-1 text-hok-champagne transition-transform duration-300 group-hover:scale-110">
                     <CheckIcon />
                   </div>
                   <div>
-                    <h4 className="font-playfair text-xl font-medium mb-1 text-white">Nigeria's #1 K-Beauty Store</h4>
-                    <p className="text-hok-mist text-sm leading-relaxed">Trusted by thousands of beauty lovers nationwide for fast, reliable delivery.</p>
+                    <h4 className="font-outfit text-xl font-normal mb-2 text-hok-charcoal">Nigeria's Premier K-Beauty Destination</h4>
+                    <p className="text-hok-stone text-sm leading-relaxed font-light">Trusted by thousands of beauty connoisseurs nationwide for reliable delivery.</p>
                   </div>
                 </div>
 
-                <div className="flex gap-4">
-                  <div className="mt-1 bg-hok-walnut/50 p-2 rounded-full h-fit">
+                <div className="flex gap-6 group cursor-default">
+                  <div className="mt-1 text-hok-champagne transition-transform duration-300 group-hover:scale-110">
                     <CheckIcon />
                   </div>
                   <div>
-                    <h4 className="font-playfair text-xl font-medium mb-1 text-white">Expert Guidance</h4>
-                    <p className="text-hok-mist text-sm leading-relaxed">Our personalized skin algorithm helps you find the perfect routine for your skin type.</p>
+                    <h4 className="font-outfit text-xl font-normal mb-2 text-hok-charcoal">Curated Expert Guidance</h4>
+                    <p className="text-hok-stone text-sm leading-relaxed font-light">Our personalized skin algorithm helps you find the perfect routine for your skin type.</p>
                   </div>
                 </div>
               </div>
@@ -237,7 +249,7 @@ export default async function Home() {
       </section>
 
       {/* New Arrivals */}
-      <section className="section-padding bg-hok-linen">
+      <section className="section-padding bg-white">
         <div className="container-narrow">
           <SectionHeading title="New Arrivals" subtitle="Fresh from Seoul, just landed" ctaText="Discover More" ctaHref="/shop?tags=new" align="left" />
 
@@ -256,47 +268,55 @@ export default async function Home() {
       </section>
 
       {/* Skin Quiz CTA */}
-      <section className="relative py-20 lg:py-28 bg-hok-ivory border-y border-hok-mist overflow-hidden flex items-center justify-center min-h-[450px] lg:min-h-[500px]">
+      <section className="relative py-24 lg:py-32 bg-white border-y border-hok-mist/30 overflow-hidden flex items-center justify-center min-h-[500px]">
+        {/* Soft Decorative Elements */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-hok-champagne/5 rounded-full blur-[100px] pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-hok-mist/20 rounded-full blur-[100px] pointer-events-none"></div>
 
-        {/* Left Subject Image (Absolute, Full Height, Far Left) */}
-        <div className="absolute left-0 bottom-0 top-0 w-[45%] md:w-[35%] lg:w-[28%] pointer-events-none z-0 opacity-40 sm:opacity-100">
+        {/* Left Subject Image */}
+        <div className="absolute left-0 bottom-0 top-0 w-[45%] md:w-[35%] lg:w-[25%] pointer-events-none z-0 opacity-20 sm:opacity-40 transition-opacity duration-700 hover:opacity-60">
           <Image
             src="/co-founder-1.png"
             alt="Personalized Skincare Consultation"
             fill
-            className="object-contain object-left-bottom"
-            sizes="(max-width: 768px) 45vw, 28vw"
+            className="object-contain object-left-bottom grayscale-[50%]"
+            sizes="(max-width: 768px) 45vw, 25vw"
           />
         </div>
 
-        {/* Right Subject Image (Absolute, Full Height, Far Right) */}
-        <div className="absolute right-0 bottom-0 top-0 w-[45%] md:w-[35%] lg:w-[28%] pointer-events-none z-0 opacity-40 sm:opacity-100">
+        {/* Right Subject Image */}
+        <div className="absolute right-0 bottom-0 top-0 w-[45%] md:w-[35%] lg:w-[25%] pointer-events-none z-0 opacity-20 sm:opacity-40 transition-opacity duration-700 hover:opacity-60">
           <Image
             src="/co-founder-2.png"
             alt="K-Beauty Skincare Specialist"
             fill
-            className="object-contain object-right-bottom"
-            sizes="(max-width: 768px) 45vw, 28vw"
+            className="object-contain object-right-bottom grayscale-[50%]"
+            sizes="(max-width: 768px) 45vw, 25vw"
           />
         </div>
 
         {/* Center Text Content */}
-        <div className="relative z-10 w-full max-w-3xl mx-auto px-4 sm:px-6 text-center flex flex-col items-center justify-center">
-          <span className="text-hok-champagne font-semibold tracking-widest uppercase mb-4 text-xs sm:text-sm block">
-            Take the guesswork out
+        <div className="relative z-10 w-full max-w-2xl mx-auto px-4 sm:px-6 text-center flex flex-col items-center justify-center bg-white/60 backdrop-blur-sm p-12 rounded-2xl border border-hok-mist/20 shadow-2xl">
+          <span className="text-hok-champagne font-outfit font-medium tracking-[0.2em] uppercase mb-6 text-xs sm:text-sm block">
+            Bespoke Skincare
           </span>
-          <h2 className="font-playfair text-4xl sm:text-5xl md:text-6xl text-hok-espresso font-semibold mb-6 leading-[1.1] text-balance">
-            Not sure where to start? Find your perfect routine.
+          <h2 className="font-fondamento text-4xl sm:text-5xl md:text-6xl text-hok-espresso font-normal mb-6 leading-[1.1] text-balance">
+            Discover Your Perfect Routine.
           </h2>
-          <p className="font-manrope text-hok-stone text-base sm:text-lg md:text-xl mb-10 max-w-xl mx-auto leading-relaxed text-balance">
-            Take our 2-minute personalized skin algorithm quiz to get expert recommendations tailored to your unique skin type and concerns.
+          <p className="font-outfit text-hok-stone text-base sm:text-lg mb-10 max-w-lg mx-auto font-light leading-relaxed text-balance">
+            Take our 2-minute personalized skin algorithm quiz to receive expert, tailored recommendations for your unique skin type.
           </p>
-          <Button asChild className="btn-shimmer bg-hok-walnut hover:bg-hok-espresso text-white rounded-none px-12 py-7 text-lg font-semibold tracking-wide transition-all duration-300 active:scale-95 shadow-xl mt-2">
-            <Link href="/skin-algorithm" className="flex items-center gap-3">
-              <span>Start the Skin Quiz</span>
+          <Link 
+            href="/skin-algorithm"
+            className="inline-flex items-center gap-4 group/btn"
+          >
+            <span className="font-outfit font-medium text-sm tracking-[0.2em] uppercase text-hok-espresso border-b border-hok-champagne pb-1 transition-colors hover:text-hok-champagne">
+              Start The Quiz
+            </span>
+            <div className="w-12 h-12 rounded-full border border-hok-champagne/30 flex items-center justify-center transition-all duration-300 group-hover/btn:bg-hok-champagne group-hover/btn:text-white group-hover/btn:border-hok-champagne group-hover/btn:shadow-lg">
               <ArrowRightIcon />
-            </Link>
-          </Button>
+            </div>
+          </Link>
         </div>
       </section>
     </div>

@@ -101,7 +101,14 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [openDropdown]);
 
-  const renderDesktopLink = (link: typeof LeftNavLinks[0], alignRight = false) => {
+  const renderDesktopLink = (
+    link: {
+      title: string;
+      href: string;
+      submenu?: { title: string; href: string }[];
+    },
+    alignRight = false
+  ) => {
     const isOpen = openDropdown === link.title;
     
     return (
@@ -109,7 +116,7 @@ export default function Navbar() {
         {link.submenu ? (
           <button 
             onClick={() => setOpenDropdown(isOpen ? null : link.title)}
-            className="nav-link-underline flex items-center gap-1 font-manrope text-[13px] font-semibold tracking-[0.15em] text-hok-espresso hover:text-hok-walnut uppercase py-2 whitespace-nowrap transition-colors duration-300"
+            className="nav-link-underline flex items-center gap-1 font-outfit text-[12px] font-medium tracking-[0.2em] text-hok-charcoal hover:text-hok-champagne uppercase py-2 whitespace-nowrap transition-colors duration-300"
           >
             {link.title}
             <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
@@ -117,7 +124,7 @@ export default function Navbar() {
         ) : (
           <Link 
             href={link.href}
-            className="nav-link-underline flex items-center gap-1 font-manrope text-[13px] font-semibold tracking-[0.15em] text-hok-espresso hover:text-hok-walnut uppercase py-2 whitespace-nowrap transition-colors duration-300"
+            className="nav-link-underline flex items-center gap-1 font-outfit text-[12px] font-medium tracking-[0.2em] text-hok-charcoal hover:text-hok-champagne uppercase py-2 whitespace-nowrap transition-colors duration-300"
           >
             {link.title}
           </Link>
@@ -145,8 +152,8 @@ export default function Navbar() {
   return (
     <>
       <header 
-        className={`w-full transition-all duration-500 ${
-          scrolled ? "bg-white/95 backdrop-blur-md shadow-sm py-2" : "bg-white py-3 lg:py-4"
+        className={`w-full transition-all duration-500 z-50 relative ${
+          scrolled ? "bg-white/80 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.03)] py-3" : "bg-white/40 backdrop-blur-md py-4 lg:py-6 border-b border-white/40"
         }`}
       >
         <div className="w-full px-6 md:px-12 lg:px-20">
@@ -170,13 +177,13 @@ export default function Navbar() {
                     <div className="flex flex-col h-full p-6">
                       <SheetClose asChild>
                         <Link href="/" className="mb-8 block w-fit">
-                          <Image src="/brand/new-hok-logo-black.svg" alt="HOK Logo" width={135} height={45} className="w-auto h-12" />
+                          <Image src="/brand/new-hok-logo-black.svg" alt="HOK Logo" width={135} height={45} className="h-12" style={{ width: "auto" }} />
                         </Link>
                       </SheetClose>
                       <div className="mb-8">
                         <ProductSearch />
                       </div>
-                      <nav className="flex flex-col gap-1 font-manrope">
+                      <nav className="flex flex-col gap-1 font-outfit">
                         {AllNavLinks.map((link) => (
                           <div key={link.title} className="flex flex-col">
                             {link.submenu ? (
@@ -227,7 +234,8 @@ export default function Navbar() {
                   alt="HOK Logo"
                   width={120}
                   height={40}
-                  className="transition-all duration-500 w-auto h-10 md:h-12"
+                  className="transition-all duration-500 h-10 md:h-12"
+                  style={{ width: "auto" }}
                   priority
                 />
               </Link>
@@ -241,7 +249,8 @@ export default function Navbar() {
                   alt="HOK Logo"
                   width={120}
                   height={40}
-                  className="transition-all duration-500 w-auto h-10 md:h-12"
+                  className="transition-all duration-500 h-10 md:h-12"
+                  style={{ width: "auto" }}
                   priority
                 />
               </Link>

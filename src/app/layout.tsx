@@ -7,20 +7,21 @@ import CookieConsent from "@/components/ui/CookieConsent";
 import BackToTop from "@/components/ui/BackToTop";
 import WhatsAppWidget from "@/components/ui/WhatsAppWidget";
 import type { Metadata, Viewport } from "next";
-import { Manrope, Playfair_Display } from "next/font/google";
+import { Outfit, Fondamento } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
-const playfair = Playfair_Display({
+const fondamento = Fondamento({
   subsets: ["latin"],
-  variable: "--font-playfair",
-  weight: ["400", "500", "600", "700"],
+  variable: "--font-fondamento",
+  weight: ["400"],
+  style: ["normal", "italic"],
 });
 
-const manrope = Manrope({
+const outfit = Outfit({
   subsets: ["latin"],
-  variable: "--font-manrope",
-  weight: ["400", "500", "600", "700"],
+  variable: "--font-outfit",
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const viewport: Viewport = {
@@ -95,7 +96,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${playfair.variable} ${manrope.variable} antialiased min-h-screen flex flex-col`}>
+      <body className={`${fondamento.variable} ${outfit.variable} antialiased min-h-screen flex flex-col font-sans`}>
         <QueryProvider>
           <div className="sticky top-0 z-50">
             <AnnouncementBar />

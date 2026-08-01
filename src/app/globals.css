@@ -10,23 +10,23 @@
   --color-hok-walnut: #5C3D2E;
   --color-hok-caramel: #8B6914;
   --color-hok-champagne: #D4A853;
-  --color-hok-linen: #FAF6EE;
-  --color-hok-ivory: #FFF9F0;
-  --color-hok-cream: #F5EDE0;
+  --color-hok-linen: #FCFAF8;
+  --color-hok-ivory: #FFFCF9;
+  --color-hok-cream: #F9F4ED;
   --color-hok-charcoal: #2C2C2C;
   --color-hok-stone: #6B6B6B;
-  --color-hok-mist: #E8E4DE;
+  --color-hok-mist: #F2EFEB;
   --color-hok-success: #2D7A4F;
   --color-hok-error: #C43333;
 
   /* Font Families */
-  --font-playfair: var(--font-playfair, serif);
-  --font-manrope: var(--font-manrope, sans-serif);
+  --font-fondamento: var(--font-fondamento, serif);
+  --font-outfit: var(--font-outfit, sans-serif);
 }
 
 :root {
-  --background: oklch(0.97 0.01 85);
-  /* hok-linen approx */
+  --background: oklch(1 0 0);
+  /* pure white */
   --foreground: oklch(0.2 0.01 40);
   /* hok-charcoal approx */
   --card: oklch(0.98 0.01 80);
@@ -88,14 +88,14 @@
   body {
     max-width: 100vw;
     overflow-x: clip;
-    background-color: var(--color-hok-linen);
+    background-color: var(--background);
     scroll-behavior: smooth;
   }
 
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-family: var(--font-manrope);
+    font-family: var(--font-outfit);
     color: var(--color-hok-charcoal);
   }
 
@@ -117,7 +117,7 @@
   h4,
   h5,
   h6 {
-    font-family: var(--font-playfair);
+    font-family: var(--font-fondamento);
     color: var(--color-hok-espresso);
   }
 
@@ -308,5 +308,41 @@
         transparent 100%);
     animation: btn-shimmer 2.8s ease-in-out infinite;
     pointer-events: none;
+  }
+
+  /* Luxury Micro-Animations */
+  @keyframes fade-up {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-up {
+    animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .hover-soft-scale {
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hover-soft-scale:hover {
+    transform: scale(1.02);
   }
 }
