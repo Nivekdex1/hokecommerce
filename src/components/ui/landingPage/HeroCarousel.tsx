@@ -113,19 +113,6 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
             </div>
           </motion.div>
 
-          <motion.div 
-            className={styles.heroCtaWrapper}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-          >
-            <Link href={slide.href} className={styles.ctaBtn}>
-              {slide.cta}
-              <span className={styles.ctaIconWrapper}>
-                <ArrowRight className={styles.ctaIcon} />
-              </span>
-            </Link>
-          </motion.div>
         </motion.div>
       </AnimatePresence>
 
@@ -177,6 +164,13 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
             <path d="M9 18l6-6-6-6" />
           </svg>
         </button>
+
+        <Link href={slide.href} className={styles.ctaBtn}>
+          {slide.cta}
+          <span className={styles.ctaIconWrapper}>
+            <ArrowRight className={styles.ctaIcon} />
+          </span>
+        </Link>
       </div>
 
       {/* Slide counter */}

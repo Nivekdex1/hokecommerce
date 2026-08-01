@@ -2,7 +2,7 @@ import HeroCarousel from "@/components/ui/landingPage/HeroCarousel";
 import TrustBar from "@/components/ui/TrustBar";
 import SectionHeading from "@/components/ui/SectionHeading";
 import ProductCard from "@/components/ui/ProductCard";
-import { getProducts, getMetaobject } from "@/lib/shopify";
+import { getProducts, getMetaobject, getMetaobjectsByType } from "@/lib/shopify";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -38,6 +38,7 @@ export default async function Home() {
   const newArrivals = newArrivalsData?.products?.map(mapProduct) || [];
 
   const heroConfig = await getMetaobject("hero_section", "home_hero");
+  const dynamicHeroSlides = await getMetaobjectsByType("hero_slide");
 
   const fallbackSlides = [
     {
@@ -79,8 +80,19 @@ export default async function Home() {
   ];
 
   let slides = fallbackSlides;
-  if (heroConfig && heroConfig.fields) {
-    // Override the first slide if the dynamic config is present
+  
+  if (dynamicHeroSlides && dynamicHeroSlides.length > 0) {
+    slides = dynamicHeroSlides.map((slide, index) => ({
+      id: index + 1,
+      title: slide.fields.title || "",
+      subtitle: slide.fields.subtitle || "",
+      cta: slide.fields.cta_text || "Shop Now",
+      href: slide.fields.cta_link || "/shop",
+      image: slide.fields.image?.url || "",
+      bgColor: slide.fields.bg_color || "bg-hok-ivory",
+    }));
+  } else if (heroConfig && heroConfig.fields) {
+    // Legacy single-slide fallback
     slides = [
       {
         id: 1,

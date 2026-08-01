@@ -156,6 +156,40 @@ export type ShopifyMetaobjectResponse = {
   };
 };
 
+export type ShopifyMetaobjectsByTypeResponse = {
+  data: {
+    metaobjects: {
+      edges: Array<{
+        node: {
+          id: string;
+          handle: string;
+          type: string;
+          fields: Array<{
+            key: string;
+            value: string | null;
+            reference: {
+              image?: {
+                url: string;
+                altText: string | null;
+              };
+            } | null;
+            references?: {
+              edges: Array<{
+                node: {
+                  image?: {
+                    url: string;
+                    altText: string | null;
+                  };
+                };
+              }>;
+            };
+          }>;
+        };
+      }>;
+    };
+  };
+};
+
 // Simplified types for use in components
 export type Products = {
   id: string;

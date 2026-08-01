@@ -556,3 +556,76 @@ export async function getMetaobject(type: string, handle: string) {
     fields,
   };
 }
+
+export async function getMetaobjectsByType(type: string): Promise<import('./types').MetaobjectData[]> {
+  const query = `
+    query getMetaobjects($type: String!) {
+      metaobjects(type: $type, first: 10) {
+        edges {
+          node {
+            id
+            handle
+            type
+            fields {
+              key
+              value
+              reference {
+                ... on MediaImage {
+                  image {
+                    url
+                    altText
+                  }
+                }
+              }
+              references(first: 10) {
+                edges {
+                  node {
+                    ... on MediaImage {
+                      image {
+                        url
+                        altText
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  const response = await shopifyFetch<import('./types').ShopifyMetaobjectsByTypeResponse>({
+    query,
+    variables: { type },
+    tags: [`metaobject:${type}`]
+  });
+
+  if (!response?.body?.data?.metaobjects?.edges) {
+    return [];
+  }
+
+  return response.body.data.metaobjects.edges.map(({ node: metaobject }) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const fields: Record<string, any> = {};
+    metaobject.fields.forEach((field) => {
+      if ((field.references?.edges?.length ?? 0) > 0) {
+        fields[field.key] = field.references?.edges
+          .map((edge: any) => edge.node?.image)
+          .filter(Boolean);
+      } else if (field.reference?.image) {
+        fields[field.key] = field.reference.image;
+      } else {
+        fields[field.key] = field.value;
+      }
+    });
+
+    return {
+      id: metaobject.id,
+      handle: metaobject.handle,
+      type: metaobject.type,
+      fields,
+    };
+  });
+}
