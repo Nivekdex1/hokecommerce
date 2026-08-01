@@ -109,7 +109,7 @@ export default async function Home() {
             Official distributors of Nigeria&apos;s favorite brands
           </p>
           <div className="relative w-full overflow-hidden py-2">
-            <div className="flex items-center gap-12 md:gap-20 w-max animate-marquee opacity-40 hover:opacity-60 transition-opacity duration-500">
+            <div className="flex items-center gap-12 md:gap-20 w-max animate-marquee opacity-60 hover:opacity-80 transition-opacity duration-500">
               {[...["cerave", "corsx", "eucerin", "anua", "posay", "12grabs"], ...["cerave", "corsx", "eucerin", "anua", "posay", "12grabs"], ...["cerave", "corsx", "eucerin", "anua", "posay", "12grabs"]].map((brand, idx) => (
                 <div key={`${brand}-${idx}`} className="relative w-24 h-12 md:w-32 md:h-14 flex-shrink-0 transition-all duration-500 hover:scale-105">
                   <Image
@@ -205,7 +205,7 @@ export default async function Home() {
                     <CheckIcon />
                   </div>
                   <div>
-                    <h4 className="font-outfit text-xl font-normal mb-2 text-hok-charcoal">Sourced Directly from Korea</h4>
+                    <h4 className="font-outfit text-xl font-normal mb-2 text-hok-charcoal">Sourced Directly from Korea 🇰🇷</h4>
                     <p className="text-hok-stone text-sm leading-relaxed font-light">We partner with official distributors to guarantee 100% authenticity for every product.</p>
                   </div>
                 </div>
