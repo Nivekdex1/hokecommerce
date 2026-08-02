@@ -200,7 +200,7 @@ export default async function Home() {
               )}
             </div>
             <div className="mt-16 flex justify-center">
-              <Link href="/shop?tags=best-seller" className="inline-flex items-center justify-center border border-hok-mist px-12 py-5 hover:bg-hok-espresso hover:text-white uppercase text-[10px] tracking-[0.2em] font-semibold transition-colors">
+              <Link href="/shop?tags=best-seller" className="inline-flex items-center justify-center bg-hok-espresso text-white px-12 py-5 hover:bg-hok-caramel uppercase text-[10px] tracking-[0.2em] font-semibold transition-colors shadow-md hover:shadow-lg">
                 Shop All Best Sellers
               </Link>
             </div>
@@ -286,7 +286,7 @@ export default async function Home() {
               )}
             </div>
             <div className="mt-16 flex justify-center">
-              <Link href="/shop?tags=new" className="inline-flex items-center justify-center border border-hok-mist px-12 py-5 hover:bg-hok-espresso hover:text-white uppercase text-[10px] tracking-[0.2em] font-semibold transition-colors">
+              <Link href="/shop?tags=new" className="inline-flex items-center justify-center bg-hok-espresso text-white px-12 py-5 hover:bg-hok-caramel uppercase text-[10px] tracking-[0.2em] font-semibold transition-colors shadow-md hover:shadow-lg">
                 Discover More New Arrivals
               </Link>
             </div>

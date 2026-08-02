@@ -34,12 +34,12 @@ const slideInLeft = {
 export default function AboutClient() {
   return (
     <main className="bg-hok-ivory min-h-screen text-hok-espresso">
-      
+
       {/* Hero Section */}
       <section className="pt-32 pb-20 lg:pt-48 border-b border-hok-mist bg-white overflow-hidden relative">
         <div className="absolute top-0 right-0 w-2/3 h-full bg-hok-linen/40 -skew-x-12 translate-x-1/4 -z-0"></div>
         <div className="container-narrow px-6 relative z-10">
-          <motion.h1 
+          <motion.h1
             initial={{ opacity: 0, letterSpacing: "1em" }}
             animate={{ opacity: 1, letterSpacing: "0.5em" }}
             transition={{ duration: 1.2, ease: "easeOut" }}
@@ -47,20 +47,20 @@ export default function AboutClient() {
           >
             Established 2024 — Lagos, Nigeria
           </motion.h1>
-          <motion.div 
+          <motion.div
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
             className="flex flex-col lg:flex-row justify-between items-end gap-12"
           >
-            <motion.h2 
+            <motion.h2
               variants={fadeInUp}
               className="text-6xl lg:text-[120px] font-light tracking-tighter leading-[0.85] text-hok-espresso"
             >
-              The House of <br/>
+              The House of <br />
               <span className="text-hok-caramel italic">Korean Beauty.</span>
             </motion.h2>
-            <motion.p 
+            <motion.p
               variants={fadeInUp}
               className="max-w-[280px] text-[12px] leading-relaxed uppercase tracking-widest text-hok-stone font-medium pb-4 border-b border-hok-mist"
             >
@@ -73,7 +73,7 @@ export default function AboutClient() {
       {/* Our Origin */}
       <section id="story" className="py-24 lg:py-40 bg-hok-ivory">
         <div className="container-narrow px-6 grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-          <motion.div 
+          <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
@@ -82,7 +82,7 @@ export default function AboutClient() {
           >
             <span className="text-[10px] font-bold tracking-[0.4em] uppercase text-hok-espresso mb-6 block">Our Origin</span>
             <h3 className="text-4xl md:text-5xl lg:text-6xl font-playfair leading-tight text-hok-espresso mb-8">
-              Why Home of <br/>Korean Beauty?
+              Why Home of <br />Korean Beauty?
             </h3>
             <div className="w-12 h-px bg-hok-mist mb-8"></div>
             <p className="text-xl lg:text-2xl leading-relaxed font-light text-hok-espresso mb-8 font-manrope">
@@ -97,9 +97,9 @@ export default function AboutClient() {
               </p>
             </div>
           </motion.div>
-          
+
           <div className="lg:col-span-7">
-            <motion.div 
+            <motion.div
               variants={staggerContainer}
               initial="hidden"
               whileInView="visible"
@@ -130,7 +130,7 @@ export default function AboutClient() {
       {/* Our Curated Partners */}
       <section id="brand" className="bg-white py-24 lg:py-40">
         <div className="container-narrow px-6">
-          <motion.div 
+          <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
@@ -144,10 +144,10 @@ export default function AboutClient() {
               We went all the way to Korea to partner with brands that deliver real results for African skin and climates.
             </p>
           </motion.div>
-          
+
           <div className="space-y-24 lg:space-y-32">
             {/* Brand 1 */}
-            <motion.div 
+            <motion.div
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-100px" }}
@@ -168,9 +168,9 @@ export default function AboutClient() {
                 </Link>
               </motion.div>
             </motion.div>
-            
+
             {/* Brand 2 */}
-            <motion.div 
+            <motion.div
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-100px" }}
@@ -191,9 +191,9 @@ export default function AboutClient() {
                 <Image src="/12grabs.jpg" alt="12 Grabs" fill className="object-cover object-bottom scale-105 group-hover:scale-100 transition-transform duration-1000" />
               </motion.div>
             </motion.div>
-            
+
             {/* Brand 3 */}
-            <motion.div 
+            <motion.div
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-100px" }}
@@ -214,9 +214,9 @@ export default function AboutClient() {
                 </Link>
               </motion.div>
             </motion.div>
-            
+
             {/* Brand 4 */}
-            <motion.div 
+            <motion.div
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, margin: "-100px" }}
@@ -239,7 +239,7 @@ export default function AboutClient() {
             </motion.div>
           </div>
 
-          <motion.div 
+          <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
@@ -261,7 +261,7 @@ export default function AboutClient() {
       {/* How we Source */}
       <section id="source" className="py-24 lg:py-40 bg-hok-linen">
         <div className="container-narrow px-6">
-          <motion.div 
+          <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
@@ -275,7 +275,7 @@ export default function AboutClient() {
               Authentic Korean Skincare, Straight from Seoul to Nigeria. No fakes. No shortcuts. Just the real deal.
             </p>
           </motion.div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-hok-mist/50 border border-hok-mist/50 rounded-sm overflow-hidden">
             {[
               { num: "01", title: "Direct Partnerships", desc: "We work directly with top K-beauty brands and authorized distributors. This ensures original formulations (no watered-down versions), fresh stock, and fair pricing by removing middleman markups." },
@@ -283,7 +283,7 @@ export default function AboutClient() {
               { num: "03", title: "Ethical Standards", desc: "We believe in skin health, not skin bleaching. We only stock brands that are cruelty-free, dermatologist-approved, and free from harmful chemicals." },
               { num: "04", title: "Secure Logistics", desc: "We handle logistics ourselves to guarantee proper storage conditions. No heat damage or contamination. Fast, secure shipping straight to your doorstep across Nigeria." }
             ].map((item, i) => (
-              <motion.div 
+              <motion.div
                 key={item.num}
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -292,15 +292,15 @@ export default function AboutClient() {
                 className="bg-white p-12 lg:p-20 group hover:bg-hok-ivory/50 transition-colors duration-500"
               >
                 <div className="text-4xl font-playfair text-hok-mist mb-10 text-stone-200 group-hover:text-hok-caramel transition-colors">{item.num}</div>
-                <h4 className="text-[12px] font-bold tracking-[0.4em] uppercase mb-6 text-hok-espresso">{item.title}</h4>
+                <h4 className="text-2xl lg:text-3xl font-playfair mb-6 text-hok-espresso">{item.title}</h4>
                 <p className="text-hok-stone font-light leading-relaxed text-sm lg:text-base font-manrope">
                   {item.desc}
                 </p>
               </motion.div>
             ))}
           </div>
-          
-          <motion.div 
+
+          <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
@@ -321,7 +321,7 @@ export default function AboutClient() {
               </motion.div>
               <motion.div variants={fadeInUp} className="text-center">
                 <p className="text-4xl md:text-5xl font-playfair text-hok-espresso mb-3">Direct</p>
-                <p className="text-[10px] uppercase tracking-widest text-hok-stone">From Seoul</p>
+                <p className="text-[10px] uppercase tracking-widest text-hok-stone">From Seoul 🇰🇷</p>
               </motion.div>
             </div>
           </motion.div>
@@ -331,7 +331,7 @@ export default function AboutClient() {
       {/* CTA */}
       <section className="bg-hok-espresso py-32 lg:py-48 text-center relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/lizare-image.png')] opacity-[0.03] bg-cover bg-center"></div>
-        <motion.div 
+        <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
@@ -348,7 +348,7 @@ export default function AboutClient() {
           </motion.div>
         </motion.div>
       </section>
-      
+
     </main>
   );
 }
