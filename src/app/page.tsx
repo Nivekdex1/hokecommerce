@@ -283,9 +283,9 @@ export default async function Home() {
       {/* Skin Quiz CTA */}
       <section className="relative py-28 lg:py-36 bg-[#FAFAF8] overflow-hidden flex items-center justify-center min-h-[550px]">
         {/* Wavy Pattern Background */}
-        <div 
-          className="absolute inset-0 opacity-20 pointer-events-none z-0" 
-          style={{ 
+        <div
+          className="absolute inset-0 opacity-20 pointer-events-none z-0"
+          style={{
             backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'40\' viewBox=\'0 0 60 40\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 20 C 15 10, 15 30, 30 20 C 45 10, 45 30, 60 20\' fill=\'none\' stroke=\'%23D4A853\' stroke-width=\'1\'/%3E%3C/svg%3E")'
           }}
         />
@@ -317,7 +317,7 @@ export default async function Home() {
         </div>
 
         {/* Center Text Content */}
-        <div className="relative z-10 w-full max-w-2xl mx-auto px-4 sm:px-6 text-center flex flex-col items-center justify-center bg-white/60 backdrop-blur-sm p-12 rounded-2xl border border-hok-mist/20 shadow-2xl">
+        <div className="relative z-10 w-full max-w-2xl mx-auto px-4 sm:px-6 text-center flex flex-col items-center justify-center bg-white/60 backdrop-blur-sm p-12 rounded-2xl border border-hok-mist/20 shadow-sm">
           <span className="text-hok-champagne font-outfit font-medium tracking-[0.2em] uppercase mb-6 text-xs sm:text-sm block">
             Bespoke Skincare
           </span>
