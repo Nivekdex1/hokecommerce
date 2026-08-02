@@ -4,11 +4,15 @@ import { ArrowRight } from "lucide-react";
 import SectionHeading from "@/components/ui/SectionHeading";
 
 const BRANDS = [
-  { name: "Cosrx", slug: "cosrx", desc: "Minimalist skincare tailored for your specific skin needs.", image: "/brand/new-hok-logo-black.svg" },
-  { name: "Derma Factory", slug: "derma-factory", desc: "High-efficacy clinical ingredients for visible results.", image: "/brand/new-hok-logo-black.svg" },
-  { name: "Lizara", slug: "lizara", desc: "Luxurious care deeply rooted in Korean beauty traditions.", image: "/brand/new-hok-logo-black.svg" },
-  { name: "12 Grabs", slug: "12-grabs", desc: "Effective, natural formulas that embrace the skin's balance.", image: "/brand/new-hok-logo-black.svg" },
-  { name: "Anua", slug: "anua", desc: "Soothing formulations featuring heartleaf for calm, clear skin.", image: "/brand/new-hok-logo-black.svg" },
+  { name: "Cosrx", slug: "cosrx", desc: "Minimalist skincare tailored for your specific skin needs.", image: "/brands/corsx.png" },
+  { name: "Derma Factory", slug: "derma-factory", desc: "High-efficacy clinical ingredients for visible results.", image: "/brands/dermafactory.png" },
+  { name: "Lizara", slug: "lizara", desc: "Luxurious care deeply rooted in Korean beauty traditions.", image: "/brands/lizara.png" },
+  { name: "12 Grabs", slug: "12-grabs", desc: "Effective, natural formulas that embrace the skin's balance.", image: "/brands/12grabs.png" },
+  { name: "Anua", slug: "anua", desc: "Soothing formulations featuring heartleaf for calm, clear skin.", image: "/brands/anua.png" },
+  { name: "CeraVe", slug: "cerave", desc: "Developed with dermatologists, offering ceramides for skin barrier restoration.", image: "/brands/cerave.png" },
+  { name: "Doris", slug: "doris", desc: "Effective, no-nonsense daily skincare for radiant, healthy skin.", image: "/brands/doris.png" },
+  { name: "Eucerin", slug: "eucerin", desc: "Science-based skincare tailored to maintain and restore skin health.", image: "/brands/eucerin.png" },
+  { name: "La Roche-Posay", slug: "la-roche-posay", desc: "Dermatologist-recommended skincare featuring thermal spring water.", image: "/brands/posay.png" },
 ];
 
 export default function BrandsPage() {
@@ -47,13 +51,13 @@ export default function BrandsPage() {
                 href={`/shop?vendors=${brand.slug}`}
                 className="group bg-white rounded-lg border border-hok-mist p-8 transition-all duration-300 hover:border-hok-caramel hover:shadow-lg flex flex-col items-center text-center"
               >
-                <div className="w-24 h-24 mb-6 rounded-full bg-hok-ivory flex items-center justify-center p-4">
+                <div className="h-20 w-full mb-6 flex items-center justify-center px-4">
                   <Image 
                     src={brand.image}
                     alt={brand.name}
-                    width={80}
+                    width={140}
                     height={80}
-                    className="w-auto h-auto opacity-70 group-hover:opacity-100 transition-opacity"
+                    className="max-h-[80px] w-auto object-contain opacity-70 group-hover:opacity-100 transition-opacity"
                   />
                 </div>
                 <h3 className="font-playfair text-2xl text-hok-espresso mb-3 group-hover:text-hok-walnut transition-colors">
