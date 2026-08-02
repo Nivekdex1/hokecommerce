@@ -80,7 +80,7 @@ export default async function Home() {
   ];
 
   let slides = fallbackSlides;
-  
+
   if (dynamicHeroSlides && dynamicHeroSlides.length > 0) {
     slides = dynamicHeroSlides.map((slide, index) => ({
       id: index + 1,
@@ -134,16 +134,17 @@ export default async function Home() {
                   "lizara": "lizara"
                 };
                 return (
-                <Link key={`${brand}-${idx}`} href={`/shop?vendors=${brandVendorMap[brand]}`} className="relative w-24 h-12 md:w-32 md:h-14 flex-shrink-0 transition-all duration-500 hover:scale-105 block">
-                  <Image
-                    src={`/brands/${brand}.png`}
-                    alt={`${brand} logo`}
-                    fill
-                    sizes="(max-width: 768px) 96px, 128px"
-                    className="object-contain"
-                  />
-                </Link>
-              )})}
+                  <Link key={`${brand}-${idx}`} href={`/shop?vendors=${brandVendorMap[brand]}`} className="relative w-24 h-12 md:w-32 md:h-14 flex-shrink-0 transition-all duration-500 hover:scale-105 block">
+                    <Image
+                      src={`/brands/${brand}.png`}
+                      alt={`${brand} logo`}
+                      fill
+                      sizes="(max-width: 768px) 96px, 128px"
+                      className="object-contain"
+                    />
+                  </Link>
+                )
+              })}
             </div>
           </div>
         </div>
@@ -291,7 +292,7 @@ export default async function Home() {
             src="/model-left.png"
             alt="Personalized Skincare Consultation"
             fill
-            className="object-contain object-left-bottom grayscale-[50%]"
+            className="object-contain object-left-bottom"
             sizes="(max-width: 768px) 45vw, 25vw"
           />
         </div>
@@ -302,7 +303,7 @@ export default async function Home() {
             src="/model-right.png"
             alt="K-Beauty Skincare Specialist"
             fill
-            className="object-contain object-right-bottom grayscale-[50%]"
+            className="object-contain object-right-bottom"
             sizes="(max-width: 768px) 45vw, 25vw"
           />
         </div>
@@ -314,7 +315,7 @@ export default async function Home() {
           </span>
           <h2 className="font-fondamento text-4xl sm:text-5xl md:text-6xl text-hok-espresso font-normal mb-6 leading-[1.1] text-balance">
             Discover Your Perfect Routine.
-          </h2>
+          </h2>g
           <p className="font-outfit text-hok-stone text-base sm:text-lg mb-10 max-w-lg mx-auto font-light leading-relaxed text-balance">
             Take our 2-minute personalized skin algorithm quiz to receive expert, tailored recommendations for your unique skin type.
           </p>
