@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-import { Mail } from "lucide-react";
+import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
@@ -144,21 +144,33 @@ const Footer = () => {
           <div className="flex flex-col">
             <h3 className="font-fondamento text-xl font-normal mb-5 text-hok-espresso">Contact</h3>
             <ul className="space-y-4 font-outfit text-sm text-hok-stone font-light">
-              <li>
-                <span className="block text-hok-charcoal font-medium mb-1 text-[10px] uppercase tracking-[0.2em]">Email</span>
-                <a href="mailto:shop@homeofkoreanbeauty.com" className="footer-link hover:text-hok-champagne transition-colors duration-200">shop@homeofkoreanbeauty.com</a>
+              <li className="flex items-start gap-3">
+                <Mail className="w-4 h-4 text-hok-champagne shrink-0 mt-1" />
+                <div>
+                  <span className="block text-hok-charcoal font-medium mb-1 text-[10px] uppercase tracking-[0.2em]">Email</span>
+                  <a href="mailto:shop@homeofkoreanbeauty.com" className="footer-link hover:text-hok-champagne transition-colors duration-200">shop@homeofkoreanbeauty.com</a>
+                </div>
               </li>
-              <li>
-                <span className="block text-hok-charcoal font-medium mb-1 text-[10px] uppercase tracking-[0.2em]">Opening Hours </span>
-                <span>Mon - Sat: 9am - 5pm</span>
+              <li className="flex items-start gap-3">
+                <Clock className="w-4 h-4 text-hok-champagne shrink-0 mt-1" />
+                <div>
+                  <span className="block text-hok-charcoal font-medium mb-1 text-[10px] uppercase tracking-[0.2em]">Opening Hours</span>
+                  <span className="block">Mon - Sat: 9am - 5pm</span>
+                </div>
               </li>
-              <li>
-                <span className="block text-hok-charcoal font-medium mb-1 text-[10px] uppercase tracking-[0.2em]">Phone</span>
-                <a href="tel:+2349164036455" className="footer-link hover:text-hok-champagne transition-colors duration-200">+234 916 403 6455</a>
+              <li className="flex items-start gap-3">
+                <Phone className="w-4 h-4 text-hok-champagne shrink-0 mt-1" />
+                <div>
+                  <span className="block text-hok-charcoal font-medium mb-1 text-[10px] uppercase tracking-[0.2em]">Phone</span>
+                  <a href="tel:+2349164036455" className="footer-link hover:text-hok-champagne transition-colors duration-200">+234 916 403 6455</a>
+                </div>
               </li>
-              <li>
-                <span className="block text-hok-charcoal font-medium mb-1 text-[10px] uppercase tracking-[0.2em]">Location</span>
-                <span className="leading-relaxed block">Shop 043 Grace of God Plaza, Opp. Kaduna Plaza, Balogun Market, Trade Fair Complex, Lagos</span>
+              <li className="flex items-start gap-3">
+                <MapPin className="w-4 h-4 text-hok-champagne shrink-0 mt-1" />
+                <div>
+                  <span className="block text-hok-charcoal font-medium mb-1 text-[10px] uppercase tracking-[0.2em]">Location</span>
+                  <span className="leading-relaxed block">Shop 043 Grace of God Plaza, Opp. Kaduna Plaza, Balogun Market, Trade Fair Complex, Lagos</span>
+                </div>
               </li>
             </ul>
           </div>
