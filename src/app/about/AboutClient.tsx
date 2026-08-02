@@ -31,7 +31,40 @@ const slideInLeft = {
   visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as const } },
 };
 
+const typewriterContainer = {
+  hidden: { opacity: 1 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.05, delayChildren: 0.1 },
+  },
+};
+
+const charVariant = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
+const flipIn = {
+  hidden: { opacity: 0, rotateX: 90, rotateY: 90, scale: 0.8 },
+  visible: { 
+    opacity: 1, 
+    rotateX: 0, 
+    rotateY: 0, 
+    scale: 1, 
+    transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] as const } 
+  },
+};
+
 export default function AboutClient() {
+  const [typewriterKey, setTypewriterKey] = React.useState(0);
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setTypewriterKey(prev => prev + 1);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <main className="bg-hok-ivory min-h-screen text-hok-espresso">
 
@@ -54,11 +87,23 @@ export default function AboutClient() {
             className="flex flex-col lg:flex-row justify-between items-end gap-12"
           >
             <motion.h2
-              variants={fadeInUp}
-              className="text-6xl lg:text-[120px] font-light tracking-tighter leading-[0.85] text-hok-espresso"
+              key={typewriterKey}
+              variants={typewriterContainer}
+              className="text-6xl lg:text-[120px] font-light tracking-tighter leading-[0.85] text-hok-espresso whitespace-pre-wrap"
             >
-              The House of <br />
-              <span className="text-hok-caramel italic">Korean Beauty.</span>
+              {"The House of ".split("").map((char, index) => (
+                <motion.span key={`t1-${index}`} variants={charVariant}>
+                  {char}
+                </motion.span>
+              ))}
+              <br />
+              <span className="text-hok-caramel italic">
+                {"Korean Beauty.".split("").map((char, index) => (
+                  <motion.span key={`t2-${index}`} variants={charVariant}>
+                    {char}
+                  </motion.span>
+                ))}
+              </span>
             </motion.h2>
             <motion.p
               variants={fadeInUp}
@@ -105,23 +150,24 @@ export default function AboutClient() {
               whileInView="visible"
               viewport={{ once: true, margin: "-100px" }}
               className="grid grid-cols-2 gap-4 lg:gap-8 mt-10 lg:mt-0"
+              style={{ perspective: 1000 }}
             >
-              <motion.div variants={fadeInUp} className="space-y-4 lg:space-y-8 mt-12 lg:mt-24">
-                <div className="aspect-[4/5] relative overflow-hidden bg-white shadow-sm group rounded-sm">
+              <div className="space-y-4 lg:space-y-8 mt-12 lg:mt-24">
+                <motion.div variants={flipIn} className="aspect-[4/5] relative overflow-hidden bg-white shadow-sm group rounded-sm">
                   <Image src="/why-hok1.png" alt="HOK Narrative 1" fill className="object-cover scale-105 group-hover:scale-100 transition-transform duration-1000" />
-                </div>
-                <div className="aspect-square relative overflow-hidden bg-white shadow-sm group rounded-sm">
+                </motion.div>
+                <motion.div variants={flipIn} className="aspect-square relative overflow-hidden bg-white shadow-sm group rounded-sm">
                   <Image src="/why-hok3.png" alt="HOK Narrative 3" fill className="object-cover scale-105 group-hover:scale-100 transition-transform duration-1000" />
-                </div>
-              </motion.div>
-              <motion.div variants={fadeInUp} className="space-y-4 lg:space-y-8">
-                <div className="aspect-square relative overflow-hidden bg-white shadow-sm group rounded-sm">
+                </motion.div>
+              </div>
+              <div className="space-y-4 lg:space-y-8">
+                <motion.div variants={flipIn} className="aspect-square relative overflow-hidden bg-white shadow-sm group rounded-sm">
                   <Image src="/why-hok2.png" alt="HOK Narrative 2" fill className="object-cover scale-105 group-hover:scale-100 transition-transform duration-1000" />
-                </div>
-                <div className="aspect-[4/5] relative overflow-hidden bg-white shadow-sm group rounded-sm">
+                </motion.div>
+                <motion.div variants={flipIn} className="aspect-[4/5] relative overflow-hidden bg-white shadow-sm group rounded-sm">
                   <Image src="/why-hok4.png" alt="HOK Narrative 4" fill className="object-cover scale-105 group-hover:scale-100 transition-transform duration-1000" />
-                </div>
-              </motion.div>
+                </motion.div>
+              </div>
             </motion.div>
           </div>
         </div>
