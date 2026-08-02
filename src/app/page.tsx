@@ -1,4 +1,4 @@
-import HeroCarousel from "@/components/ui/landingPage/HeroCarousel";
+import HeroCarousel, { HeroSlide } from "@/components/ui/landingPage/HeroCarousel";
 import TrustBar from "@/components/ui/TrustBar";
 import SectionHeading from "@/components/ui/SectionHeading";
 import ProductCard from "@/components/ui/ProductCard";
@@ -40,7 +40,7 @@ export default async function Home() {
   const heroConfig = await getMetaobject("hero_section", "home_hero");
   const dynamicHeroSlides = await getMetaobjectsByType("hero_slide");
 
-  const fallbackSlides = [
+  const fallbackSlides: HeroSlide[] = [
     {
       id: 1,
       title: "Discover Your Glass Skin Era",
@@ -89,6 +89,7 @@ export default async function Home() {
       cta: slide.fields.cta_text || "Shop Now",
       href: slide.fields.cta_link || "/shop",
       image: slide.fields.image?.url || "",
+      mobileImage: slide.fields.mobile_image?.url || undefined,
       bgColor: slide.fields.bg_color || "bg-hok-ivory",
     }));
   } else if (heroConfig && heroConfig.fields) {
@@ -101,6 +102,7 @@ export default async function Home() {
         cta: heroConfig.fields.hero_cta_text || fallbackSlides[0].cta,
         href: heroConfig.fields.hero_cta_link || fallbackSlides[0].href,
         image: heroConfig.fields.hero_image?.url || fallbackSlides[0].image,
+        mobileImage: heroConfig.fields.hero_mobile_image?.url || undefined,
         bgColor: "bg-hok-ivory",
       },
       fallbackSlides[1],

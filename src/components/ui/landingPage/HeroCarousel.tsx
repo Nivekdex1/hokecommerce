@@ -14,8 +14,13 @@ export type HeroSlide = {
   cta: string;
   href: string;
   image: string;
+  mobileImage?: string;
   bgColor?: string;
 };
+
+// Toggle this to true to use Approach 1 (Single wide image filling the screen using object-fit: cover)
+// Set to false to use Approach 2 (Separate desktop and mobile images using object-fit: contain)
+export const USE_SINGLE_COVER_IMAGE = false;
 
 // Define some rich gradients and accents for the HOK slides to emulate renket.org
 const SLIDE_THEMES = [
@@ -91,21 +96,48 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
             transition={{ delay: 0.2, duration: 0.7, ease: "easeOut" }}
           >
             <div className={styles.imageWrapper}>
-              <Image
-                src={slide.image}
-                alt={slide.title}
-                fill
-                priority={current === 0}
-                className={styles.productImage}
-                style={{
-                  // Because HOK uses transparent PNGs instead of JPEGs like Renket,
-                  // contain works best so we don't awkwardly crop the products.
-                  objectFit: "contain",
-                  objectPosition: "center center",
-                  padding: "4rem", // Give it some breathing room from the edges
-                }}
-                sizes="100vw"
-              />
+              {USE_SINGLE_COVER_IMAGE ? (
+                <Image
+                  src={slide.image}
+                  alt={slide.title}
+                  fill
+                  priority={current === 0}
+                  className={styles.productImage}
+                  style={{ objectFit: "cover", objectPosition: "center center" }}
+                  sizes="100vw"
+                />
+              ) : slide.mobileImage ? (
+                <>
+                  <Image
+                    src={slide.image}
+                    alt={slide.title}
+                    fill
+                    priority={current === 0}
+                    className={`${styles.productImage} hidden md:block`}
+                    style={{ objectFit: "contain", objectPosition: "center center" }}
+                    sizes="100vw"
+                  />
+                  <Image
+                    src={slide.mobileImage}
+                    alt={slide.title}
+                    fill
+                    priority={current === 0}
+                    className={`${styles.productImage} block md:hidden`}
+                    style={{ objectFit: "contain", objectPosition: "center center" }}
+                    sizes="100vw"
+                  />
+                </>
+              ) : (
+                <Image
+                  src={slide.image}
+                  alt={slide.title}
+                  fill
+                  priority={current === 0}
+                  className={styles.productImage}
+                  style={{ objectFit: "contain", objectPosition: "center center" }}
+                  sizes="100vw"
+                />
+              )}
               <div
                 className={styles.imageGlow}
                 style={{ background: theme.accent }}
