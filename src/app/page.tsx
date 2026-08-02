@@ -124,7 +124,7 @@ export default async function Home() {
           </p>
           <div className="relative w-full overflow-hidden py-2">
             <div className="flex items-center gap-12 md:gap-20 w-max animate-marquee opacity-60 hover:opacity-80 transition-opacity duration-500">
-              {[...["cerave", "corsx", "doris", "eucerin", "anua", "posay", "12grabs", "dermafactory", "lizara"], ...["cerave", "corsx", "doris", "eucerin", "anua", "posay", "12grabs", "dermafactory", "lizara"], ...["cerave", "corsx", "doris", "eucerin", "anua", "posay", "12grabs", "dermafactory", "lizara"]].map((brand, idx) => {
+              {[...["cerave", "corsx", "doris", "eucerin", "anua", "posay", "12grabs", "dermafactory", "lizara", "jigott"], ...["cerave", "corsx", "doris", "eucerin", "anua", "posay", "12grabs", "dermafactory", "lizara", "jigott"], ...["cerave", "corsx", "doris", "eucerin", "anua", "posay", "12grabs", "dermafactory", "lizara", "jigott"]].map((brand, idx) => {
                 const brandVendorMap: Record<string, string> = {
                   "cerave": "cerave",
                   "corsx": "cosrx",
@@ -134,7 +134,8 @@ export default async function Home() {
                   "posay": "la-roche-posay",
                   "12grabs": "12-grabs",
                   "dermafactory": "derma-factory",
-                  "lizara": "lizara"
+                  "lizara": "lizara",
+                  "jigott": "jigott"
                 };
                 return (
                   <Link key={`${brand}-${idx}`} href={`/shop?vendors=${brandVendorMap[brand]}`} className="relative w-24 h-12 md:w-32 md:h-14 flex-shrink-0 transition-all duration-500 hover:scale-105 block">

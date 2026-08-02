@@ -59,6 +59,13 @@ Used to display auto-playing promotional banners at the top of the `/shop` page 
 - **Handle:** Must exactly match the vendor handle (e.g., `cosrx`, `cerave`).
 - `banners` (List of Files) - High resolution (e.g., 1920x480) banners for the brand.
 
+### 3. `site_configuration`
+Used to control global site settings, such as the scrolling announcement ticker (marquee) at the very top of the page.
+- **Handle:** `global_settings`
+- `announcement_text` (Single line text) - The main scrolling message.
+- `announcement_link_text` (Single line text) - Text for the clickable link (e.g., "Shop Now").
+- `announcement_link_url` (URL or text) - The destination URL for the link.
+
 ---
 
 ## 🎨 Design System & Aesthetics

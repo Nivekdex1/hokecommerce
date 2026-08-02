@@ -158,6 +158,17 @@ export default function About() {
             </div>
             
           </div>
+
+          <div className="mt-20 flex flex-col items-center justify-center text-center px-4">
+            <h3 className="text-3xl md:text-4xl font-playfair mb-6">Discover More Brands</h3>
+            <p className="text-hok-stone font-light leading-relaxed mb-10 max-w-2xl font-manrope">
+              While these four hold a special place in our hearts, we curate a much wider selection of Nigeria's favorite, dermatologist-backed Korean skincare brands.
+            </p>
+            <Link href="/brands" className="inline-flex items-center justify-center bg-hok-espresso text-white px-12 py-6 hover:bg-hok-walnut uppercase text-[10px] tracking-widest font-bold transition-colors">
+              View All Brands
+            </Link>
+          </div>
+
         </div>
       </section>
 

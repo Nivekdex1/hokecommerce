@@ -11,11 +11,16 @@ export const collections = [
 
 // Brands
 export const brands = [
+  { id: "12-grabs", name: "12 GRABS" },
+  { id: "anua", name: "ANUA" },
+  { id: "cerave", name: "CERAVE" },
   { id: "cosrx", name: "COSRX" },
   { id: "derma-factory", name: "DERMA FACTORY" },
-  { id: "lizara", name: "LIZARA" },
-  { id: "12-grabs", name: "12 GRABS" },
+  { id: "doris", name: "DORIS" },
+  { id: "eucerin", name: "EUCERIN" },
   { id: "jigott", name: "JIGOTT" },
+  { id: "la-roche-posay", name: "LA ROCHE-POSAY" },
+  { id: "lizara", name: "LIZARA" },
 ];
 
 // Skin Types
