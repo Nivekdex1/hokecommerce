@@ -33,6 +33,7 @@ const LeftNavLinks = [
       { title: "Lizara", href: "/shop?vendors=lizara" },
       { title: "12 Grabs", href: "/shop?vendors=12-grabs" },
       { title: "Anua", href: "/shop?vendors=anua" },
+      { title: "Jigott", href: "/shop?vendors=jigott" },
     ],
   },
 ];

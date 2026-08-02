@@ -28,6 +28,9 @@ export default function WholesalePage() {
   const [errors, setErrors] = useState<Partial<typeof formData>>({});
 
   const [quoteFormData, setQuoteFormData] = useState({
+    fullName: "",
+    businessName: "",
+    phone: "",
     email: "",
     orderRequest: "",
   });
@@ -92,13 +95,28 @@ export default function WholesalePage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const [isSubmittingQuote, setIsSubmittingQuote] = useState(false);
+
   const handleQuoteSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmittingQuote(true);
     try {
-      toast.success("Your quote request has been submitted successfully!");
-      setQuoteFormData({ email: "", orderRequest: "" });
+      const response = await fetch("/api/quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(quoteFormData),
+      });
+
+      if (response.ok) {
+        toast.success("Your quote request has been submitted successfully!");
+        setQuoteFormData({ fullName: "", businessName: "", phone: "", email: "", orderRequest: "" });
+      } else {
+        toast.error("Failed to submit quote request. Please try again.");
+      }
     } catch (error) {
       toast.error("Failed to submit quote request. Please try again.");
+    } finally {
+      setIsSubmittingQuote(false);
     }
   };
 
@@ -254,16 +272,50 @@ export default function WholesalePage() {
             <p className="font-manrope text-sm text-hok-stone mb-8">Have a specific order in mind? Send us your requirements and we'll send a custom quote.</p>
             
             <form onSubmit={handleQuoteSubmit} className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="quoteEmail">Email Address</Label>
-                <Input
-                  id="quoteEmail"
-                  type="email"
-                  value={quoteFormData.email}
-                  onChange={(e) => setQuoteFormData({ ...quoteFormData, email: e.target.value })}
-                  required
-                  className="border-hok-mist bg-hok-linen/50"
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="quoteFullName">Full Name</Label>
+                  <Input
+                    id="quoteFullName"
+                    value={quoteFormData.fullName}
+                    onChange={(e) => setQuoteFormData({ ...quoteFormData, fullName: e.target.value })}
+                    required
+                    className="border-hok-mist bg-hok-linen/50"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="quoteBusinessName">Business Name (Optional)</Label>
+                  <Input
+                    id="quoteBusinessName"
+                    value={quoteFormData.businessName}
+                    onChange={(e) => setQuoteFormData({ ...quoteFormData, businessName: e.target.value })}
+                    className="border-hok-mist bg-hok-linen/50"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="quotePhone">Phone Number</Label>
+                  <Input
+                    id="quotePhone"
+                    type="tel"
+                    value={quoteFormData.phone}
+                    onChange={(e) => setQuoteFormData({ ...quoteFormData, phone: e.target.value })}
+                    required
+                    className="border-hok-mist bg-hok-linen/50"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="quoteEmail">Email Address</Label>
+                  <Input
+                    id="quoteEmail"
+                    type="email"
+                    value={quoteFormData.email}
+                    onChange={(e) => setQuoteFormData({ ...quoteFormData, email: e.target.value })}
+                    required
+                    className="border-hok-mist bg-hok-linen/50"
+                  />
+                </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="orderRequest">Order Details (Products & Quantities)</Label>
@@ -276,8 +328,8 @@ export default function WholesalePage() {
                   placeholder="E.g., 50x Cosrx Snail Mucin, 20x Anua Heartleaf Toner..."
                 />
               </div>
-              <Button type="submit" className="w-full h-12 bg-hok-walnut hover:bg-hok-espresso text-white rounded-none font-semibold">
-                Submit Request
+              <Button type="submit" disabled={isSubmittingQuote} className="w-full h-12 bg-hok-walnut hover:bg-hok-espresso text-white rounded-none font-semibold">
+                {isSubmittingQuote ? "Submitting..." : "Submit Request"}
               </Button>
             </form>
           </div>

@@ -12,6 +12,7 @@ const BRANDS = [
   { name: "CeraVe", slug: "cerave", desc: "Developed with dermatologists, offering ceramides for skin barrier restoration.", image: "/brands/cerave.png" },
   { name: "Doris", slug: "doris", desc: "Effective, no-nonsense daily skincare for radiant, healthy skin.", image: "/brands/doris.png" },
   { name: "Eucerin", slug: "eucerin", desc: "Science-based skincare tailored to maintain and restore skin health.", image: "/brands/eucerin.png" },
+  { name: "Jigott", slug: "jigott", desc: "Nourishing, ingredient-focused Korean skincare for radiant vitality.", image: "/brands/jigott.png" },
   { name: "La Roche-Posay", slug: "la-roche-posay", desc: "Dermatologist-recommended skincare featuring thermal spring water.", image: "/brands/posay.png" },
 ];
 

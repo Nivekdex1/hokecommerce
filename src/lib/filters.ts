@@ -15,6 +15,7 @@ export const brands = [
   { id: "derma-factory", name: "DERMA FACTORY" },
   { id: "lizara", name: "LIZARA" },
   { id: "12-grabs", name: "12 GRABS" },
+  { id: "jigott", name: "JIGOTT" },
 ];
 
 // Skin Types
