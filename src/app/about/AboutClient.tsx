@@ -145,6 +145,7 @@ export default function AboutClient() {
 
           <div className="lg:col-span-7">
             <motion.div
+              key={typewriterKey}
               variants={staggerContainer}
               initial="hidden"
               whileInView="visible"
