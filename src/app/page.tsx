@@ -122,10 +122,11 @@ export default async function Home() {
           </p>
           <div className="relative w-full overflow-hidden py-2">
             <div className="flex items-center gap-12 md:gap-20 w-max animate-marquee opacity-60 hover:opacity-80 transition-opacity duration-500">
-              {[...["cerave", "corsx", "eucerin", "anua", "posay", "12grabs", "dermafactory", "lizara"], ...["cerave", "corsx", "eucerin", "anua", "posay", "12grabs", "dermafactory", "lizara"], ...["cerave", "corsx", "eucerin", "anua", "posay", "12grabs", "dermafactory", "lizara"]].map((brand, idx) => {
+              {[...["cerave", "corsx", "doris", "eucerin", "anua", "posay", "12grabs", "dermafactory", "lizara"], ...["cerave", "corsx", "doris", "eucerin", "anua", "posay", "12grabs", "dermafactory", "lizara"], ...["cerave", "corsx", "doris", "eucerin", "anua", "posay", "12grabs", "dermafactory", "lizara"]].map((brand, idx) => {
                 const brandVendorMap: Record<string, string> = {
                   "cerave": "cerave",
                   "corsx": "cosrx",
+                  "doris": "doris",
                   "eucerin": "eucerin",
                   "anua": "anua",
                   "posay": "la-roche-posay",
