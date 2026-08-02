@@ -7,10 +7,32 @@ import ProductCard from "@/components/ui/ProductCard";
 import { Metadata } from "next";
 import { Suspense } from "react";
 
-export const metadata: Metadata = {
-  title: "Shop Skincare",
-  description: "Browse our complete collection of authentic Korean skincare products.",
-};
+export async function generateMetadata(
+  props: { searchParams?: Promise<ShopPageSearchParams> }
+): Promise<Metadata> {
+  const searchParams = await props.searchParams;
+  let title = "Shop Skincare";
+  
+  if (searchParams?.collections) {
+    const col = Array.isArray(searchParams.collections) ? searchParams.collections[0] : searchParams.collections;
+    title = col.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  } else if (searchParams?.category) {
+    const cat = Array.isArray(searchParams.category) ? searchParams.category[0] : searchParams.category;
+    title = cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  } else if (searchParams?.vendors) {
+    const vendor = Array.isArray(searchParams.vendors) ? searchParams.vendors[0] : searchParams.vendors;
+    title = vendor.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  } else if (searchParams?.tags) {
+    const tag = Array.isArray(searchParams.tags) ? searchParams.tags[0] : searchParams.tags;
+    if (tag === 'new') title = 'New Arrivals';
+    else if (tag === 'best-seller') title = 'Best Sellers';
+  }
+
+  return {
+    title,
+    description: "Browse our complete collection of authentic Korean skincare products.",
+  };
+}
 
 interface ShopPageSearchParams {
   minPrice?: string;
@@ -28,6 +50,32 @@ export default async function ShopPage(props: {
   searchParams?: Promise<ShopPageSearchParams>;
 }) {
   const searchParams = await props.searchParams;
+  
+  let pageTitle = "Shop Skincare";
+  let pageDescription = "Authentic K-beauty essentials for every skin concern. Sourced directly from Korea for your perfect glow.";
+
+  if (searchParams?.collections) {
+    const col = Array.isArray(searchParams.collections) ? searchParams.collections[0] : searchParams.collections;
+    pageTitle = col.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    pageDescription = `Shop our ${pageTitle} collection for your specific skin concerns.`;
+  } else if (searchParams?.category) {
+    const cat = Array.isArray(searchParams.category) ? searchParams.category[0] : searchParams.category;
+    pageTitle = cat.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    pageDescription = `Browse our complete selection of authentic Korean ${pageTitle.toLowerCase()}.`;
+  } else if (searchParams?.vendors) {
+    const vendor = Array.isArray(searchParams.vendors) ? searchParams.vendors[0] : searchParams.vendors;
+    pageTitle = vendor.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    pageDescription = `Discover the complete collection from ${pageTitle}.`;
+  } else if (searchParams?.tags) {
+    const tag = Array.isArray(searchParams.tags) ? searchParams.tags[0] : searchParams.tags;
+    if (tag === 'new') {
+       pageTitle = 'New Arrivals';
+       pageDescription = 'Discover the latest Korean skincare products that just landed.';
+    } else if (tag === 'best-seller') {
+       pageTitle = 'Best Sellers';
+       pageDescription = 'Shop our most loved and highly rated K-beauty essentials.';
+    }
+  }
   const pageSize = 20;
 
   const { products, pageInfo } = await getProducts({
@@ -80,8 +128,8 @@ export default async function ShopPage(props: {
     <div className="bg-hok-linen min-h-screen">
       <div className="bg-hok-ivory border-b border-hok-mist py-10 md:py-16">
         <div className="container-narrow">
-          <h1 className="font-playfair text-4xl md:text-5xl text-hok-espresso font-semibold mb-4">Shop Skincare</h1>
-          <p className="font-manrope text-hok-stone text-lg max-w-2xl">Authentic K-beauty essentials for every skin concern. Sourced directly from Korea for your perfect glow.</p>
+          <h1 className="font-playfair text-4xl md:text-5xl text-hok-espresso font-semibold mb-4">{pageTitle}</h1>
+          <p className="font-manrope text-hok-stone text-lg max-w-2xl">{pageDescription}</p>
         </div>
       </div>
       
