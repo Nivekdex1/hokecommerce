@@ -282,9 +282,17 @@ export default async function Home() {
 
       {/* Skin Quiz CTA */}
       <section className="relative py-28 lg:py-36 bg-[#FAFAF8] overflow-hidden flex items-center justify-center min-h-[550px]">
+        {/* Wavy Pattern Background */}
+        <div 
+          className="absolute inset-0 opacity-20 pointer-events-none z-0" 
+          style={{ 
+            backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'40\' viewBox=\'0 0 60 40\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M0 20 C 15 10, 15 30, 30 20 C 45 10, 45 30, 60 20\' fill=\'none\' stroke=\'%23D4A853\' stroke-width=\'1\'/%3E%3C/svg%3E")'
+          }}
+        />
+
         {/* Soft Decorative Elements */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-hok-champagne/4 rounded-full blur-[120px] pointer-events-none"></div>
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-hok-mist/30 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-hok-champagne/4 rounded-full blur-[120px] pointer-events-none z-0"></div>
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-hok-mist/30 rounded-full blur-[120px] pointer-events-none z-0"></div>
 
         {/* Left Subject Image */}
         <div className="absolute left-0 bottom-0 top-0 w-[45%] md:w-[35%] lg:w-[25%] pointer-events-none z-0 opacity-100 sm:opacity-100 transition-opacity duration-700">
