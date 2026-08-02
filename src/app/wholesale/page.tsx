@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { format } from "date-fns";
-import { CheckCircle2, ChevronRight, MapPin, X, AlertCircle } from "lucide-react";
+import { CheckCircle2, ChevronRight, MapPin, X, AlertCircle, FileText } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "sonner";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -39,6 +39,7 @@ export default function WholesalePage() {
     fullName: "",
     email: "",
     phoneNumber: "",
+    date: "",
   });
 
   const validateForm = () => {
@@ -124,7 +125,7 @@ export default function WholesalePage() {
     e.preventDefault();
     try {
       toast.success("Your warehouse tour request has been submitted successfully!");
-      setTourFormData({ fullName: "", email: "", phoneNumber: "" });
+      setTourFormData({ fullName: "", email: "", phoneNumber: "", date: "" });
     } catch (error) {
       toast.error("Failed to submit tour request. Please try again.");
     }
@@ -269,7 +270,12 @@ export default function WholesalePage() {
           {/* Custom Quote Form */}
           <div className="bg-white border border-hok-mist p-8 md:p-12 rounded-md">
             <h3 className="font-playfair text-2xl font-medium text-hok-espresso mb-2">Request a Quote</h3>
-            <p className="font-manrope text-sm text-hok-stone mb-8">Have a specific order in mind? Send us your requirements and we'll send a custom quote.</p>
+            <p className="font-manrope text-sm text-hok-stone mb-4">Have a specific order in mind? Send us your requirements and we'll send a custom quote.</p>
+            <div className="mb-8">
+              <a href="https://docs.google.com/spreadsheets/d/1b2wmlwzqfG9l6MwqGCYjyhiWO2mQDDkZM1D54MW4hns/edit?usp=sharing" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-hok-espresso hover:text-hok-caramel transition-colors border border-hok-mist px-4 py-2 rounded-sm bg-hok-ivory">
+                <FileText className="w-4 h-4" /> View Current Price List
+              </a>
+            </div>
             
             <form onSubmit={handleQuoteSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -375,6 +381,18 @@ export default function WholesalePage() {
                       className="border-white/20 bg-white/5 text-white placeholder:text-white/40"
                     />
                   </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="tourDate" className="text-hok-ivory">Preferred Date</Label>
+                  <Input
+                    id="tourDate"
+                    type="date"
+                    value={tourFormData.date}
+                    onChange={(e) => setTourFormData({ ...tourFormData, date: e.target.value })}
+                    required
+                    className="border-white/20 bg-white/5 text-white placeholder:text-white/40 [color-scheme:dark]"
+                  />
                 </div>
                 
                 <div className="mt-8">

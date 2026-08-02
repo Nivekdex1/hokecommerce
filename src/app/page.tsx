@@ -185,7 +185,7 @@ export default async function Home() {
       {/* Best Sellers */}
       <section className="py-20 md:py-28 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <SectionHeading title="Best Sellers" subtitle="Most Popular" ctaText="Shop All" ctaHref="/shop?tags=best-seller" align="left" />
+          <SectionHeading title="Best Sellers" subtitle="Most Popular" align="left" />
 
           <ScrollReveal>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10">
@@ -198,6 +198,11 @@ export default async function Home() {
                   No best sellers available.
                 </div>
               )}
+            </div>
+            <div className="mt-16 flex justify-center">
+              <Link href="/shop?tags=best-seller" className="inline-flex items-center justify-center border border-hok-mist px-12 py-5 hover:bg-hok-espresso hover:text-white uppercase text-[10px] tracking-[0.2em] font-semibold transition-colors">
+                Shop All Best Sellers
+              </Link>
             </div>
           </ScrollReveal>
         </div>
@@ -266,7 +271,7 @@ export default async function Home() {
       {/* New Arrivals */}
       <section className="py-20 md:py-28 bg-[#FAFAF8]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <SectionHeading title="New Arrivals" subtitle="Just Landed" ctaText="Discover More" ctaHref="/shop?tags=new" align="left" />
+          <SectionHeading title="New Arrivals" subtitle="Just Landed" align="left" />
 
           <ScrollReveal>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10">
@@ -279,6 +284,11 @@ export default async function Home() {
                   No new arrivals available.
                 </div>
               )}
+            </div>
+            <div className="mt-16 flex justify-center">
+              <Link href="/shop?tags=new" className="inline-flex items-center justify-center border border-hok-mist px-12 py-5 hover:bg-hok-espresso hover:text-white uppercase text-[10px] tracking-[0.2em] font-semibold transition-colors">
+                Discover More New Arrivals
+              </Link>
             </div>
           </ScrollReveal>
         </div>
