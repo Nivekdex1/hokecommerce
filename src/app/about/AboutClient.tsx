@@ -46,12 +46,12 @@ const charVariant = {
 
 const flipIn = {
   hidden: { opacity: 0, rotateX: 90, rotateY: 90, scale: 0.8 },
-  visible: { 
-    opacity: 1, 
-    rotateX: 0, 
-    rotateY: 0, 
-    scale: 1, 
-    transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] as const } 
+  visible: {
+    opacity: 1,
+    rotateX: 0,
+    rotateY: 0,
+    scale: 1,
+    transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] as const }
   },
 };
 
@@ -248,7 +248,7 @@ export default function AboutClient() {
               className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center"
             >
               <motion.div variants={slideInLeft} className="lg:col-span-7 relative aspect-[4/3] overflow-hidden group rounded-sm">
-                <Image src="/corsx-image.png" alt="COSRX" fill className="object-cover scale-105 group-hover:scale-100 transition-transform duration-1000" />
+                <Image src="/cosrx.jpg" alt="COSRX" fill className="object-cover scale-105 group-hover:scale-100 transition-transform duration-1000" />
               </motion.div>
               <motion.div variants={slideInRight} className="lg:col-span-5 lg:pl-8">
                 <span className="text-[10px] font-bold tracking-[0.4em] uppercase text-hok-stone mb-6 block">03 / COSRX</span>
