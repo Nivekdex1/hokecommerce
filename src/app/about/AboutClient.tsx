@@ -377,7 +377,7 @@ export default function AboutClient() {
 
       {/* CTA */}
       <section className="bg-hok-espresso py-32 lg:py-48 text-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/lizare-image.png')] opacity-[0.03] bg-cover bg-center"></div>
+        <div className="absolute inset-0 bg-[url('/lizare-image.png')] opacity-[0.5] bg-cover bg-center"></div>
         <motion.div
           initial="hidden"
           whileInView="visible"
