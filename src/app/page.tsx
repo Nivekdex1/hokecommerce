@@ -164,8 +164,8 @@ export default async function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
             {[
               { href: "/shop?productType=cleanser", image: "/cleaners.png", label: "Cleansers" },
-              { href: "/shop?productType=serum", image: "/hero-products.png", label: "Serums" },
-              { href: "/shop?productType=moisturizer", image: "/specialist.png", label: "Moisturizers" },
+              { href: "/shop?productType=serum", image: "/serums.png", label: "Serums" },
+              { href: "/shop?productType=moisturizer", image: "/moisturizers.png", label: "Moisturizers" },
             ].map((cat) => (
               <Link key={cat.label} href={cat.href} className="group relative h-[500px] overflow-hidden block bg-white transition-all duration-700 hover:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.06)]">
                 <div className="absolute inset-0 overflow-hidden">
