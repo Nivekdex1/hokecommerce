@@ -228,7 +228,7 @@ export default async function Home() {
                 Our Commitment
               </span>
               <h2 className="font-fondamento text-4xl md:text-5xl lg:text-6xl font-normal mb-8 text-hok-espresso leading-tight">
-                Why Choose <br /><span className="text-hok-champagne">HOK Beauty?</span>
+                Why Shop <br /><span className="text-hok-champagne">HOK Beauty?</span>
               </h2>
               <p className="font-outfit text-lg text-hok-stone mb-12 font-light leading-relaxed">
                 We believe in authentic, dermatologist-backed skincare that brings out your natural glow. No counterfeits, no shortcuts. Just pure, proven formulas.

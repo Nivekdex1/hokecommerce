@@ -96,8 +96,12 @@ export async function getProducts({
     };
   }
 
-  // --- Build Filter Query String ---
+  // --- Build Filter Query String (for root products) ---
   const filterQueries: string[] = [];
+  
+  // --- Build ProductFilter array (for Collection products) ---
+  const productFilters: any[] = [];
+  
   const processMultiParam = (
     param: string | string[] | undefined,
   ): string[] => {
@@ -108,22 +112,27 @@ export async function getProducts({
   const vendors = processMultiParam(searchParams?.vendors);
   if (vendors.length > 0) {
     filterQueries.push(`(${vendors.map((v) => `vendor:'${v}'`).join(" OR ")})`);
+    // ProductFilter only supports AND logic between elements, so we just take the first if multiple
+    productFilters.push({ productVendor: vendors[0] });
   }
   const productTypes = processMultiParam(searchParams?.productType);
   if (productTypes.length > 0) {
     filterQueries.push(
       `(${productTypes.map((pt) => `product_type:'${pt}'`).join(" OR ")})`,
     );
+    productFilters.push({ productType: productTypes[0] });
   }
   const categories = processMultiParam(searchParams?.category);
   if (categories.length > 0) {
     filterQueries.push(
       `(${categories.map((c) => `product_type:'${c}'`).join(" OR ")})`,
     );
+    productFilters.push({ productType: categories[0] });
   }
   const tags = processMultiParam(searchParams?.tags);
   if (tags.length > 0) {
     filterQueries.push(`(${tags.map((t) => `tag:'${t}'`).join(" OR ")})`);
+    productFilters.push({ tag: tags[0] });
   }
   // --- Price Filtering ---
   const minPrice = searchParams?.minPrice ? parseFloat(searchParams.minPrice) : undefined;
@@ -135,8 +144,18 @@ export async function getProducts({
   if (maxPrice !== undefined && !isNaN(maxPrice)) {
     filterQueries.push(`variants.price:<=${maxPrice}`);
   }
+  
+  if ((minPrice !== undefined && !isNaN(minPrice)) || (maxPrice !== undefined && !isNaN(maxPrice))) {
+    const priceFilter: any = {};
+    if (minPrice !== undefined && !isNaN(minPrice)) priceFilter.min = minPrice;
+    if (maxPrice !== undefined && !isNaN(maxPrice)) priceFilter.max = maxPrice;
+    productFilters.push({ price: priceFilter });
+  }
 
   const filterString = filterQueries.join(" AND ");
+  const collectionHandle = searchParams?.collections 
+    ? (Array.isArray(searchParams.collections) ? searchParams.collections[0] : searchParams.collections)
+    : null;
   // ---------------------------------
 
   // --- Determine Pagination Variables ---
@@ -158,21 +177,80 @@ export async function getProducts({
   }
   // -------------------------------------
 
-  let sortKey = undefined;
+  let sortKeyRoot = undefined;
+  let sortKeyCollection = undefined;
   let reverse = undefined;
   if (searchParams?.sort === "newest") {
-    sortKey = "CREATED_AT";
+    sortKeyRoot = "CREATED_AT";
+    sortKeyCollection = "CREATED";
     reverse = true;
   } else if (searchParams?.sort === "price-low-high") {
-    sortKey = "PRICE";
+    sortKeyRoot = "PRICE";
+    sortKeyCollection = "PRICE";
     reverse = false;
   } else if (searchParams?.sort === "price-high-low") {
-    sortKey = "PRICE";
+    sortKeyRoot = "PRICE";
+    sortKeyCollection = "PRICE";
     reverse = true;
   }
 
   // Update GraphQL query to accept all pagination parameters and sorting
-  const query = `
+  const query = collectionHandle ? `
+    query GetCollectionProducts(
+      $collectionHandle: String!,
+      $first: Int,
+      $last: Int,
+      $after: String,
+      $before: String,
+      $sortKey: ProductCollectionSortKeys,
+      $reverse: Boolean,
+      $filters: [ProductFilter!]
+    ) {
+      collection(handle: $collectionHandle) {
+        products(
+          first: $first,
+          last: $last,
+          after: $after,
+          before: $before,
+          sortKey: $sortKey,
+          reverse: $reverse,
+          filters: $filters
+        ) {
+          pageInfo {
+            hasNextPage
+            hasPreviousPage
+            startCursor
+            endCursor
+          }
+          edges {
+            cursor
+            node {
+              id
+              title
+              handle
+              description
+              priceRange {
+                minVariantPrice {
+                  amount
+                  currencyCode
+                }
+              }
+              images(first: 1) {
+                edges {
+                  node {
+                    url
+                    altText
+                    width
+                    height
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ` : `
     query GetProducts(
       $filterQuery: String,
       $first: Int,
@@ -229,10 +307,16 @@ export async function getProducts({
   try {
     const response = await shopifyFetch<ShopifyProductsResponse>({
       query,
-      variables: {
+      variables: collectionHandle ? {
+        collectionHandle,
+        ...paginationVariables,
+        sortKey: sortKeyCollection,
+        reverse,
+        filters: productFilters,
+      } : {
         filterQuery: filterString,
-        ...paginationVariables, // Spread the correct pagination variables
-        sortKey,
+        ...paginationVariables,
+        sortKey: sortKeyRoot,
         reverse,
       },
     });
@@ -244,10 +328,12 @@ export async function getProducts({
       );
     }
 
+    const productsData = collectionHandle ? response.body?.data?.collection?.products : response.body?.data?.products;
+
     if (
       !response ||
       response.status !== 200 ||
-      !response.body?.data?.products
+      !productsData
     ) {
       console.error("Invalid response from Shopify API:", response);
       return {
@@ -261,7 +347,7 @@ export async function getProducts({
       };
     }
 
-    let products = response.body.data.products.edges.map(({ node }) => ({
+    let products = productsData.edges.map(({ node }) => ({
       id: node.id,
       title: node.title,
       handle: node.handle,
@@ -294,13 +380,8 @@ export async function getProducts({
     }
 
     return {
-      products: products,
-      pageInfo: response.body.data.products.pageInfo || {
-        hasNextPage: false,
-        hasPreviousPage: false,
-        startCursor: null,
-        endCursor: null,
-      },
+      products,
+      pageInfo: productsData.pageInfo,
     };
   } catch (error) {
     console.error("Error fetching products:", error);

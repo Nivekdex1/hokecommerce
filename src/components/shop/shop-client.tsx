@@ -28,7 +28,7 @@ export default function ShopClient({ initialProducts }: ShopClientProps) {
     error,
   } = useQuery({
     queryKey: ["get-all-products"],
-    queryFn: getProducts,
+    queryFn: () => getProducts().then(res => res.products),
     initialData: initialProducts,
   });
 

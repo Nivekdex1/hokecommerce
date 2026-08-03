@@ -39,6 +39,40 @@ export type ShopifyProductsResponse = {
         };
       }>;
     };
+    collection?: {
+      products: {
+        pageInfo: {
+          hasNextPage: boolean;
+          hasPreviousPage: boolean;
+          startCursor: string;
+          endCursor: string;
+        };
+        edges: Array<{
+          node: {
+            id: string;
+            title: string;
+            handle: string;
+            description: string;
+            priceRange: {
+              minVariantPrice: {
+                amount: string;
+                currencyCode: string;
+              };
+            };
+            images: {
+              edges: Array<{
+                node: {
+                  url: string;
+                  altText: string | null;
+                  width?: number;
+                  height?: number;
+                };
+              }>;
+            };
+          };
+        }>;
+      };
+    };
   };
   errors?: Array<{
     message: string;

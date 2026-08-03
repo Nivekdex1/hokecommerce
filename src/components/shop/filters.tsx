@@ -46,7 +46,10 @@ export default function Filters() {
       if (type === "checkbox") {
         const currentValues = params.getAll(name);
         if (checked) {
-          if (!currentValues.includes(value)) {
+          if (name === "collections") {
+            params.delete("collections");
+            params.append("collections", value);
+          } else if (!currentValues.includes(value)) {
             params.append(name, value);
           }
         } else {
