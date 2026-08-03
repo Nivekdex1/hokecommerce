@@ -65,7 +65,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       ) : badge ? (
         <div className={`absolute top-4 left-4 z-10 text-[9px] font-outfit font-semibold px-3 py-1.5 tracking-[0.2em] uppercase rounded-none shadow-sm ${
           badge === "NEW" 
-            ? "bg-hok-champagne/10 text-hok-caramel backdrop-blur-sm border border-hok-champagne/30" 
+            ? "bg-white text-hok-espresso border border-hok-mist" 
             : "bg-hok-espresso text-white"
         }`}>
           {badge}

@@ -36,8 +36,8 @@ export default function WhatsAppWidget() {
       }`}>
       {/* Chat Popup */}
       <div className={`absolute bottom-16 left-0 w-[320px] rounded-2xl overflow-hidden shadow-2xl border border-hok-mist/60 transition-all duration-300 origin-bottom-left ${isOpen
-          ? "opacity-100 scale-100 pointer-events-auto"
-          : "opacity-0 scale-90 pointer-events-none"
+        ? "opacity-100 scale-100 pointer-events-auto"
+        : "opacity-0 scale-90 pointer-events-none"
         }`}>
         {/* Header */}
         <div className="bg-[#075E54] px-5 py-4 flex items-center gap-3">
@@ -45,8 +45,8 @@ export default function WhatsAppWidget() {
             <WhatsAppIcon className="w-6 h-6 text-white" />
           </div>
           <div className="flex-1">
-            <h4 className="text-white font-manrope font-bold text-sm">HOK Beauty</h4>
-            <p className="text-white/70 text-xs font-manrope">Typically replies within minutes</p>
+            <h4 className="text-white font-outfit font-bold text-sm">HOK Beauty</h4>
+            <p className="text-white/70 text-xs font-outfit">Typically replies within minutes</p>
           </div>
           <button
             onClick={() => setIsOpen(false)}
@@ -97,8 +97,8 @@ export default function WhatsAppWidget() {
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Chat on WhatsApp"
         className={`group w-14 h-14 rounded-full shadow-xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 ${isOpen
-            ? "bg-hok-walnut hover:bg-hok-espresso border border-white/20"
-            : "bg-[#25D366] hover:bg-[#128C7E]"
+          ? "bg-hok-walnut hover:bg-hok-espresso border border-white/20"
+          : "bg-[#25D366] hover:bg-[#128C7E]"
           }`}
       >
         {isOpen ? (
