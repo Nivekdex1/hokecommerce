@@ -163,7 +163,7 @@ export default async function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
             {[
-              { href: "/shop?productType=cleanser", image: "/cleaners.png", label: "Cleansers" },
+              { href: "/shop?productType=cleanser", image: "/cleansers.png", label: "Cleansers" },
               { href: "/shop?productType=serum", image: "/serums.png", label: "Serums" },
               { href: "/shop?productType=moisturizer", image: "/moisturizers.png", label: "Moisturizers" },
             ].map((cat) => (
