@@ -41,7 +41,8 @@ export async function shopifyFetch<T>({
   query,
   variables,
   tags,
-}: ShopifyRequestOptions & { tags?: string[] }): Promise<{ status: number; body: T }> {
+  revalidate = 60, // Default to 60 seconds for dynamic changes
+}: ShopifyRequestOptions & { tags?: string[], revalidate?: number | false }): Promise<{ status: number; body: T }> {
   if (!isShopifyConfigured) {
     console.error("Shopify environment variables are not configured");
     throw new Error(
@@ -59,7 +60,7 @@ export async function shopifyFetch<T>({
         "X-Shopify-Storefront-Access-Token": storefrontAccessToken,
       },
       body: JSON.stringify({ query, variables }),
-      ...(tags && { next: { tags } }),
+      ...(tags ? { next: { tags, revalidate } } : { next: { revalidate } }),
     });
 
     return {

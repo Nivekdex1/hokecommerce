@@ -89,7 +89,7 @@ export default async function Home() {
       title: slide.fields.title || "",
       subtitle: slide.fields.subtitle || "",
       cta: slide.fields.cta_text || "Shop Now",
-      href: slide.fields.cta_link || "/shop",
+      href: slide.fields.cta_link || slide.fields.cta_links || "/shop",
       image: slide.fields.image?.url || "",
       mobileImage: slide.fields.mobile_image?.url || undefined,
       bgColor: slide.fields.bg_color || "bg-hok-ivory",
