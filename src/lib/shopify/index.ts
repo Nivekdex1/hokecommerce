@@ -18,7 +18,8 @@ interface ShopPageSearchParams {
   category?: string | string[]; // Note: Category often maps to productType or tags
   after?: string; // Cursor for forward pagination
   before?: string; // Cursor for backward pagination
-  // Add other potential search params like sort, query etc.
+  sort?: string; // Sorting parameter
+  // Add other potential search params like query etc.
 }
 
 const domain =
@@ -157,21 +158,38 @@ export async function getProducts({
   }
   // -------------------------------------
 
-  // Update GraphQL query to accept all pagination parameters
+  let sortKey = undefined;
+  let reverse = undefined;
+  if (searchParams?.sort === "newest") {
+    sortKey = "CREATED_AT";
+    reverse = true;
+  } else if (searchParams?.sort === "price-low-high") {
+    sortKey = "PRICE";
+    reverse = false;
+  } else if (searchParams?.sort === "price-high-low") {
+    sortKey = "PRICE";
+    reverse = true;
+  }
+
+  // Update GraphQL query to accept all pagination parameters and sorting
   const query = `
     query GetProducts(
       $filterQuery: String,
       $first: Int,
       $last: Int,
       $after: String,
-      $before: String
+      $before: String,
+      $sortKey: ProductSortKeys,
+      $reverse: Boolean
     ) {
       products(
         first: $first,
         last: $last,
         after: $after,
         before: $before,
-        query: $filterQuery
+        query: $filterQuery,
+        sortKey: $sortKey,
+        reverse: $reverse
       ) {
         pageInfo {
           hasNextPage
@@ -214,6 +232,8 @@ export async function getProducts({
       variables: {
         filterQuery: filterString,
         ...paginationVariables, // Spread the correct pagination variables
+        sortKey,
+        reverse,
       },
     });
 

@@ -44,6 +44,7 @@ interface ShopPageSearchParams {
   category?: string | string[];
   after?: string;
   before?: string;
+  sort?: string;
 }
 
 export default async function ShopPage(props: {

@@ -21,6 +21,7 @@ export default async function Home() {
   // Fetch new arrivals
   let newArrivalsData = await getProducts({
     pageSize: 4,
+    searchParams: { sort: "newest" }
   });
 
   // Helper to map Shopify product to ProductCard props
@@ -287,7 +288,7 @@ export default async function Home() {
               )}
             </div>
             <div className="mt-16 flex justify-center">
-              <Link href="/shop?tags=new" className="inline-flex items-center justify-center bg-hok-espresso text-white px-12 py-5 hover:bg-hok-caramel uppercase text-[10px] tracking-[0.2em] font-semibold transition-colors shadow-md hover:shadow-lg">
+              <Link href="/shop?sort=newest" className="inline-flex items-center justify-center bg-hok-espresso text-white px-12 py-5 hover:bg-hok-caramel uppercase text-[10px] tracking-[0.2em] font-semibold transition-colors shadow-md hover:shadow-lg">
                 Discover More New Arrivals
               </Link>
             </div>
