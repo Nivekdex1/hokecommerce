@@ -219,7 +219,7 @@ export default async function Home() {
               <div className="absolute inset-0 bg-gradient-to-tr from-[#E6E1DC]/80 via-hok-champagne/40 to-transparent blur-3xl rounded-full scale-[1.1] md:scale-[1.2]" />
               <div className="group order-2 md:order-1 relative h-[600px] w-[85%] mx-auto overflow-hidden rounded-[150px] md:rounded-[250px] transition-transform duration-[1500ms] hover:scale-[1.02]">
                 <div className="relative h-full w-full overflow-hidden">
-                  <Image src="/lizare-image-2.png" alt="Glass skin model" fill className="object-cover transition-transform duration-[2000ms] group-hover:scale-110 grayscale-[10%]" sizes="(max-width: 768px) 100vw, 50vw" />
+                  <Image src="/store.png" alt="Whyy Shop HOK" fill className="object-cover transition-transform duration-[2000ms] group-hover:scale-110 grayscale-[10%]" sizes="(max-width: 768px) 100vw, 50vw" />
                 </div>
               </div>
             </ScrollReveal>
