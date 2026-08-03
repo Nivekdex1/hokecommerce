@@ -161,6 +161,7 @@ const QuizResults: React.FC<QuizResultsProps> = ({
                       price: node.priceRange.minVariantPrice.amount,
                       currencyCode: node.priceRange.minVariantPrice.currencyCode,
                       image: node.media.edges[0]?.node.image?.src || "",
+                      availableForSale: node.availableForSale,
                     }}
                   />
                 ))}

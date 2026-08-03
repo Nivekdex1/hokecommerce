@@ -15,6 +15,7 @@ interface ProductsBySkinType {
           node: {
             handle: string;
             title: string;
+            availableForSale: boolean;
             priceRange: {
               minVariantPrice: {
                 amount: string;
@@ -44,6 +45,7 @@ interface ProductsBySkinTypeResponse {
     node: {
       handle: string;
       title: string;
+      availableForSale: boolean;
       priceRange: {
         minVariantPrice: {
           amount: string;
@@ -87,6 +89,7 @@ export const getProductsBySkinType = async (
               node {
                 handle
                 title
+                availableForSale
                 priceRange {
                   minVariantPrice {
                     amount

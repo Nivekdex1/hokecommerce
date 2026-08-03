@@ -64,6 +64,7 @@ export default async function WholesaleShopPage(props: {
     currencyCode: p.currencyCode || "NGN",
     image: p.featuredImage?.url || "/placeholder.jpg",
     vendor: p.vendor,
+    availableForSale: p.availableForSale,
   });
 
   return (

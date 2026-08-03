@@ -198,6 +198,8 @@ export type Products = {
   description: string;
   price: string;
   currencyCode: string;
+  vendor?: string;
+  availableForSale?: boolean;
   featuredImage?: {
     url: string;
     altText: string | null;

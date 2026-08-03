@@ -53,8 +53,10 @@ export default function ProductClient({
 
   const handleAddToCart = () => {
     addItem({
-      id: selectedVariant || product.id,
+      productId: product.id,
+      variantId: selectedVariant || product.id,
       title: product.title,
+      handle: product.handle,
       price: currentPrice,
       image: images[0]?.url || "/placeholder.jpg",
       quantity,
@@ -71,6 +73,7 @@ export default function ProductClient({
     currencyCode: p.currencyCode || "NGN",
     image: p.featuredImage?.url || p.images?.[0]?.url || "/placeholder.jpg",
     vendor: p.vendor,
+    availableForSale: p.availableForSale,
   });
 
   return (

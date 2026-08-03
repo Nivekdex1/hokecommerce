@@ -32,6 +32,7 @@ export default async function Home() {
     currencyCode: p.currencyCode || "NGN",
     image: p.featuredImage?.url || "/placeholder.jpg",
     vendor: p.vendor || "K-Beauty",
+    availableForSale: p.availableForSale,
   });
 
   const bestSellers = bestSellersData?.products?.map(mapProduct) || [];
