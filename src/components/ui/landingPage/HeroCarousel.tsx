@@ -114,7 +114,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
                     fill
                     priority={current === 0}
                     className={`${styles.productImage} hidden md:block`}
-                    style={{ objectFit: "contain", objectPosition: "center center" }}
+                    style={{ objectFit: "cover", objectPosition: "center center" }}
                     sizes="100vw"
                   />
                   <Image
@@ -123,7 +123,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
                     fill
                     priority={current === 0}
                     className={`${styles.productImage} block md:hidden`}
-                    style={{ objectFit: "contain", objectPosition: "center center" }}
+                    style={{ objectFit: "cover", objectPosition: "center center" }}
                     sizes="100vw"
                   />
                 </>
@@ -134,7 +134,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
                   fill
                   priority={current === 0}
                   className={styles.productImage}
-                  style={{ objectFit: "contain", objectPosition: "center center" }}
+                  style={{ objectFit: "cover", objectPosition: "center center" }}
                   sizes="100vw"
                 />
               )}
