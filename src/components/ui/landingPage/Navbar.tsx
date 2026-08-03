@@ -15,12 +15,15 @@ const LeftNavLinks = [
     href: "/shop",
     submenu: [
       { title: "All Products", href: "/shop" },
-      { title: "Cleansers", href: "/shop?category=cleansers" },
-      { title: "Toners", href: "/shop?category=toner" },
-      { title: "Dark Spots & Hyperpigmentation", href: "/shop?collections=hyperpigmentation" },
-      { title: "Acne & Blemishes", href: "/shop?collections=acne" },
-      { title: "Dullness & Radiance", href: "/shop?collections=glow" },
-      { title: "Firming & Anti-Aging", href: "/shop?collections=anti-aging" },
+      { title: "Cleansers", href: "/shop?category=Cleanser" },
+      { title: "Toners", href: "/shop?category=Toner" },
+      { title: "Serums", href: "/shop?category=Serum" },
+      { title: "Moisturizers", href: "/shop?category=Moisturizer" },
+      { title: "Dry Skin", href: "/shop?collections=dry-skin" },
+      { title: "Oily Skin", href: "/shop?collections=oily-skin" },
+      { title: "Normal Skin", href: "/shop?collections=normal-skin" },
+      { title: "The Glass Skin Set", href: "/shop?collections=curated-bundles" },
+      { title: "Glow Getter Set", href: "/shop?collections=glow-getter-set" },
     ]
   },
   {
