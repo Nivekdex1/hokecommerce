@@ -21,7 +21,7 @@ export default function BrandsPage() {
     <main className="min-h-screen bg-hok-ivory">
       {/* Hero Section */}
       <section className="relative w-full h-[40vh] min-h-[400px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-hok-espresso/90 z-10" />
+        <div className="absolute inset-0 bg-hok-espresso/70 z-10" />
         <div className="absolute inset-0 z-0">
           <Image
             src="/lizare-image-2.png"
@@ -44,21 +44,21 @@ export default function BrandsPage() {
       <section className="py-20">
         <div className="container-narrow">
           <SectionHeading title="Shop by Brand" subtitle="Find your favorite Korean beauty brands" />
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
             {BRANDS.map((brand) => (
-              <Link 
-                key={brand.slug} 
+              <Link
+                key={brand.slug}
                 href={`/shop?vendors=${brand.slug}`}
                 className="group bg-white rounded-lg border border-hok-mist p-8 transition-all duration-300 hover:border-hok-caramel hover:shadow-lg flex flex-col items-center text-center"
               >
                 <div className="h-20 w-full mb-6 flex items-center justify-center px-4">
-                  <Image 
+                  <Image
                     src={brand.image}
                     alt={brand.name}
                     width={140}
                     height={80}
-                    className="max-h-[80px] w-auto object-contain opacity-70 group-hover:opacity-100 transition-opacity"
+                    className="max-h-[80px] w-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity"
                   />
                 </div>
                 <h3 className="font-playfair text-2xl text-hok-espresso mb-3 group-hover:text-hok-walnut transition-colors">
