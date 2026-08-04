@@ -339,7 +339,7 @@ export default async function Home() {
           </span>
           <h2 className="font-fondamento text-4xl sm:text-5xl md:text-6xl text-hok-espresso font-normal mb-6 leading-[1.1] text-balance">
             Discover Your Perfect Routine.
-          </h2>g
+          </h2>
           <p className="font-outfit text-hok-stone text-base sm:text-lg mb-10 max-w-lg mx-auto font-light leading-relaxed text-balance">
             Take our 2-minute personalized skin algorithm quiz to receive expert, tailored recommendations for your unique skin type.
           </p>
