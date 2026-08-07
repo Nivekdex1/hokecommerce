@@ -39,10 +39,27 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const { items: wishlistItems, toggleItem } = useWishlistStore();
   const [quantity, setQuantity] = useState(1);
   const [isMounted, setIsMounted] = React.useState(false);
+  const [imgError, setImgError] = useState(false);
+  const [isImgLoading, setIsImgLoading] = useState(true);
+
+  // Normalize image URL (handle //cdn.shopify.com protocol-relative URLs)
+  const getValidImageUrl = (url?: string) => {
+    if (!url) return "/placeholder.jpg";
+    if (url.startsWith("//")) return `https:${url}`;
+    return url;
+  };
+
+  const [imgSrc, setImgSrc] = useState<string>(() => getValidImageUrl(product.image));
 
   React.useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  React.useEffect(() => {
+    setImgSrc(getValidImageUrl(product.image));
+    setImgError(false);
+    setIsImgLoading(true);
+  }, [product.image]);
 
   const inWishlist = wishlistItems.some((i) => i.id === product.id);
 
@@ -123,12 +140,22 @@ const ProductCard: React.FC<ProductCardProps> = ({
       )}
       
       <div className={`relative w-full ${variant === "compact" ? "aspect-square" : "aspect-[4/5]"} bg-[#F8F6F4] overflow-hidden`}>
+        {isImgLoading && (
+          <div className="absolute inset-0 bg-hok-mist/60 animate-pulse z-10" />
+        )}
         <Image
-          src={product.image || "/placeholder.jpg"}
+          src={imgError ? "/placeholder.jpg" : imgSrc}
           alt={product.title}
           fill
-          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-          className="object-cover object-center transition-transform duration-[1500ms] group-hover:scale-110 drop-shadow-sm"
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          className={`object-cover object-center transition-all duration-700 group-hover:scale-110 drop-shadow-sm ${
+            isImgLoading ? "opacity-0 scale-105" : "opacity-100 scale-100"
+          }`}
+          onLoad={() => setIsImgLoading(false)}
+          onError={() => {
+            setImgError(true);
+            setIsImgLoading(false);
+          }}
         />
       </div>
 

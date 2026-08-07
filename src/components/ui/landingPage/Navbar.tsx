@@ -221,7 +221,7 @@ export default function Navbar() {
                                 </span>
                               )}
                             </div>
-                            <span className="font-outfit font-medium text-sm text-center tracking-[0.1em] uppercase">My Wishlist</span>
+                            <span className="font-outfit font-medium text-sm tracking-[0.1em] uppercase">My Wishlist</span>
                           </Link>
                         </SheetClose>
                       </div>

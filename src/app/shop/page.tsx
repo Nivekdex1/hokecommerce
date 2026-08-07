@@ -121,7 +121,12 @@ export default async function ShopPage(props: {
     handle: p.handle,
     price: p.price,
     currencyCode: p.currencyCode || "NGN",
-    image: p.featuredImage?.url || "/placeholder.jpg",
+    image:
+      p.featuredImage?.url ||
+      p.images?.edges?.[0]?.node?.url ||
+      (Array.isArray(p.images) && p.images[0]?.url) ||
+      p.image ||
+      "/placeholder.jpg",
     vendor: p.vendor,
     availableForSale: p.availableForSale,
   });
