@@ -78,7 +78,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <Link
       href={`/shop/${product.handle}`}
-      className={`group flex flex-col relative bg-white/40 border-[0.5px] border-hok-mist/60 hover:border-hok-mist/90 p-2 overflow-hidden transition-all duration-700 hover:-translate-y-2 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_15px_40px_-20px_rgba(0,0,0,0.08)] ${
+      className={`group flex flex-col relative bg-white/40 border-[0.5px] border-hok-mist/60 hover:border-hok-mist/90 p-3.5 sm:p-4 overflow-hidden transition-all duration-700 hover:-translate-y-2 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_15px_40px_-20px_rgba(0,0,0,0.08)] ${
         variant === "compact" ? "min-w-[200px]" : "w-full"
       }`}
     >
@@ -145,7 +145,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         
         <div className="mt-auto flex flex-col gap-4">
           <div className="flex items-center justify-between">
-            <span className="font-outfit font-medium text-hok-charcoal">
+            <span className="font-outfit font-bold text-base sm:text-lg text-hok-espresso">
               {formatPrice(product.price, { currencyCode: product.currencyCode })}
             </span>
             
