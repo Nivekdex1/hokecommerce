@@ -11,8 +11,8 @@ import { useEffect, useState, useRef } from "react";
 import ProductSearch from "../product-search";
 
 const LeftNavLinks = [
-  { 
-    title: "SHOP", 
+  {
+    title: "SHOP",
     href: "/shop",
     submenu: [
       { title: "All Products", href: "/shop" },
@@ -89,11 +89,11 @@ export default function Navbar() {
     setMounted(true);
     useCartStore.persist.rehydrate();
     useWishlistStore.persist.rehydrate();
-    
+
     const handleScroll = () => {
       setScrolled(window.scrollY > 40);
     };
-    
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -133,11 +133,11 @@ export default function Navbar() {
     alignRight = false
   ) => {
     const isOpen = openDropdown === link.title;
-    
+
     return (
       <div key={link.title} className="relative">
         {link.submenu ? (
-          <button 
+          <button
             onClick={() => setOpenDropdown(isOpen ? null : link.title)}
             className="nav-link-underline flex items-center gap-1 font-outfit text-[12px] font-medium tracking-[0.2em] text-hok-charcoal hover:text-hok-champagne uppercase py-2 whitespace-nowrap transition-colors duration-300"
           >
@@ -145,7 +145,7 @@ export default function Navbar() {
             <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
           </button>
         ) : (
-          <Link 
+          <Link
             href={link.href}
             className="nav-link-underline flex items-center gap-1 font-outfit text-[12px] font-medium tracking-[0.2em] text-hok-charcoal hover:text-hok-champagne uppercase py-2 whitespace-nowrap transition-colors duration-300"
           >
@@ -174,21 +174,20 @@ export default function Navbar() {
 
   return (
     <>
-      <header 
-        className={`w-full transition-all duration-500 z-50 relative ${
-          scrolled ? "bg-white/80 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.03)] py-3" : "bg-white/40 backdrop-blur-md py-4 lg:py-6 border-b border-white/40"
-        }`}
+      <header
+        className={`w-full transition-all duration-500 z-50 relative ${scrolled ? "bg-white/80 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.03)] py-3" : "bg-white/40 backdrop-blur-md py-4 lg:py-6 border-b border-white/40"
+          }`}
       >
         <div className="w-full px-6 md:px-12 lg:px-20">
           <div className="flex w-full items-center justify-between">
-            
+
             {/* Left: Mobile Menu + Desktop Logo */}
             <div className="flex flex-1 lg:flex-none items-center justify-start gap-6 xl:gap-8">
               {/* Mobile Menu */}
               <div className="lg:hidden">
                 <Sheet>
                   <SheetTrigger asChild>
-                    <button 
+                    <button
                       className="p-2 -ml-2 text-hok-espresso rounded-md hover:bg-hok-linen active:scale-95 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-hok-champagne"
                       aria-label="Toggle menu"
                     >
@@ -206,12 +205,12 @@ export default function Navbar() {
                       <div className="mb-8">
                         <ProductSearch />
                       </div>
-                      
+
                       {/* Mobile Wishlist Link */}
                       <div className="mb-6 px-4">
                         <SheetClose asChild>
-                          <Link 
-                            href="/wishlist" 
+                          <Link
+                            href="/wishlist"
                             className="flex items-center gap-3 py-3 px-4 bg-white rounded-lg shadow-sm border border-hok-mist/30 text-hok-espresso hover:text-hok-walnut transition-colors group"
                           >
                             <div className="relative">
@@ -222,7 +221,7 @@ export default function Navbar() {
                                 </span>
                               )}
                             </div>
-                            <span className="font-outfit font-medium text-sm tracking-[0.1em] uppercase">My Wishlist</span>
+                            <span className="font-outfit font-medium text-sm text-center tracking-[0.1em] uppercase">My Wishlist</span>
                           </Link>
                         </SheetClose>
                       </div>
@@ -339,23 +338,23 @@ export default function Navbar() {
                 </div>
 
                 {/* Cart Icon */}
-              <div className="relative">
-                <button
-                  onClick={() => useCartStore.getState().setOpen(true)}
-                  className="relative text-hok-espresso hover:text-hok-walnut transition-all duration-200 active:scale-95 group p-2 block"
-                >
-                  <ShoppingCart className="w-5 h-5 lg:w-[22px] lg:h-[22px] transition-transform duration-300 group-hover:scale-110" />
-                  <span className="sr-only">Cart</span>
-                  {mounted && totalItemsCount > 0 && (
-                    <span className={`absolute -top-0.5 -right-0.5 w-[18px] h-[18px] bg-hok-champagne text-white text-[10px] font-bold flex items-center justify-center rounded-full ${badgeBounce ? 'animate-badge-bounce' : ''}`}>
-                      {totalItemsCount}
-                    </span>
-                  )}
-                </button>
-              </div>
+                <div className="relative">
+                  <button
+                    onClick={() => useCartStore.getState().setOpen(true)}
+                    className="relative text-hok-espresso hover:text-hok-walnut transition-all duration-200 active:scale-95 group p-2 block"
+                  >
+                    <ShoppingCart className="w-5 h-5 lg:w-[22px] lg:h-[22px] transition-transform duration-300 group-hover:scale-110" />
+                    <span className="sr-only">Cart</span>
+                    {mounted && totalItemsCount > 0 && (
+                      <span className={`absolute -top-0.5 -right-0.5 w-[18px] h-[18px] bg-hok-champagne text-white text-[10px] font-bold flex items-center justify-center rounded-full ${badgeBounce ? 'animate-badge-bounce' : ''}`}>
+                        {totalItemsCount}
+                      </span>
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
-            
+
           </div>
         </div>
       </header>

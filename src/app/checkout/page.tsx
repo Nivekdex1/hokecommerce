@@ -402,15 +402,15 @@ export default function CheckoutPage() {
                       <span className="text-xs font-bold">{index + 1}</span>
                     )}
                   </div>
-                  <div className="hidden sm:block text-left">
+                  <div className="flex flex-col text-left">
                     <p
-                      className={`text-sm font-semibold font-outfit uppercase tracking-wider ${
+                      className={`text-[11px] sm:text-sm font-semibold font-outfit uppercase tracking-wider ${
                         isActive || isCompleted ? "text-hok-espresso" : "text-hok-stone"
                       }`}
                     >
                       {step.label}
                     </p>
-                    <p className="text-xs text-hok-stone font-outfit">{step.sublabel}</p>
+                    <p className="hidden sm:block text-xs text-hok-stone font-outfit">{step.sublabel}</p>
                   </div>
                 </button>
                 {index < steps.length - 1 && (
@@ -912,11 +912,23 @@ function OrderSummary({
               <span>Subtotal</span>
             </div>
             {items.map((item: any) => (
-              <div key={item.id} className="flex justify-between items-start text-sm font-outfit gap-4">
-                <span className="text-hok-espresso line-clamp-1 flex-1">
-                  {item.title} × {item.quantity}
-                </span>
-                <span className="text-hok-walnut font-medium shrink-0">
+              <div key={item.id} className="flex items-center gap-3 text-sm font-outfit">
+                <div className="w-12 h-12 flex-shrink-0 bg-hok-linen rounded overflow-hidden relative border border-hok-mist/40">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    className="object-cover"
+                    sizes="48px"
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-hok-espresso font-medium line-clamp-1 text-xs sm:text-sm">
+                    {item.title}
+                  </p>
+                  <p className="text-[11px] text-hok-stone">Qty: {item.quantity}</p>
+                </div>
+                <span className="text-hok-walnut font-semibold shrink-0 text-xs sm:text-sm">
                   {formatPrice(
                     (parseFloat(item.price) * item.quantity).toString(),
                     { currencyCode: item.currencyCode }
