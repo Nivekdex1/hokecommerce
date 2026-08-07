@@ -3,7 +3,8 @@
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetClose } from "@/components/ui/sheet";
 import { useCartStore } from "@/store/useCartStore";
-import { Menu, ShoppingCart, ChevronDown, Search, X } from "lucide-react";
+import { useWishlistStore } from "@/store/useWishlistStore";
+import { Menu, ShoppingCart, ChevronDown, Search, X, Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
@@ -70,10 +71,12 @@ export default function Navbar() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { totalItems } = useCartStore();
   const totalItemsCount = totalItems();
+  const wishlistItemsCount = useWishlistStore((state) => state.items.length);
 
   useEffect(() => {
     setMounted(true);
     useCartStore.persist.rehydrate();
+    useWishlistStore.persist.rehydrate();
     
     const handleScroll = () => {
       setScrolled(window.scrollY > 40);
@@ -191,6 +194,27 @@ export default function Navbar() {
                       <div className="mb-8">
                         <ProductSearch />
                       </div>
+                      
+                      {/* Mobile Wishlist Link */}
+                      <div className="mb-6 px-4">
+                        <SheetClose asChild>
+                          <Link 
+                            href="/wishlist" 
+                            className="flex items-center gap-3 py-3 px-4 bg-white rounded-lg shadow-sm border border-hok-mist/30 text-hok-espresso hover:text-hok-walnut transition-colors group"
+                          >
+                            <div className="relative">
+                              <Heart className="w-5 h-5 group-hover:fill-hok-champagne/20 transition-all" />
+                              {mounted && wishlistItemsCount > 0 && (
+                                <span className="absolute -top-1 -right-1.5 w-4 h-4 bg-hok-error text-white text-[9px] font-bold flex items-center justify-center rounded-full">
+                                  {wishlistItemsCount}
+                                </span>
+                              )}
+                            </div>
+                            <span className="font-outfit font-medium text-sm tracking-[0.1em] uppercase">My Wishlist</span>
+                          </Link>
+                        </SheetClose>
+                      </div>
+
                       <nav className="flex flex-col gap-1 font-outfit">
                         {AllNavLinks.map((link) => (
                           <div key={link.title} className="flex flex-col">
@@ -288,7 +312,21 @@ export default function Navbar() {
                 )}
               </div>
 
-              {/* Cart Icon */}
+              <div className="flex items-center gap-2">
+                {/* Wishlist Icon */}
+                <div className="relative">
+                  <Link href="/wishlist" className="relative text-hok-espresso hover:text-hok-walnut transition-all duration-200 active:scale-95 group p-2 block">
+                    <Heart className="w-5 h-5 lg:w-[22px] lg:h-[22px] transition-transform duration-300 group-hover:scale-110" />
+                    <span className="sr-only">Wishlist</span>
+                    {mounted && wishlistItemsCount > 0 && (
+                      <span className="absolute -top-0.5 -right-0.5 w-[18px] h-[18px] bg-hok-error text-white text-[10px] font-bold flex items-center justify-center rounded-full animate-in zoom-in">
+                        {wishlistItemsCount}
+                      </span>
+                    )}
+                  </Link>
+                </div>
+
+                {/* Cart Icon */}
               <div className="relative">
                 <Link href="/cart" className="relative text-hok-espresso hover:text-hok-walnut transition-all duration-200 active:scale-95 group p-2 block">
                   <ShoppingCart className="w-5 h-5 lg:w-[22px] lg:h-[22px] transition-transform duration-300 group-hover:scale-110" />
@@ -299,6 +337,7 @@ export default function Navbar() {
                     </span>
                   )}
                 </Link>
+              </div>
               </div>
             </div>
             

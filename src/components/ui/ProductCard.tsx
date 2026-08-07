@@ -1,11 +1,12 @@
 "use client";
 
 import { formatPrice } from "@/utils/formatPrice";
-import { Star } from "lucide-react";
+import { Star, Heart, Minus, Plus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { useCartStore } from "@/store/useCartStore";
+import { useWishlistStore } from "@/store/useWishlistStore";
 import { toast } from "sonner";
 
 export interface ProductType {
@@ -33,6 +34,15 @@ const ProductCard: React.FC<ProductCardProps> = ({
   badge = null,
 }) => {
   const { addItem } = useCartStore();
+  const { items: wishlistItems, toggleItem } = useWishlistStore();
+  const [quantity, setQuantity] = useState(1);
+  const [isMounted, setIsMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const inWishlist = wishlistItems.some((i) => i.id === product.id);
 
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -45,10 +55,22 @@ const ProductCard: React.FC<ProductCardProps> = ({
       handle: product.handle,
       price: product.price,
       image: product.image,
-      quantity: 1,
+      quantity: quantity,
       currencyCode: product.currencyCode,
     });
-    toast.success(`${product.title} added to cart`);
+    toast.success(`${quantity} x ${product.title} added to cart`);
+    setQuantity(1); // Reset quantity after adding
+  };
+
+  const handleWishlistToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleItem(product);
+    if (!inWishlist) {
+      toast.success(`${product.title} added to wishlist`);
+    } else {
+      toast.info(`${product.title} removed from wishlist`);
+    }
   };
 
   return (
@@ -72,6 +94,17 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </div>
       ) : null}
       
+      {/* Wishlist Button */}
+      {isMounted && (
+        <button 
+          onClick={handleWishlistToggle}
+          className="absolute top-4 right-4 z-20 w-8 h-8 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-full shadow-sm hover:scale-110 hover:bg-white transition-all duration-300"
+          aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
+        >
+          <Heart className={`w-4 h-4 transition-colors duration-300 ${inWishlist ? 'fill-hok-error text-hok-error' : 'text-hok-espresso group-hover:text-hok-error'}`} />
+        </button>
+      )}
+      
       <div className={`relative w-full ${variant === "compact" ? "aspect-square" : "aspect-[4/5]"} bg-[#F8F6F4] overflow-hidden`}>
         <Image
           src={product.image || "/placeholder.jpg"}
@@ -80,22 +113,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
           sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
           className="object-cover object-center transition-transform duration-[1500ms] group-hover:scale-110 drop-shadow-sm"
         />
-        
-        {showQuickAdd && (
-          <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-out z-10">
-            <button
-              onClick={product.availableForSale === false ? undefined : handleQuickAdd}
-              disabled={product.availableForSale === false}
-              className={`w-full bg-white/95 backdrop-blur-md font-outfit font-medium text-xs tracking-[0.2em] uppercase py-3.5 shadow-sm transition-all duration-300 ${
-                product.availableForSale === false 
-                  ? "text-hok-stone cursor-not-allowed" 
-                  : "text-hok-espresso hover:bg-hok-espresso hover:text-white active:scale-[0.97]"
-              }`}
-            >
-              {product.availableForSale === false ? "Out of Stock" : "Add to Bag"}
-            </button>
-          </div>
-        )}
       </div>
 
       <div className="pt-5 flex flex-col flex-grow bg-transparent">
@@ -109,15 +126,61 @@ const ProductCard: React.FC<ProductCardProps> = ({
           {product.title}
         </h3>
         
-        <div className="mt-auto flex items-center justify-between">
-          <span className="font-outfit font-medium text-hok-charcoal">
-            {formatPrice(product.price, { currencyCode: product.currencyCode })}
-          </span>
-          
-          <div className="flex items-center text-hok-champagne">
-            <Star className="w-3.5 h-3.5 fill-current" />
-            <span className="text-xs text-hok-stone ml-1 font-outfit">4.9</span>
+        <div className="mt-auto flex flex-col gap-4">
+          <div className="flex items-center justify-between">
+            <span className="font-outfit font-medium text-hok-charcoal">
+              {formatPrice(product.price, { currencyCode: product.currencyCode })}
+            </span>
+            
+            <div className="flex items-center text-hok-champagne">
+              <Star className="w-3.5 h-3.5 fill-current" />
+              <span className="text-xs text-hok-stone ml-1 font-outfit">4.9</span>
+            </div>
           </div>
+          
+          {showQuickAdd && (
+            <div className="flex items-center gap-2">
+              {/* Quantity Selector */}
+              <div 
+                className="flex items-center border border-hok-mist/60 rounded-none h-[42px] bg-white w-24 shrink-0 transition-colors hover:border-hok-mist"
+                onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+              >
+                <button 
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  className="w-8 h-full flex items-center justify-center text-hok-stone hover:text-hok-espresso transition-colors disabled:opacity-50"
+                  disabled={quantity <= 1}
+                >
+                  <Minus className="w-3 h-3" />
+                </button>
+                <input 
+                  type="number" 
+                  value={quantity}
+                  onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                  className="w-8 h-full text-center text-xs font-outfit border-none focus:ring-0 p-0 text-hok-espresso bg-transparent appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                  min="1"
+                />
+                <button 
+                  onClick={() => setQuantity(quantity + 1)}
+                  className="w-8 h-full flex items-center justify-center text-hok-stone hover:text-hok-espresso transition-colors"
+                >
+                  <Plus className="w-3 h-3" />
+                </button>
+              </div>
+              
+              {/* Add to Bag Button */}
+              <button
+                onClick={product.availableForSale === false ? undefined : handleQuickAdd}
+                disabled={product.availableForSale === false}
+                className={`flex-1 h-[42px] font-outfit font-medium text-[11px] tracking-[0.15em] uppercase shadow-sm transition-all duration-300 ${
+                  product.availableForSale === false 
+                    ? "bg-hok-mist/50 text-hok-stone cursor-not-allowed" 
+                    : "bg-hok-espresso text-white hover:bg-hok-walnut active:scale-[0.97]"
+                }`}
+              >
+                {product.availableForSale === false ? "Out of Stock" : "Add to Bag"}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </Link>
