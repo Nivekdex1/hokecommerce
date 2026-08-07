@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 import CookieConsent from "@/components/ui/CookieConsent";
 import BackToTop from "@/components/ui/BackToTop";
 import WhatsAppWidget from "@/components/ui/WhatsAppWidget";
+import CartDrawer from "@/components/ui/CartDrawer";
 import type { Metadata, Viewport } from "next";
 import { Outfit, Fondamento } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
@@ -109,6 +110,7 @@ export default function RootLayout({
           <CookieConsent />
           <BackToTop />
           <WhatsAppWidget />
+          <CartDrawer />
           <Toaster position="top-right" />
         </QueryProvider>
         <Analytics />

@@ -2,13 +2,16 @@
 
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/store/useCartStore";
+import { useRecentlyViewedStore } from "@/store/useRecentlyViewedStore";
 import { formatPrice } from "@/utils/formatPrice";
 import { Loader2, MessageSquareWarning, Minus, Plus, X, Lock, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import SectionHeading from "@/components/ui/SectionHeading";
+import ProductCard from "@/components/ui/ProductCard";
 
 export default function Cart() {
   const {
@@ -24,10 +27,13 @@ export default function Cart() {
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
+  const router = useRouter();
+  const recentlyViewed = useRecentlyViewedStore((s) => s.items);
 
   useEffect(() => {
     setMounted(true);
     useCartStore.persist.rehydrate();
+    useRecentlyViewedStore.persist.rehydrate();
   }, []);
 
   useEffect(() => {
@@ -45,27 +51,33 @@ export default function Cart() {
     }
     setIsCheckingOut(true);
     setError(null);
+    router.push("/checkout");
+    setIsCheckingOut(false);
+  };
 
-    try {
-      await syncWithShopify();
-      const checkoutUrl = await getCheckoutUrl();
-
-      if (checkoutUrl) {
-        setTimeout(() => {
-          clearCart();
-          window.location.href = checkoutUrl;
-        }, 100);
-      } else {
-        toast.error("Failed to create checkout - no URL returned");
-        setError("No checkout URL was returned from Shopify");
-      }
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      toast.error("There was a problem creating your checkout");
-      setError(`Error: ${errorMessage}`);
-    } finally {
-      setIsCheckingOut(false);
-    }
+  const handleRemoveWithUndo = (itemId: string) => {
+    const removedItem = items.find((i) => i.id === itemId);
+    if (!removedItem) return;
+    removeItem(itemId);
+    toast("Item removed from cart", {
+      description: removedItem.title,
+      action: {
+        label: "Undo",
+        onClick: () => {
+          useCartStore.getState().addItem({
+            productId: removedItem.productId,
+            variantId: removedItem.variantId,
+            title: removedItem.title,
+            handle: removedItem.handle,
+            price: removedItem.price,
+            image: removedItem.image,
+            quantity: removedItem.quantity,
+            currencyCode: removedItem.currencyCode,
+          });
+        },
+      },
+      duration: 5000,
+    });
   };
 
   if (!mounted) return null;
@@ -123,7 +135,7 @@ export default function Cart() {
                     <div key={item.id} className="p-4 sm:px-6 sm:py-6 flex flex-col md:grid md:grid-cols-12 md:gap-4 md:items-center relative">
                       {/* Mobile Remove Button */}
                       <button 
-                        onClick={() => removeItem(item.id)}
+                        onClick={() => handleRemoveWithUndo(item.id)}
                         className="md:hidden absolute top-4 right-4 text-hok-stone hover:text-hok-error"
                       >
                         <X className="w-5 h-5" />
@@ -139,7 +151,7 @@ export default function Cart() {
                             {item.title}
                           </Link>
                           <button 
-                            onClick={() => removeItem(item.id)}
+                            onClick={() => handleRemoveWithUndo(item.id)}
                             className="text-xs text-hok-stone hover:text-hok-error text-left mt-2 hidden md:inline-flex items-center"
                           >
                             <X className="w-3 h-3 mr-1" /> Remove
@@ -249,6 +261,18 @@ export default function Cart() {
           </div>
         )}
       </div>
+
+      {/* Recently Viewed */}
+      {recentlyViewed.length > 0 && (
+        <div className="container-narrow pt-8 pb-16">
+          <SectionHeading title="Recently Viewed" subtitle="Continue where you left off" />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            {recentlyViewed.slice(0, 4).map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </div>
+      )}
     </main>
   );
 }

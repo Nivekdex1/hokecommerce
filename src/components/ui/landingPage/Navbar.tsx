@@ -67,11 +67,23 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [badgeBounce, setBadgeBounce] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { totalItems } = useCartStore();
   const totalItemsCount = totalItems();
+  const prevCountRef = useRef(totalItemsCount);
   const wishlistItemsCount = useWishlistStore((state) => state.items.length);
+
+  // Trigger bounce when cart count increases
+  useEffect(() => {
+    if (mounted && totalItemsCount > prevCountRef.current) {
+      setBadgeBounce(true);
+      const timer = setTimeout(() => setBadgeBounce(false), 400);
+      return () => clearTimeout(timer);
+    }
+    prevCountRef.current = totalItemsCount;
+  }, [totalItemsCount, mounted]);
 
   useEffect(() => {
     setMounted(true);
@@ -328,15 +340,18 @@ export default function Navbar() {
 
                 {/* Cart Icon */}
               <div className="relative">
-                <Link href="/cart" className="relative text-hok-espresso hover:text-hok-walnut transition-all duration-200 active:scale-95 group p-2 block">
+                <button
+                  onClick={() => useCartStore.getState().setOpen(true)}
+                  className="relative text-hok-espresso hover:text-hok-walnut transition-all duration-200 active:scale-95 group p-2 block"
+                >
                   <ShoppingCart className="w-5 h-5 lg:w-[22px] lg:h-[22px] transition-transform duration-300 group-hover:scale-110" />
                   <span className="sr-only">Cart</span>
                   {mounted && totalItemsCount > 0 && (
-                    <span className="absolute -top-0.5 -right-0.5 w-[18px] h-[18px] bg-hok-champagne text-white text-[10px] font-bold flex items-center justify-center rounded-full animate-in zoom-in">
+                    <span className={`absolute -top-0.5 -right-0.5 w-[18px] h-[18px] bg-hok-champagne text-white text-[10px] font-bold flex items-center justify-center rounded-full ${badgeBounce ? 'animate-badge-bounce' : ''}`}>
                       {totalItemsCount}
                     </span>
                   )}
-                </Link>
+                </button>
               </div>
               </div>
             </div>

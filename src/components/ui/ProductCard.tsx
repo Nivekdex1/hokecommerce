@@ -1,7 +1,7 @@
 "use client";
 
 import { formatPrice } from "@/utils/formatPrice";
-import { Star, Heart, Minus, Plus } from "lucide-react";
+import { Star, Heart, Minus, Plus, Eye } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -25,6 +25,7 @@ interface ProductCardProps {
   variant?: "default" | "compact" | "featured";
   showQuickAdd?: boolean;
   badge?: "NEW" | "BEST SELLER" | "LOW STOCK" | null;
+  onQuickView?: (product: ProductType) => void;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
@@ -32,6 +33,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   variant = "default",
   showQuickAdd = true,
   badge = null,
+  onQuickView,
 }) => {
   const { addItem } = useCartStore();
   const { items: wishlistItems, toggleItem } = useWishlistStore();
@@ -94,15 +96,30 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </div>
       ) : null}
       
-      {/* Wishlist Button */}
+      {/* Wishlist & Quick View Buttons */}
       {isMounted && (
-        <button 
-          onClick={handleWishlistToggle}
-          className="absolute top-4 right-4 z-20 w-8 h-8 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-full shadow-sm hover:scale-110 hover:bg-white transition-all duration-300"
-          aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
-        >
-          <Heart className={`w-4 h-4 transition-colors duration-300 ${inWishlist ? 'fill-hok-error text-hok-error' : 'text-hok-espresso group-hover:text-hok-error'}`} />
-        </button>
+        <div className="absolute top-4 right-4 z-20 flex flex-col gap-2">
+          <button 
+            onClick={handleWishlistToggle}
+            className="w-8 h-8 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-full shadow-sm hover:scale-110 hover:bg-white transition-all duration-200"
+            aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
+          >
+            <Heart className={`w-4 h-4 transition-colors duration-200 ${inWishlist ? 'fill-hok-error text-hok-error' : 'text-hok-espresso group-hover:text-hok-error'}`} />
+          </button>
+          {onQuickView && (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onQuickView(product);
+              }}
+              className="w-8 h-8 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-full shadow-sm opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 hover:scale-110 hover:bg-white transition-all duration-200"
+              aria-label="Quick view"
+            >
+              <Eye className="w-4 h-4 text-hok-espresso" />
+            </button>
+          )}
+        </div>
       )}
       
       <div className={`relative w-full ${variant === "compact" ? "aspect-square" : "aspect-[4/5]"} bg-[#F8F6F4] overflow-hidden`}>
@@ -139,31 +156,31 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </div>
           
           {showQuickAdd && (
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col 2xl:flex-row items-stretch gap-2 mt-1">
               {/* Quantity Selector */}
               <div 
-                className="flex items-center border border-hok-mist/60 rounded-none h-[42px] bg-white w-24 shrink-0 transition-colors hover:border-hok-mist"
+                className="flex items-center justify-between border border-hok-mist/60 rounded-none h-[38px] 2xl:h-[42px] bg-white w-full 2xl:w-24 shrink-0 transition-colors hover:border-hok-mist"
                 onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
               >
                 <button 
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-8 h-full flex items-center justify-center text-hok-stone hover:text-hok-espresso transition-colors disabled:opacity-50"
+                  className="w-10 2xl:w-8 h-full flex items-center justify-center text-hok-stone hover:text-hok-espresso transition-colors disabled:opacity-50"
                   disabled={quantity <= 1}
                 >
-                  <Minus className="w-3 h-3" />
+                  <Minus className="w-3.5 h-3.5 2xl:w-3 2xl:h-3" />
                 </button>
                 <input 
                   type="number" 
                   value={quantity}
                   onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="w-8 h-full text-center text-xs font-outfit border-none focus:ring-0 p-0 text-hok-espresso bg-transparent appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                  className="flex-1 h-full text-center text-xs font-outfit border-none focus:ring-0 p-0 text-hok-espresso bg-transparent appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                   min="1"
                 />
                 <button 
                   onClick={() => setQuantity(quantity + 1)}
-                  className="w-8 h-full flex items-center justify-center text-hok-stone hover:text-hok-espresso transition-colors"
+                  className="w-10 2xl:w-8 h-full flex items-center justify-center text-hok-stone hover:text-hok-espresso transition-colors"
                 >
-                  <Plus className="w-3 h-3" />
+                  <Plus className="w-3.5 h-3.5 2xl:w-3 2xl:h-3" />
                 </button>
               </div>
               
@@ -171,7 +188,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               <button
                 onClick={product.availableForSale === false ? undefined : handleQuickAdd}
                 disabled={product.availableForSale === false}
-                className={`flex-1 h-[42px] font-outfit font-medium text-[11px] tracking-[0.15em] uppercase shadow-sm transition-all duration-300 ${
+                className={`w-full 2xl:flex-1 h-[38px] 2xl:h-[42px] font-outfit font-medium text-[10px] 2xl:text-[11px] tracking-[0.15em] uppercase shadow-sm transition-all duration-300 ${
                   product.availableForSale === false 
                     ? "bg-hok-mist/50 text-hok-stone cursor-not-allowed" 
                     : "bg-hok-espresso text-white hover:bg-hok-walnut active:scale-[0.97]"

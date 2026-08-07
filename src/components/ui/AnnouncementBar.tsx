@@ -5,12 +5,12 @@ import { getMetaobject } from "@/lib/shopify";
 const AnnouncementBar = async () => {
   const config = await getMetaobject("site_configuration", "global_settings");
 
-  const text = config?.fields?.announcement_text || "✨ Discover your perfect glow! Free delivery on orders over ₦50,000.";
-  const linkText = config?.fields?.announcement_link_text || "Shop Now";
+  const text = config?.fields?.announcement_text || "✨ DISCOVER YOUR PERFECT GLOW! FREE DELIVERY ON ORDERS OVER ₦50,000.";
+  const linkText = config?.fields?.announcement_link_text || "SHOP NOW";
   const linkUrl = config?.fields?.announcement_link_url || "/shop";
 
   return (
-    <div className="w-full bg-hok-walnut text-white text-xs md:text-sm py-3 md:py-4 relative z-50 overflow-hidden flex items-center whitespace-nowrap">
+    <div className="w-full bg-hok-walnut text-white text-xs md:text-sm font-light py-3 md:py-4 relative z-50 overflow-hidden flex items-center whitespace-nowrap">
       <div className="flex w-max animate-marquee hover:[animation-play-state:paused]">
         {[...Array(6)].map((_, i) => (
           <div key={i} className="flex items-center justify-center px-8 md:px-16">
