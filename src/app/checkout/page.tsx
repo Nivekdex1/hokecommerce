@@ -368,8 +368,8 @@ export default function CheckoutPage() {
       </div>
 
       {/* Steps Indicator */}
-      <div className="w-full px-6 md:px-12 lg:px-20 py-6 border-b border-hok-mist/40 bg-white/50">
-        <div className="flex items-center justify-between max-w-3xl">
+      <div className="w-full px-4 md:px-12 lg:px-20 py-4 sm:py-6 border-b border-hok-mist/40 bg-white/50">
+        <div className="flex items-start justify-between max-w-3xl mx-auto">
           {steps.map((step, index) => {
             const isActive = index === currentStepIndex;
             const isCompleted = index < currentStepIndex;
@@ -382,13 +382,13 @@ export default function CheckoutPage() {
                       setCurrentStep(step.key);
                     }
                   }}
-                  className={`flex items-center gap-2 md:gap-3 transition-colors ${
-                    isCompleted ? "cursor-pointer" : isActive ? "cursor-default" : "cursor-default"
+                  className={`flex flex-col sm:flex-row items-center gap-1.5 sm:gap-3 transition-colors text-center sm:text-left group ${
+                    isCompleted ? "cursor-pointer" : "cursor-default"
                   }`}
                   disabled={!isCompleted && !isActive}
                 >
                   <div
-                    className={`w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center border-2 transition-all ${
+                    className={`w-7 h-7 sm:w-8 sm:h-8 shrink-0 rounded-full flex items-center justify-center border-2 transition-all ${
                       isCompleted
                         ? "bg-hok-espresso border-hok-espresso text-white"
                         : isActive
@@ -402,20 +402,24 @@ export default function CheckoutPage() {
                       <span className="text-xs font-bold">{index + 1}</span>
                     )}
                   </div>
-                  <div className="flex flex-col text-left">
+                  <div className="flex flex-col items-center sm:items-start">
                     <p
-                      className={`text-[11px] sm:text-sm font-semibold font-outfit uppercase tracking-wider ${
+                      className={`text-[10px] sm:text-sm font-semibold font-outfit uppercase tracking-wider ${
                         isActive || isCompleted ? "text-hok-espresso" : "text-hok-stone"
                       }`}
                     >
-                      {step.label}
+                      <span className="sm:hidden">
+                        {step.key === "bag" ? "Bag" : step.key === "shipping" ? "Shipping" : "Confirmation"}
+                      </span>
+                      <span className="hidden sm:inline">{step.label}</span>
                     </p>
                     <p className="hidden sm:block text-xs text-hok-stone font-outfit">{step.sublabel}</p>
                   </div>
                 </button>
+
                 {index < steps.length - 1 && (
                   <div
-                    className={`flex-1 h-[2px] mx-2 md:mx-4 transition-colors ${
+                    className={`flex-1 h-[2px] mx-2 sm:mx-4 mt-3.5 sm:mt-4 transition-colors ${
                       index < currentStepIndex ? "bg-hok-espresso" : "bg-hok-mist"
                     }`}
                   />
