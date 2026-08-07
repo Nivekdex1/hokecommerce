@@ -156,31 +156,33 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </div>
           
           {showQuickAdd && (
-            <div className="flex flex-col 2xl:flex-row items-stretch gap-2 mt-1">
+            <div className="flex flex-col 2xl:flex-row items-stretch gap-1.5 sm:gap-2 mt-1 w-full max-w-full overflow-hidden">
               {/* Quantity Selector */}
               <div 
-                className="flex items-center justify-between border border-hok-mist/60 rounded-none h-[38px] 2xl:h-[42px] bg-white w-full 2xl:w-24 shrink-0 transition-colors hover:border-hok-mist"
+                className="flex items-center justify-between border border-hok-mist/60 rounded-none h-8 sm:h-[38px] 2xl:h-[42px] bg-white w-full 2xl:w-24 shrink-0 transition-colors hover:border-hok-mist px-1"
                 onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
               >
                 <button 
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-10 2xl:w-8 h-full flex items-center justify-center text-hok-stone hover:text-hok-espresso transition-colors disabled:opacity-50"
+                  className="w-7 sm:w-8 h-full flex items-center justify-center text-hok-stone hover:text-hok-espresso transition-colors disabled:opacity-40 shrink-0"
                   disabled={quantity <= 1}
+                  aria-label="Decrease quantity"
                 >
-                  <Minus className="w-3.5 h-3.5 2xl:w-3 2xl:h-3" />
+                  <Minus className="w-3 h-3" />
                 </button>
                 <input 
                   type="number" 
                   value={quantity}
                   onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="flex-1 h-full text-center text-xs font-outfit border-none focus:ring-0 p-0 text-hok-espresso bg-transparent appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                  className="flex-1 min-w-0 h-full text-center text-xs font-outfit border-none focus:ring-0 p-0 text-hok-espresso bg-transparent appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                   min="1"
                 />
                 <button 
                   onClick={() => setQuantity(quantity + 1)}
-                  className="w-10 2xl:w-8 h-full flex items-center justify-center text-hok-stone hover:text-hok-espresso transition-colors"
+                  className="w-7 sm:w-8 h-full flex items-center justify-center text-hok-stone hover:text-hok-espresso transition-colors shrink-0"
+                  aria-label="Increase quantity"
                 >
-                  <Plus className="w-3.5 h-3.5 2xl:w-3 2xl:h-3" />
+                  <Plus className="w-3 h-3" />
                 </button>
               </div>
               
@@ -188,7 +190,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               <button
                 onClick={product.availableForSale === false ? undefined : handleQuickAdd}
                 disabled={product.availableForSale === false}
-                className={`w-full 2xl:flex-1 h-[38px] 2xl:h-[42px] font-outfit font-medium text-[10px] 2xl:text-[11px] tracking-[0.15em] uppercase shadow-sm transition-all duration-300 ${
+                className={`w-full 2xl:flex-1 h-8 sm:h-[38px] 2xl:h-[42px] font-outfit font-medium text-[10px] sm:text-[11px] tracking-[0.08em] sm:tracking-[0.15em] uppercase shadow-sm transition-all duration-300 truncate px-2 ${
                   product.availableForSale === false 
                     ? "bg-hok-mist/50 text-hok-stone cursor-not-allowed" 
                     : "bg-hok-espresso text-white hover:bg-hok-walnut active:scale-[0.97]"
