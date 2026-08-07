@@ -143,7 +143,7 @@ export default function CartDrawer() {
       >
         {/* Header with Tabs */}
         <div className="border-b border-hok-mist/60">
-          <div className="flex items-center justify-between px-6 pt-5 pb-3">
+          <div className="flex items-center justify-between px-4 sm:px-6 pt-5 pb-3">
             <div className="flex items-center gap-3">
               <ShoppingBag className="w-5 h-5 text-hok-espresso" />
               <h2 className="font-playfair text-lg font-semibold text-hok-espresso">
@@ -160,7 +160,7 @@ export default function CartDrawer() {
           </div>
 
           {/* Tabs */}
-          <div className="flex px-6">
+          <div className="flex px-4 sm:px-6">
             <button
               onClick={() => setActiveTab("cart")}
               className={`font-outfit text-sm font-medium pb-3 mr-6 border-b-2 transition-all duration-150 ${
@@ -225,11 +225,11 @@ export default function CartDrawer() {
                 </div>
 
                 {/* Footer */}
-                <div className="border-t border-hok-mist px-6 pt-4 pb-6 bg-white space-y-3">
+                <div className="border-t border-hok-mist px-4 sm:px-6 pt-4 pb-6 bg-white space-y-3 w-full max-w-full overflow-hidden">
                   {/* Coupon Field */}
-                  <div className="flex gap-2">
-                    <div className="flex-1 flex items-center border border-hok-mist/60 bg-hok-linen/30 px-3 h-10 gap-2">
-                      <Tag className="w-3.5 h-3.5 text-hok-stone" />
+                  <div className="flex gap-2 w-full min-w-0">
+                    <div className="flex-1 min-w-0 flex items-center border border-hok-mist/60 bg-hok-linen/30 px-2.5 sm:px-3 h-10 gap-1.5 sm:gap-2">
+                      <Tag className="w-3.5 h-3.5 text-hok-stone shrink-0" />
                       <input
                         type="text"
                         value={couponCode}
@@ -238,12 +238,12 @@ export default function CartDrawer() {
                           if (couponApplied) setCouponApplied(false);
                         }}
                         placeholder="Have a coupon?"
-                        className="flex-1 bg-transparent text-sm font-outfit placeholder:text-hok-stone/50 focus:outline-none text-hok-espresso"
+                        className="flex-1 min-w-0 bg-transparent text-xs sm:text-sm font-outfit placeholder:text-hok-stone/50 focus:outline-none text-hok-espresso"
                       />
                     </div>
                     <button
                       onClick={handleApplyCoupon}
-                      className="px-4 h-10 bg-hok-espresso text-white text-xs font-outfit font-medium tracking-wider uppercase hover:bg-hok-walnut transition-colors duration-150"
+                      className="px-3 sm:px-4 h-10 shrink-0 bg-hok-espresso text-white text-xs font-outfit font-medium tracking-wider uppercase hover:bg-hok-walnut transition-colors duration-150"
                     >
                       Apply
                     </button>

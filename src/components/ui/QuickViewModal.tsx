@@ -94,7 +94,7 @@ export default function QuickViewModal({ product, isOpen, onClose }: QuickViewMo
         className={`fixed inset-0 z-[90] flex items-center justify-center p-4 sm:p-8 pointer-events-none`}
       >
         <div
-          className={`bg-white w-full max-w-[800px] max-h-[90vh] overflow-y-auto shadow-2xl pointer-events-auto transform transition-all duration-200 ${
+          className={`relative bg-white w-full max-w-[800px] max-h-[90vh] overflow-y-auto rounded-lg sm:rounded-xl shadow-2xl pointer-events-auto transform transition-all duration-200 ${
             isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0"
           }`}
           onClick={(e) => e.stopPropagation()}
