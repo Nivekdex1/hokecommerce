@@ -157,7 +157,7 @@ export default async function Home() {
       </section>
 
       {/* Featured Collections */}
-      <section className="py-20 md:py-28 bg-[#FAF8F5]">
+      <section className="py-20 md:py-28 bg-[#FAFAF8]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <SectionHeading title="Curated Just For You" subtitle="Featured Categories" />
 
@@ -168,61 +168,56 @@ export default async function Home() {
                 href: "/shop?productType=cleanser",
                 image: "/cleansers.png",
                 label: "Cleansers",
-                description: "Gentle, non-stripping formulas to wash away impurities and prep your canvas.",
               },
               {
                 step: "02 / TREAT",
                 href: "/shop?productType=serum",
                 image: "/serums.png",
-                label: "Serums & Ampoules",
-                description: "Concentrated active ingredients to target hyperpigmentation, texture, and breakouts.",
+                label: "Serums",
               },
               {
                 step: "03 / NOURISH",
                 href: "/shop?productType=moisturizer",
                 image: "/moisturizers.png",
                 label: "Moisturizers",
-                description: "Deep barrier-repair creams and emulsions to seal in lasting moisture and radiant glow.",
               },
             ].map((cat) => (
               <Link
                 key={cat.label}
                 href={cat.href}
-                className="group relative h-[480px] sm:h-[500px] bg-white border border-hok-mist/60 rounded-2xl p-7 sm:p-8 flex flex-col justify-between overflow-hidden transition-all duration-700 hover:shadow-[0_20px_50px_-15px_rgba(30,18,10,0.08)] hover:-translate-y-1"
+                className="group relative h-[480px] md:h-[520px] rounded-2xl overflow-hidden block bg-[#F5F2EC] shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_50px_-15px_rgba(0,0,0,0.1)] transition-all duration-700 hover:-translate-y-1"
               >
-                {/* Top: Header Info (Completely clean & legible) */}
-                <div className="relative z-10">
-                  <span className="text-[10px] font-outfit font-semibold tracking-[0.25em] text-hok-champagne uppercase block mb-1.5">
+                {/* Full-bleed background product image */}
+                <div className="absolute inset-0 overflow-hidden">
+                  <Image
+                    src={cat.image}
+                    alt={cat.label}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover object-center transition-transform duration-[1500ms] ease-out group-hover:scale-105"
+                  />
+                </div>
+
+                {/* Subtle depth gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
+
+                {/* Bottom Floating Glass Card — Minimal & Luxury */}
+                <div className="absolute bottom-4 left-4 right-4 p-5 bg-white/95 backdrop-blur-md rounded-xl border border-white/80 shadow-[0_8px_30px_rgba(0,0,0,0.06)] transition-all duration-500 group-hover:bg-white">
+                  <span className="text-[10px] font-outfit font-semibold tracking-[0.25em] text-hok-champagne uppercase block mb-1">
                     {cat.step}
                   </span>
-                  <h3 className="text-hok-espresso font-fondamento text-2xl md:text-3xl font-normal leading-tight mb-2 group-hover:text-hok-champagne transition-colors duration-300">
+
+                  <h3 className="text-hok-espresso font-fondamento text-2xl sm:text-3xl font-normal leading-tight mb-3 group-hover:text-hok-champagne transition-colors duration-300">
                     {cat.label}
                   </h3>
-                  <p className="text-hok-stone font-outfit text-xs font-light leading-relaxed line-clamp-2">
-                    {cat.description}
-                  </p>
-                </div>
 
-                {/* Center: Curated Product Showcase Image Stage */}
-                <div className="relative flex-1 w-full my-3 flex items-center justify-center">
-                  <div className="relative w-full h-[210px]">
-                    <Image
-                      src={cat.image}
-                      alt={cat.label}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      className="object-contain object-center transition-transform duration-[1200ms] ease-out group-hover:scale-105"
-                    />
-                  </div>
-                </div>
-
-                {/* Bottom: Action Link */}
-                <div className="relative z-10 pt-4 border-t border-hok-mist/50 flex items-center justify-between">
-                  <span className="text-[11px] font-outfit tracking-[0.2em] uppercase text-hok-espresso font-medium group-hover:text-hok-champagne transition-colors duration-300">
-                    Shop Collection
-                  </span>
-                  <div className="w-8 h-8 rounded-full border border-hok-mist/80 flex items-center justify-center text-hok-espresso group-hover:bg-hok-espresso group-hover:text-white group-hover:border-hok-espresso transition-all duration-300">
-                    <ArrowRightIcon />
+                  <div className="flex items-center justify-between pt-3 border-t border-hok-mist/50">
+                    <span className="text-[11px] font-outfit tracking-[0.2em] uppercase text-hok-espresso font-medium group-hover:text-hok-champagne transition-colors duration-300">
+                      Shop Now
+                    </span>
+                    <div className="w-7 h-7 rounded-full bg-hok-linen flex items-center justify-center text-hok-espresso group-hover:bg-hok-espresso group-hover:text-white transition-all duration-300 transform group-hover:translate-x-1">
+                      <ArrowRightIcon />
+                    </div>
                   </div>
                 </div>
               </Link>
