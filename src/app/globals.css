@@ -314,7 +314,7 @@
   @keyframes fade-up {
     0% {
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(12px);
     }
     100% {
       opacity: 1;
@@ -343,6 +343,22 @@
   }
 
   .hover-soft-scale:hover {
-    transform: scale(1.02);
+    transform: scale(1.01);
+  }
+
+  /* Mega menu dropdown animation */
+  @keyframes mega-menu-enter {
+    0% {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-mega-menu-enter {
+    animation: mega-menu-enter 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 }
