@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { X } from "lucide-react";
 
 const WhatsAppIcon = ({ className }: { className?: string }) => (
@@ -10,12 +11,16 @@ const WhatsAppIcon = ({ className }: { className?: string }) => (
 );
 
 export default function WhatsAppWidget() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [visible, setVisible] = useState(false);
   const [message, setMessage] = useState("");
 
   const phoneNumber = "2347065095024"; // HOK WhatsApp number
   const defaultMessage = "Hi HOK! I'd like to know more about your Korean skincare products.";
+
+  // Hide widget on product detail pages (/shop/[product])
+  const isProductPage = pathname?.startsWith("/shop/") && pathname !== "/shop";
 
   useEffect(() => {
     // Show the widget after a short delay for a nice entrance

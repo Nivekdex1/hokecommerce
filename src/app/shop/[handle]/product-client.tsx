@@ -5,13 +5,15 @@ import { Button } from "@/components/ui/button";
 import { ProductDetails, Products } from "@/lib/shopify/types";
 import { useCartStore } from "@/store/useCartStore";
 import { formatPrice } from "@/utils/formatPrice";
-import { CheckCircle2, ChevronRight, Minus, Plus, Truck, AlertCircle, ShieldCheck } from "lucide-react";
+import { CheckCircle2, ChevronRight, Minus, Plus, Truck, AlertCircle, ShieldCheck, Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import ProductCard from "@/components/ui/ProductCard";
 import SectionHeading from "@/components/ui/SectionHeading";
+import { useWishlistStore } from "@/store/useWishlistStore";
+import { useRecentlyViewedStore } from "@/store/useRecentlyViewedStore";
 
 interface ProductClientProps {
   initialProduct: ProductDetails | null;
@@ -29,14 +31,31 @@ export default function ProductClient({
   const [selectedVariant, setSelectedVariant] = useState<string | null>(null);
   
   const [showStickyCTA, setShowStickyCTA] = useState(false);
+  const { items: wishlistItems, toggleItem: toggleWishlistItem } = useWishlistStore();
+  
+  const inWishlist = wishlistItems.some((i) => i.id === product?.id);
 
   useEffect(() => {
     if (product && product.variants && product.variants.length > 0) {
       setSelectedVariant(product.variants[0].id);
     }
+
+    // Track recently viewed
+    if (product) {
+      useRecentlyViewedStore.persist.rehydrate();
+      useRecentlyViewedStore.getState().addItem({
+        id: product.id,
+        title: product.title,
+        handle: product.handle,
+        price: product.price,
+        currencyCode: product.currencyCode || "NGN",
+        image: product.images?.[0]?.url || "/placeholder.jpg",
+        vendor: product.vendor,
+        availableForSale: product.availableForSale,
+      });
+    }
     
     const handleScroll = () => {
-      // Show sticky CTA after scrolling past main CTA
       setShowStickyCTA(window.scrollY > 600);
     };
     window.addEventListener("scroll", handleScroll);
@@ -63,6 +82,24 @@ export default function ProductClient({
       currencyCode: currentCurrencyCode,
     });
     toast.success(`${quantity}x ${product.title} added to cart`);
+  };
+
+  const handleWishlistToggle = () => {
+    toggleWishlistItem({
+      id: product.id,
+      title: product.title,
+      handle: product.handle,
+      price: currentPrice,
+      image: images[0]?.url || "/placeholder.jpg",
+      currencyCode: currentCurrencyCode,
+      vendor: product.vendor,
+      availableForSale: product.availableForSale,
+    });
+    if (!inWishlist) {
+      toast.success(`${product.title} added to wishlist`);
+    } else {
+      toast.info(`${product.title} removed from wishlist`);
+    }
   };
 
   const mapRelatedProduct = (p: any) => ({
@@ -169,7 +206,7 @@ export default function ProductClient({
 
             {/* Quantity & CTA */}
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
-              <div className="flex items-center justify-between border border-hok-mist rounded-none h-14 w-full sm:w-1/3 bg-white">
+              <div className="flex items-center justify-between border border-hok-mist rounded-none h-14 w-full sm:w-[120px] bg-white shrink-0">
                 <button 
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   className="w-12 h-full flex items-center justify-center text-hok-stone hover:text-hok-espresso transition-colors"
@@ -185,13 +222,23 @@ export default function ProductClient({
                 </button>
               </div>
               
-              <Button 
-                onClick={handleAddToCart}
-                disabled={!inStock}
-                className="h-14 w-full sm:w-2/3 rounded-none bg-hok-walnut hover:bg-hok-espresso text-white text-lg font-semibold tracking-wide transition-colors"
-              >
-                {inStock ? "Add to Cart" : "Out of Stock"}
-              </Button>
+              <div className="flex items-center gap-4 w-full">
+                <Button 
+                  onClick={handleAddToCart}
+                  disabled={!inStock}
+                  className="flex-1 h-14 rounded-none bg-hok-walnut hover:bg-hok-espresso text-white text-lg font-semibold tracking-wide transition-colors"
+                >
+                  {inStock ? "Add to Cart" : "Out of Stock"}
+                </Button>
+                
+                <button
+                  onClick={handleWishlistToggle}
+                  className="w-14 h-14 shrink-0 flex items-center justify-center border border-hok-mist bg-white hover:bg-hok-linen transition-colors group"
+                  aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
+                >
+                  <Heart className={`w-6 h-6 transition-colors duration-300 ${inWishlist ? 'fill-hok-error text-hok-error' : 'text-hok-espresso group-hover:text-hok-error'}`} />
+                </button>
+              </div>
             </div>
 
             {/* Trust Indicators */}
@@ -239,20 +286,42 @@ export default function ProductClient({
         </div>
       </div>
 
-      {/* Sticky Mobile CTA */}
+      {/* Enhanced Sticky Mobile CTA */}
       {showStickyCTA && inStock && (
-        <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-hok-mist p-4 md:hidden shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] animate-in slide-in-from-bottom-full">
-          <div className="flex gap-4 items-center">
-            <div className="flex-1 flex flex-col">
-              <span className="font-playfair font-semibold text-sm line-clamp-1">{product.title}</span>
-              <span className="text-hok-walnut font-bold text-sm">{formatPrice(currentPrice, { currencyCode: currentCurrencyCode })}</span>
+        <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-hok-mist px-4 py-3 md:hidden shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] animate-in slide-in-from-bottom-full duration-200">
+          <div className="flex gap-3 items-center">
+            {/* Quantity */}
+            <div className="flex items-center border border-hok-mist rounded-sm bg-white shrink-0">
+              <button 
+                onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                className="w-9 h-9 flex items-center justify-center text-hok-stone"
+              >
+                <Minus className="w-3.5 h-3.5" />
+              </button>
+              <span className="w-6 text-center text-sm font-medium">{quantity}</span>
+              <button 
+                onClick={() => setQuantity(quantity + 1)}
+                className="w-9 h-9 flex items-center justify-center text-hok-stone"
+              >
+                <Plus className="w-3.5 h-3.5" />
+              </button>
             </div>
+            
+            {/* Add to Cart */}
             <Button 
               onClick={handleAddToCart}
-              className="rounded-none bg-hok-walnut text-white font-semibold"
+              className="flex-1 h-10 rounded-none bg-hok-walnut text-white font-semibold text-sm"
             >
-              Add to Cart
+              Add to Cart · {formatPrice(currentPrice, { currencyCode: currentCurrencyCode })}
             </Button>
+            
+            {/* Wishlist */}
+            <button
+              onClick={handleWishlistToggle}
+              className="w-10 h-10 shrink-0 flex items-center justify-center border border-hok-mist bg-white"
+            >
+              <Heart className={`w-5 h-5 transition-colors duration-150 ${inWishlist ? 'fill-hok-error text-hok-error' : 'text-hok-espresso'}`} />
+            </button>
           </div>
         </div>
       )}

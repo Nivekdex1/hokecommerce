@@ -2,9 +2,14 @@
 
 import { ArrowUp } from "lucide-react";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 export default function BackToTop() {
+  const pathname = usePathname();
   const [visible, setVisible] = useState(false);
+
+  // Hide button on product detail pages (/shop/[product])
+  const isProductPage = pathname?.startsWith("/shop/") && pathname !== "/shop";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,6 +19,8 @@ export default function BackToTop() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  if (isProductPage) return null;
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });

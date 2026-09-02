@@ -3,7 +3,7 @@ import Pagination from "@/components/ui/pagination";
 import ProductGridSkeleton from "@/components/ui/ProductGridSkeleton";
 import { getProducts, getMetaobject } from "@/lib/shopify";
 import BrandBannerCarousel from "@/components/ui/BrandBannerCarousel";
-import ProductCard from "@/components/ui/ProductCard";
+import ProductGridClient from "@/components/ui/ProductGridClient";
 import { Metadata } from "next";
 import { Suspense } from "react";
 
@@ -121,7 +121,12 @@ export default async function ShopPage(props: {
     handle: p.handle,
     price: p.price,
     currencyCode: p.currencyCode || "NGN",
-    image: p.featuredImage?.url || "/placeholder.jpg",
+    image:
+      p.featuredImage?.url ||
+      p.images?.edges?.[0]?.node?.url ||
+      (Array.isArray(p.images) && p.images[0]?.url) ||
+      p.image ||
+      "/placeholder.jpg",
     vendor: p.vendor,
     availableForSale: p.availableForSale,
   });
@@ -143,18 +148,7 @@ export default async function ShopPage(props: {
           <div className="w-full md:w-3/4">
             {brandBanners.length > 0 && <BrandBannerCarousel banners={brandBanners} />}
             <Suspense fallback={<ProductGridSkeleton />}>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-6">
-                {products && products.length > 0 ? (
-                  products.map((product: any) => (
-                    <ProductCard key={product.id} product={mapProduct(product)} />
-                  ))
-                ) : (
-                  <div className="col-span-full py-20 text-center text-hok-stone bg-white rounded-md border border-hok-mist">
-                    <p className="text-xl font-playfair mb-2">No products found</p>
-                    <p className="text-sm">Try adjusting your filters or search criteria.</p>
-                  </div>
-                )}
-              </div>
+              <ProductGridClient products={products.map(mapProduct)} />
 
               {pageInfo && (pageInfo.hasNextPage || pageInfo.hasPreviousPage) && (
                 <div className="mt-12 flex justify-center">
