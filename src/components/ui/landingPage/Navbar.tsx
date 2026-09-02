@@ -415,93 +415,95 @@ export default function Navbar() {
             
           </div>
         </div>
-      </header>
 
-      {/* ─── Mega Menu Dropdown Panel ─────────────────────────────────────── */}
-      {activeCategory && activeCategory.columns && (
-        <div
-          className="fixed left-0 right-0 z-40"
-          style={{ top: scrolled ? "57px" : "65px" }}
-          onMouseEnter={() => handleMouseEnter(activeCategory.title)}
-          onMouseLeave={handleMouseLeave}
-        >
-          {/* Backdrop */}
-          <div className="fixed inset-0 bg-black/5 -z-10" onClick={() => setActiveDropdown(null)} />
-          
-          {/* Panel */}
-          <div className="bg-white border-b border-hok-mist/40 shadow-[0_12px_40px_-16px_rgba(0,0,0,0.08)] animate-mega-menu-enter">
-            <div className="w-full px-6 md:px-12 lg:px-16 flex justify-center">
-              <div className="py-8 flex flex-col lg:flex-row gap-10 w-full max-w-6xl items-stretch justify-between">
-                
-                {/* Left Highlight / Feature Card */}
-                {activeCategory.featureCard && (
-                  <div className="w-full lg:w-72 shrink-0 bg-[#FAF8F5] border border-hok-mist/50 rounded-xl p-6 flex flex-col justify-between group hover:border-hok-champagne/40 transition-all duration-300 shadow-sm">
-                    <div>
-                      {activeCategory.featureCard.tag && (
-                        <span className="text-[9px] font-outfit font-semibold tracking-[0.2em] uppercase text-hok-champagne mb-2.5 block">
-                          {activeCategory.featureCard.tag}
-                        </span>
-                      )}
-                      <h4 className="font-fondamento text-2xl text-hok-espresso font-normal mb-2.5 leading-snug">
-                        {activeCategory.featureCard.title}
-                      </h4>
-                      <p className="font-outfit text-xs text-hok-stone font-light leading-relaxed mb-6">
-                        {activeCategory.featureCard.description}
-                      </p>
+        {/* ─── Mega Menu Dropdown Panel (Positioned flush directly below Header) ─────── */}
+        {activeCategory && activeCategory.columns && (
+          <div
+            className="absolute top-full left-0 right-0 w-full z-40"
+            onMouseEnter={() => handleMouseEnter(activeCategory.title)}
+            onMouseLeave={handleMouseLeave}
+          >
+            {/* Backdrop */}
+            <div
+              className="fixed inset-0 top-0 bg-black/10 -z-10 backdrop-blur-[2px]"
+              onClick={() => setActiveDropdown(null)}
+            />
+            
+            {/* Panel */}
+            <div className="bg-white border-b border-hok-mist/40 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.12)] animate-mega-menu-enter">
+              <div className="w-full px-6 md:px-12 lg:px-16 flex justify-center">
+                <div className="py-8 flex flex-col lg:flex-row gap-10 w-full max-w-6xl items-stretch justify-between">
+                  
+                  {/* Left Highlight / Feature Card */}
+                  {activeCategory.featureCard && (
+                    <div className="w-full lg:w-72 shrink-0 bg-[#FAF8F5] border border-hok-mist/50 rounded-xl p-6 flex flex-col justify-between group hover:border-hok-champagne/40 transition-all duration-300 shadow-sm">
+                      <div>
+                        {activeCategory.featureCard.tag && (
+                          <span className="text-[9px] font-outfit font-semibold tracking-[0.2em] uppercase text-hok-champagne mb-2.5 block">
+                            {activeCategory.featureCard.tag}
+                          </span>
+                        )}
+                        <h4 className="font-fondamento text-2xl text-hok-espresso font-normal mb-2.5 leading-snug">
+                          {activeCategory.featureCard.title}
+                        </h4>
+                        <p className="font-outfit text-xs text-hok-stone font-light leading-relaxed mb-6">
+                          {activeCategory.featureCard.description}
+                        </p>
+                      </div>
+                      <Link
+                        href={activeCategory.featureCard.href}
+                        onClick={() => setActiveDropdown(null)}
+                        className="inline-flex items-center gap-2 text-xs font-outfit font-medium text-hok-espresso hover:text-hok-champagne transition-colors group-hover:translate-x-0.5 transform duration-200 uppercase tracking-wider"
+                      >
+                        <span>{activeCategory.featureCard.ctaText}</span>
+                        <span className="text-hok-champagne text-sm font-normal">→</span>
+                      </Link>
                     </div>
-                    <Link
-                      href={activeCategory.featureCard.href}
-                      onClick={() => setActiveDropdown(null)}
-                      className="inline-flex items-center gap-2 text-xs font-outfit font-medium text-hok-espresso hover:text-hok-champagne transition-colors group-hover:translate-x-0.5 transform duration-200 uppercase tracking-wider"
-                    >
-                      <span>{activeCategory.featureCard.ctaText}</span>
-                      <span className="text-hok-champagne text-sm font-normal">→</span>
-                    </Link>
-                  </div>
-                )}
+                  )}
 
-                {/* Columns */}
-                <div className={`grid gap-8 flex-1 w-full ${
-                  activeCategory.columns.length === 2
-                    ? "grid-cols-2"
-                    : activeCategory.columns.length === 3
-                    ? "grid-cols-3"
-                    : "grid-cols-4"
-                }`}>
-                  {activeCategory.columns.map((col) => (
-                    <div key={col.heading}>
-                      <h4 className="font-outfit text-[10px] font-semibold tracking-[0.2em] uppercase text-hok-stone mb-4">
-                        {col.heading}
-                      </h4>
-                      <ul className="space-y-2">
-                        {col.links.map((link) => (
-                          <li key={link.title}>
-                            <Link
-                              href={link.href}
-                              onClick={() => setActiveDropdown(null)}
-                              className="group/link block py-1"
-                            >
-                              <span className="font-outfit text-[13px] text-hok-charcoal group-hover/link:text-hok-champagne transition-colors duration-200 block font-normal">
-                                {link.title}
-                              </span>
-                              {link.description && (
-                                <span className="font-outfit text-[11px] text-hok-stone font-light block leading-tight mt-0.5">
-                                  {link.description}
+                  {/* Columns */}
+                  <div className={`grid gap-8 flex-1 w-full ${
+                    activeCategory.columns.length === 2
+                      ? "grid-cols-2"
+                      : activeCategory.columns.length === 3
+                      ? "grid-cols-3"
+                      : "grid-cols-4"
+                  }`}>
+                    {activeCategory.columns.map((col) => (
+                      <div key={col.heading}>
+                        <h4 className="font-outfit text-[10px] font-semibold tracking-[0.2em] uppercase text-hok-stone mb-4">
+                          {col.heading}
+                        </h4>
+                        <ul className="space-y-2">
+                          {col.links.map((link) => (
+                            <li key={link.title}>
+                              <Link
+                                href={link.href}
+                                onClick={() => setActiveDropdown(null)}
+                                className="group/link block py-1"
+                              >
+                                <span className="font-outfit text-[13px] text-hok-charcoal group-hover/link:text-hok-champagne transition-colors duration-200 block font-normal">
+                                  {link.title}
                                 </span>
-                              )}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
+                                {link.description && (
+                                  <span className="font-outfit text-[11px] text-hok-stone font-light block leading-tight mt-0.5">
+                                    {link.description}
+                                  </span>
+                                )}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
 
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </header>
     </>
   );
 }
