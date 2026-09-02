@@ -3,7 +3,7 @@
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetClose } from "@/components/ui/sheet";
 import { useCartStore } from "@/store/useCartStore";
 import { useWishlistStore } from "@/store/useWishlistStore";
-import { Menu, ShoppingBag, ChevronDown, Search, Heart, X } from "lucide-react";
+import { Menu, ShoppingBag, ChevronDown, Search, Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, useRef, useCallback } from "react";
@@ -179,8 +179,8 @@ export default function Navbar() {
         <div className="w-full px-6 md:px-12 lg:px-16">
           <div className="flex w-full items-center justify-between">
             
-            {/* Left: Mobile Menu */}
-            <div className="flex flex-1 lg:flex-none items-center justify-start">
+            {/* Left: Desktop Logo & Mobile Menu */}
+            <div className="flex flex-1 items-center justify-start">
               {/* Mobile Menu */}
               <div className="lg:hidden">
                 <Sheet>
@@ -257,9 +257,10 @@ export default function Navbar() {
               </Link>
             </div>
 
-            {/* Center: Mobile Logo */}
-            <div className="flex lg:hidden shrink-0 items-center justify-center px-4">
-              <Link href="/" className="block hover:opacity-80 transition-opacity duration-300">
+            {/* Center: Desktop 3 Nav Links (Centered) & Mobile Logo */}
+            <div className="flex items-center justify-center">
+              {/* Mobile Logo */}
+              <Link href="/" className="flex lg:hidden shrink-0 items-center justify-center px-4 hover:opacity-80 transition-opacity duration-300">
                 <Image
                   src="/brand/new-hok-logo-black.svg"
                   alt="HOK Logo"
@@ -270,15 +271,12 @@ export default function Navbar() {
                   priority
                 />
               </Link>
-            </div>
 
-            {/* Right: Desktop Nav + Utilities */}
-            <div className="flex flex-1 items-center justify-end gap-2">
-              {/* Desktop Navigation — 3 categories */}
+              {/* Desktop Navigation — 3 Centered Categories */}
               <nav
                 ref={navRef}
-                className={`hidden lg:flex items-center gap-8 mr-6 transition-all duration-300 ${
-                  searchOpen ? "opacity-0 w-0 overflow-hidden pointer-events-none" : "opacity-100"
+                className={`hidden lg:flex items-center justify-center gap-10 xl:gap-14 transition-all duration-300 ${
+                  searchOpen ? "opacity-0 pointer-events-none" : "opacity-100"
                 }`}
               >
                 {NavCategories.map((cat) => (
@@ -290,7 +288,7 @@ export default function Navbar() {
                   >
                     <Link
                       href={cat.href}
-                      className={`flex items-center gap-1 font-outfit text-[12px] font-medium tracking-[0.18em] uppercase py-2 whitespace-nowrap transition-colors duration-300 ${
+                      className={`flex items-center gap-1.5 font-outfit text-[12px] font-medium tracking-[0.2em] uppercase py-2 whitespace-nowrap transition-colors duration-300 ${
                         activeDropdown === cat.title
                           ? "text-hok-champagne"
                           : "text-hok-charcoal hover:text-hok-champagne"
@@ -309,58 +307,58 @@ export default function Navbar() {
                   </div>
                 ))}
               </nav>
+            </div>
 
-              {/* Icon Cluster: Search, Wishlist, Cart */}
-              <div className="flex items-center gap-1">
-                {/* Search */}
-                <div className="hidden lg:block relative" ref={searchRef}>
-                  {searchOpen ? (
-                    <div className="w-64 lg:w-80 animate-in fade-in zoom-in-95 duration-200">
-                      <ProductSearch autoFocus />
-                    </div>
-                  ) : (
-                    <button
-                      onClick={() => setSearchOpen(true)}
-                      className="p-2 text-hok-espresso hover:text-hok-champagne transition-colors duration-200"
-                      aria-label="Search products"
-                    >
-                      <Search className="w-[18px] h-[18px]" strokeWidth={1.5} />
-                    </button>
+            {/* Right: Desktop & Mobile Utilities */}
+            <div className="flex flex-1 items-center justify-end gap-1.5">
+              {/* Search */}
+              <div className="hidden lg:block relative" ref={searchRef}>
+                {searchOpen ? (
+                  <div className="w-64 lg:w-80 animate-in fade-in zoom-in-95 duration-200">
+                    <ProductSearch autoFocus />
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => setSearchOpen(true)}
+                    className="p-2 text-hok-espresso hover:text-hok-champagne transition-colors duration-200"
+                    aria-label="Search products"
+                  >
+                    <Search className="w-[18px] h-[18px]" strokeWidth={1.5} />
+                  </button>
+                )}
+              </div>
+
+              {/* Wishlist */}
+              <div className="relative">
+                <Link
+                  href="/wishlist"
+                  className="relative text-hok-espresso hover:text-hok-champagne transition-colors duration-200 p-2 block"
+                  aria-label="Wishlist"
+                >
+                  <Heart className="w-[18px] h-[18px]" strokeWidth={1.5} />
+                  {mounted && totalWishlistCount > 0 && (
+                    <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-hok-champagne text-white text-[9px] font-bold flex items-center justify-center rounded-full">
+                      {totalWishlistCount}
+                    </span>
                   )}
-                </div>
+                </Link>
+              </div>
 
-                {/* Wishlist */}
-                <div className="relative">
-                  <Link
-                    href="/wishlist"
-                    className="relative text-hok-espresso hover:text-hok-champagne transition-colors duration-200 p-2 block"
-                    aria-label="Wishlist"
-                  >
-                    <Heart className="w-[18px] h-[18px]" strokeWidth={1.5} />
-                    {mounted && totalWishlistCount > 0 && (
-                      <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-hok-champagne text-white text-[9px] font-bold flex items-center justify-center rounded-full">
-                        {totalWishlistCount}
-                      </span>
-                    )}
-                  </Link>
-                </div>
-
-                {/* Cart */}
-                <div className="relative">
-                  <Link
-                    href="/cart"
-                    className="relative text-hok-espresso hover:text-hok-champagne transition-colors duration-200 p-2 block"
-                    aria-label="Cart"
-                  >
-                    <ShoppingBag className="w-[18px] h-[18px]" strokeWidth={1.5} />
-                    <span className="sr-only">Cart</span>
-                    {mounted && totalCartCount > 0 && (
-                      <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-hok-champagne text-white text-[9px] font-bold flex items-center justify-center rounded-full">
-                        {totalCartCount}
-                      </span>
-                    )}
-                  </Link>
-                </div>
+              {/* Cart */}
+              <div className="relative">
+                <Link
+                  href="/cart"
+                  className="relative text-hok-espresso hover:text-hok-champagne transition-colors duration-200 p-2 block"
+                  aria-label="Cart"
+                >
+                  <ShoppingBag className="w-[18px] h-[18px]" strokeWidth={1.5} />
+                  <span className="sr-only">Cart</span>
+                  {mounted && totalCartCount > 0 && (
+                    <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-hok-champagne text-white text-[9px] font-bold flex items-center justify-center rounded-full">
+                      {totalCartCount}
+                    </span>
+                  )}
+                </Link>
               </div>
             </div>
             
@@ -381,8 +379,8 @@ export default function Navbar() {
           
           {/* Panel */}
           <div className="bg-white border-b border-hok-mist/40 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.08)] animate-mega-menu-enter">
-            <div className="w-full px-6 md:px-12 lg:px-16">
-              <div className={`py-8 grid gap-8 ${
+            <div className="w-full px-6 md:px-12 lg:px-16 flex justify-center">
+              <div className={`py-8 grid gap-8 w-full ${
                 activeCategory.columns.length === 1
                   ? "grid-cols-1 max-w-xs"
                   : activeCategory.columns.length === 2

@@ -51,21 +51,21 @@ const AnnouncementBar = async () => {
   ];
 
   return (
-    <div className="w-full bg-hok-walnut text-white text-xs md:text-sm font-light py-2.5 md:py-3 relative z-50 overflow-hidden flex items-center whitespace-nowrap">
+    <div className="w-full bg-hok-walnut text-white py-2 md:py-2.5 relative z-50 overflow-hidden flex items-center whitespace-nowrap border-b border-white/5">
       <div className="flex w-max animate-marquee hover:[animation-play-state:paused]">
         {tickerSequence.map((item, i) => (
-          <div key={i} className="flex items-center justify-center px-4 md:px-8">
-            <p className="font-medium tracking-wide flex items-center gap-1.5">
+          <div key={i} className="flex items-center justify-center px-6 md:px-10">
+            <p className="font-outfit font-light tracking-[0.2em] text-[11px] md:text-xs uppercase flex items-center gap-1.5 text-white/90">
               <span>{item.text}</span>
               {item.linkText && (
                 <Link
                   href={item.linkUrl || "/shop"}
-                  className="underline underline-offset-2 hover:text-hok-champagne transition-colors ml-1 font-semibold"
+                  className="font-normal underline underline-offset-4 hover:text-hok-champagne transition-colors ml-1 text-hok-champagne/90"
                 >
                   {item.linkText}
                 </Link>
               )}
-              <span className="ml-3 text-hok-champagne/60 text-[10px]">✦</span>
+              <span className="ml-4 text-hok-champagne/50 text-[9px]">✦</span>
             </p>
           </div>
         ))}
