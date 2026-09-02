@@ -19,14 +19,18 @@ export default function WhatsAppWidget() {
   const phoneNumber = "2347065095024"; // HOK WhatsApp number
   const defaultMessage = "Hi HOK! I'd like to know more about your Korean skincare products.";
 
-  // Hide widget on product detail pages (/shop/[product])
-  const isProductPage = pathname?.startsWith("/shop/") && pathname !== "/shop";
+  // Hide widget on product detail pages (/shop/[handle] or /wholesale-shop/[handle])
+  const isProductPage =
+    (pathname?.startsWith("/shop/") && pathname !== "/shop") ||
+    (pathname?.startsWith("/wholesale-shop/") && pathname !== "/wholesale-shop");
 
   useEffect(() => {
     // Show the widget after a short delay for a nice entrance
     const timer = setTimeout(() => setVisible(true), 1500);
     return () => clearTimeout(timer);
   }, []);
+
+  if (isProductPage) return null;
 
   const handleSend = () => {
     const text = message.trim() || defaultMessage;
@@ -37,13 +41,19 @@ export default function WhatsAppWidget() {
   };
 
   return (
-    <div className={`fixed bottom-6 left-6 z-40 transition-all duration-500 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-      }`}>
+    <div
+      className={`fixed bottom-6 left-6 z-40 transition-all duration-500 ${
+        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+      }`}
+    >
       {/* Chat Popup */}
-      <div className={`absolute bottom-16 left-0 w-[320px] rounded-2xl overflow-hidden shadow-2xl border border-hok-mist/60 transition-all duration-300 origin-bottom-left ${isOpen
-        ? "opacity-100 scale-100 pointer-events-auto"
-        : "opacity-0 scale-90 pointer-events-none"
-        }`}>
+      <div
+        className={`absolute bottom-16 left-0 w-[320px] rounded-2xl overflow-hidden shadow-2xl border border-hok-mist/60 transition-all duration-300 origin-bottom-left ${
+          isOpen
+            ? "opacity-100 scale-100 pointer-events-auto"
+            : "opacity-0 scale-90 pointer-events-none"
+        }`}
+      >
         {/* Header */}
         <div className="bg-[#075E54] px-5 py-4 flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center shrink-0">
@@ -101,10 +111,11 @@ export default function WhatsAppWidget() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Chat on WhatsApp"
-        className={`group w-14 h-14 rounded-full shadow-xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 ${isOpen
-          ? "bg-hok-walnut hover:bg-hok-espresso border border-white/20"
-          : "bg-[#25D366] hover:bg-[#128C7E]"
-          }`}
+        className={`group w-14 h-14 rounded-full shadow-xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 ${
+          isOpen
+            ? "bg-hok-walnut hover:bg-hok-espresso border border-white/20"
+            : "bg-[#25D366] hover:bg-[#128C7E]"
+        }`}
       >
         {isOpen ? (
           <X className="w-6 h-6 text-white" />

@@ -157,26 +157,73 @@ export default async function Home() {
       </section>
 
       {/* Featured Collections */}
-      <section className="py-20 md:py-28 bg-[#FAFAF8]">
+      <section className="py-20 md:py-28 bg-[#FAF8F5]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <SectionHeading title="Curated Just For You" subtitle="Featured Categories" />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
             {[
-              { href: "/shop?productType=cleanser", image: "/cleansers.png", label: "Cleansers" },
-              { href: "/shop?productType=serum", image: "/serums.png", label: "Serums" },
-              { href: "/shop?productType=moisturizer", image: "/moisturizers.png", label: "Moisturizers" },
+              {
+                step: "01 / PURIFY",
+                href: "/shop?productType=cleanser",
+                image: "/cleansers.png",
+                label: "Cleansers",
+                description: "Gentle, non-stripping formulas to wash away impurities and prep your canvas.",
+              },
+              {
+                step: "02 / TREAT",
+                href: "/shop?productType=serum",
+                image: "/serums.png",
+                label: "Serums & Ampoules",
+                description: "Concentrated active ingredients to target hyperpigmentation, texture, and breakouts.",
+              },
+              {
+                step: "03 / NOURISH",
+                href: "/shop?productType=moisturizer",
+                image: "/moisturizers.png",
+                label: "Moisturizers",
+                description: "Deep barrier-repair creams and emulsions to seal in lasting moisture and radiant glow.",
+              },
             ].map((cat) => (
-              <Link key={cat.label} href={cat.href} className="group relative h-[500px] overflow-hidden block bg-white transition-all duration-700 hover:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.06)]">
-                <div className="absolute inset-0 overflow-hidden">
-                  <Image src={cat.image} alt={cat.label} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover transition-transform duration-[2s] group-hover:scale-110" />
-                </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-white via-white/10 to-transparent opacity-90 group-hover:opacity-70 transition-opacity duration-700" />
-                <div className="absolute bottom-0 left-0 right-0 p-8 flex flex-col items-start">
-                  <h3 className="text-hok-espresso font-fondamento text-2xl md:text-3xl font-normal mb-2">{cat.label}</h3>
-                  <span className="text-hok-champagne font-outfit text-[10px] tracking-[0.25em] uppercase flex items-center gap-2 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                    Shop Now <ArrowRightIcon />
+              <Link
+                key={cat.label}
+                href={cat.href}
+                className="group relative h-[480px] sm:h-[500px] bg-white border border-hok-mist/60 rounded-2xl p-7 sm:p-8 flex flex-col justify-between overflow-hidden transition-all duration-700 hover:shadow-[0_20px_50px_-15px_rgba(30,18,10,0.08)] hover:-translate-y-1"
+              >
+                {/* Top: Header Info (Completely clean & legible) */}
+                <div className="relative z-10">
+                  <span className="text-[10px] font-outfit font-semibold tracking-[0.25em] text-hok-champagne uppercase block mb-1.5">
+                    {cat.step}
                   </span>
+                  <h3 className="text-hok-espresso font-fondamento text-2xl md:text-3xl font-normal leading-tight mb-2 group-hover:text-hok-champagne transition-colors duration-300">
+                    {cat.label}
+                  </h3>
+                  <p className="text-hok-stone font-outfit text-xs font-light leading-relaxed line-clamp-2">
+                    {cat.description}
+                  </p>
+                </div>
+
+                {/* Center: Curated Product Showcase Image Stage */}
+                <div className="relative flex-1 w-full my-3 flex items-center justify-center">
+                  <div className="relative w-full h-[210px]">
+                    <Image
+                      src={cat.image}
+                      alt={cat.label}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-contain object-center transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+                    />
+                  </div>
+                </div>
+
+                {/* Bottom: Action Link */}
+                <div className="relative z-10 pt-4 border-t border-hok-mist/50 flex items-center justify-between">
+                  <span className="text-[11px] font-outfit tracking-[0.2em] uppercase text-hok-espresso font-medium group-hover:text-hok-champagne transition-colors duration-300">
+                    Shop Collection
+                  </span>
+                  <div className="w-8 h-8 rounded-full border border-hok-mist/80 flex items-center justify-center text-hok-espresso group-hover:bg-hok-espresso group-hover:text-white group-hover:border-hok-espresso transition-all duration-300">
+                    <ArrowRightIcon />
+                  </div>
                 </div>
               </Link>
             ))}

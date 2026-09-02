@@ -9,23 +9,45 @@ import Link from "next/link";
 import { useEffect, useState, useRef, useCallback } from "react";
 import ProductSearch from "../product-search";
 
-// ─── Nav Data: 3 Primary Categories ───────────────────────────────────────────
+// ─── Nav Data: 3 Primary Categories with Rich Content ─────────────────────────
+
+interface NavLinkItem {
+  title: string;
+  href: string;
+  description?: string;
+}
 
 interface NavColumn {
   heading: string;
-  links: { title: string; href: string }[];
+  links: NavLinkItem[];
+}
+
+interface NavFeatureCard {
+  tag?: string;
+  title: string;
+  description: string;
+  href: string;
+  ctaText: string;
 }
 
 interface NavCategory {
   title: string;
   href: string;
   columns?: NavColumn[];
+  featureCard?: NavFeatureCard;
 }
 
 const NavCategories: NavCategory[] = [
   {
     title: "Shop",
     href: "/shop",
+    featureCard: {
+      tag: "CURATED ROUTINES",
+      title: "Glass Skin Sets",
+      description: "Dermatologist-selected Korean routines for deep hydration and radiance.",
+      href: "/shop?collections=curated-bundles",
+      ctaText: "Shop Bundles",
+    },
     columns: [
       {
         heading: "By Type",
@@ -62,7 +84,7 @@ const NavCategories: NavCategory[] = [
         links: [
           { title: "Best Sellers", href: "/shop?tags=best-seller" },
           { title: "New Arrivals", href: "/shop?sort=newest" },
-          { title: "Curated Bundles", href: "/shop?collections=curated-bundles" },
+          { title: "Skin Algorithm", href: "/skin-algorithm" },
         ],
       },
     ],
@@ -70,14 +92,28 @@ const NavCategories: NavCategory[] = [
   {
     title: "Explore",
     href: "/skin-algorithm",
+    featureCard: {
+      tag: "PERSONALIZED CARE",
+      title: "The Skin Algorithm",
+      description: "Take our 2-minute diagnostic quiz for tailored Korean skincare recommendations.",
+      href: "/skin-algorithm",
+      ctaText: "Take The Quiz",
+    },
     columns: [
       {
-        heading: "Discover",
+        heading: "Our Story & Values",
         links: [
-          { title: "Skin Algorithm", href: "/skin-algorithm" },
-          { title: "About Us", href: "/about" },
-          { title: "Quality Guarantee", href: "/quality-guarantee" },
-          { title: "Contact Us", href: "/contact" },
+          { title: "About HOK", href: "/about", description: "Our sourcing & authenticity promise" },
+          { title: "Quality Guarantee", href: "/quality-guarantee", description: "100% verified Korean skincare" },
+          { title: "Brand Partners", href: "/brands", description: "Official distribution network" },
+        ],
+      },
+      {
+        heading: "Client Care",
+        links: [
+          { title: "Skin Algorithm Quiz", href: "/skin-algorithm", description: "Find your ideal routine" },
+          { title: "Contact Us", href: "/contact", description: "Inquiries & skincare consultations" },
+          { title: "Returns & Shipping", href: "/returns-policy", description: "Delivery across Nigeria" },
         ],
       },
     ],
@@ -85,13 +121,28 @@ const NavCategories: NavCategory[] = [
   {
     title: "HOK Pro",
     href: "/wholesale",
+    featureCard: {
+      tag: "B2B WHOLESALE",
+      title: "Grow Your Beauty Business",
+      description: "Official wholesale pricing and direct Korean supply for beauty businesses across Nigeria.",
+      href: "/wholesale",
+      ctaText: "Apply For HOK Pro",
+    },
     columns: [
       {
-        heading: "Wholesale",
+        heading: "Wholesale Portal",
         links: [
-          { title: "Shop Wholesale", href: "/wholesale-shop" },
-          { title: "Wholesaler Terms", href: "/wholesale" },
-          { title: "Join The HOK Tribe", href: "https://linktr.ee/hokbeauty" },
+          { title: "Shop Wholesale", href: "/wholesale-shop", description: "Browse bulk catalog & pricing" },
+          { title: "Wholesale Terms", href: "/wholesale", description: "MOQs, tiers & partner policies" },
+          { title: "Request a Quote", href: "/wholesale", description: "Custom volume inquiries" },
+        ],
+      },
+      {
+        heading: "Community & Support",
+        links: [
+          { title: "Join The HOK Tribe", href: "https://linktr.ee/hokbeauty", description: "Connect with our retailer network" },
+          { title: "Book a Store Tour", href: "/wholesale", description: "Visit our Lagos showroom" },
+          { title: "Quality Guarantee", href: "/quality-guarantee", description: "Authentic distributor stock" },
         ],
       },
     ],
@@ -205,27 +256,27 @@ export default function Navbar() {
                       </div>
                       <nav className="flex flex-col font-outfit">
                         {NavCategories.map((cat) => (
-                          <div key={cat.title} className="border-b border-hok-mist/40">
+                          <div key={cat.title} className="border-b border-hok-mist/40 py-2">
                             <SheetClose asChild>
                               <Link
                                 href={cat.href}
-                                className="text-[13px] font-semibold text-hok-espresso uppercase tracking-[0.15em] py-3.5 block transition-colors hover:text-hok-champagne"
+                                className="text-[13px] font-semibold text-hok-espresso uppercase tracking-[0.15em] py-2 block transition-colors hover:text-hok-champagne"
                               >
                                 {cat.title}
                               </Link>
                             </SheetClose>
                             {cat.columns && (
-                              <div className="pb-3">
+                              <div className="pb-2">
                                 {cat.columns.map((col) => (
                                   <div key={col.heading} className="mb-2">
-                                    <span className="text-[10px] text-hok-stone uppercase tracking-[0.2em] font-semibold block px-3 py-1">
+                                    <span className="text-[10px] text-hok-stone uppercase tracking-[0.2em] font-semibold block px-2 py-1">
                                       {col.heading}
                                     </span>
                                     {col.links.map((link) => (
                                       <SheetClose asChild key={link.title}>
                                         <Link
                                           href={link.href}
-                                          className="text-[13px] text-hok-stone hover:text-hok-espresso transition-colors block py-1.5 px-3"
+                                          className="text-[13px] text-hok-stone hover:text-hok-espresso transition-colors block py-1 px-2"
                                         >
                                           {link.title}
                                         </Link>
@@ -272,7 +323,7 @@ export default function Navbar() {
                 />
               </Link>
 
-              {/* Desktop Navigation — 3 Centered Categories */}
+              {/* Desktop Navigation — 3 Centered Categories with Carets */}
               <nav
                 ref={navRef}
                 className={`hidden lg:flex items-center justify-center gap-10 xl:gap-14 transition-all duration-300 ${
@@ -295,7 +346,7 @@ export default function Navbar() {
                       }`}
                     >
                       {cat.title}
-                      {cat.columns && cat.columns.length > 1 && (
+                      {cat.columns && (
                         <ChevronDown
                           className={`w-3 h-3 transition-transform duration-300 ${
                             activeDropdown === cat.title ? "rotate-180" : ""
@@ -378,37 +429,74 @@ export default function Navbar() {
           <div className="fixed inset-0 bg-black/5 -z-10" onClick={() => setActiveDropdown(null)} />
           
           {/* Panel */}
-          <div className="bg-white border-b border-hok-mist/40 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.08)] animate-mega-menu-enter">
+          <div className="bg-white border-b border-hok-mist/40 shadow-[0_12px_40px_-16px_rgba(0,0,0,0.08)] animate-mega-menu-enter">
             <div className="w-full px-6 md:px-12 lg:px-16 flex justify-center">
-              <div className={`py-8 grid gap-8 w-full ${
-                activeCategory.columns.length === 1
-                  ? "grid-cols-1 max-w-xs"
-                  : activeCategory.columns.length === 2
-                  ? "grid-cols-2 max-w-lg"
-                  : activeCategory.columns.length === 3
-                  ? "grid-cols-3 max-w-3xl"
-                  : "grid-cols-4 max-w-5xl"
-              }`}>
-                {activeCategory.columns.map((col) => (
-                  <div key={col.heading}>
-                    <h4 className="font-outfit text-[10px] font-semibold tracking-[0.2em] uppercase text-hok-stone mb-4">
-                      {col.heading}
-                    </h4>
-                    <ul className="space-y-1">
-                      {col.links.map((link) => (
-                        <li key={link.title}>
-                          <Link
-                            href={link.href}
-                            onClick={() => setActiveDropdown(null)}
-                            className="font-outfit text-[13px] text-hok-charcoal hover:text-hok-champagne transition-colors duration-200 py-1.5 block"
-                          >
-                            {link.title}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
+              <div className="py-8 flex flex-col lg:flex-row gap-10 w-full max-w-6xl items-stretch justify-between">
+                
+                {/* Left Highlight / Feature Card */}
+                {activeCategory.featureCard && (
+                  <div className="w-full lg:w-72 shrink-0 bg-[#FAF8F5] border border-hok-mist/50 rounded-xl p-6 flex flex-col justify-between group hover:border-hok-champagne/40 transition-all duration-300 shadow-sm">
+                    <div>
+                      {activeCategory.featureCard.tag && (
+                        <span className="text-[9px] font-outfit font-semibold tracking-[0.2em] uppercase text-hok-champagne mb-2.5 block">
+                          {activeCategory.featureCard.tag}
+                        </span>
+                      )}
+                      <h4 className="font-fondamento text-2xl text-hok-espresso font-normal mb-2.5 leading-snug">
+                        {activeCategory.featureCard.title}
+                      </h4>
+                      <p className="font-outfit text-xs text-hok-stone font-light leading-relaxed mb-6">
+                        {activeCategory.featureCard.description}
+                      </p>
+                    </div>
+                    <Link
+                      href={activeCategory.featureCard.href}
+                      onClick={() => setActiveDropdown(null)}
+                      className="inline-flex items-center gap-2 text-xs font-outfit font-medium text-hok-espresso hover:text-hok-champagne transition-colors group-hover:translate-x-0.5 transform duration-200 uppercase tracking-wider"
+                    >
+                      <span>{activeCategory.featureCard.ctaText}</span>
+                      <span className="text-hok-champagne text-sm font-normal">→</span>
+                    </Link>
                   </div>
-                ))}
+                )}
+
+                {/* Columns */}
+                <div className={`grid gap-8 flex-1 w-full ${
+                  activeCategory.columns.length === 2
+                    ? "grid-cols-2"
+                    : activeCategory.columns.length === 3
+                    ? "grid-cols-3"
+                    : "grid-cols-4"
+                }`}>
+                  {activeCategory.columns.map((col) => (
+                    <div key={col.heading}>
+                      <h4 className="font-outfit text-[10px] font-semibold tracking-[0.2em] uppercase text-hok-stone mb-4">
+                        {col.heading}
+                      </h4>
+                      <ul className="space-y-2">
+                        {col.links.map((link) => (
+                          <li key={link.title}>
+                            <Link
+                              href={link.href}
+                              onClick={() => setActiveDropdown(null)}
+                              className="group/link block py-1"
+                            >
+                              <span className="font-outfit text-[13px] text-hok-charcoal group-hover/link:text-hok-champagne transition-colors duration-200 block font-normal">
+                                {link.title}
+                              </span>
+                              {link.description && (
+                                <span className="font-outfit text-[11px] text-hok-stone font-light block leading-tight mt-0.5">
+                                  {link.description}
+                                </span>
+                              )}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+
               </div>
             </div>
           </div>
