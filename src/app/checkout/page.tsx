@@ -244,6 +244,11 @@ export default function CheckoutPage() {
       });
 
       const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Failed to sync order with Shopify");
+      }
+
       const orderNum = data.orderNumber || `${Math.floor(100000 + Math.random() * 900000)}`;
 
       const orderData = {
@@ -263,7 +268,22 @@ export default function CheckoutPage() {
       toast.success(`Order #${orderNum} placed successfully!`);
     } catch (err) {
       console.error("Failed to finalize order creation:", err);
-      toast.error("Order payment received, but error finalizing. Support notified.");
+      // Fallback: If payment went through on Paystack, present the Paystack reference to the customer
+      const fallbackOrderNum = paystackRef.startsWith("demo-") ? `${Math.floor(100000 + Math.random() * 900000)}` : paystackRef;
+      const orderData = {
+        orderNumber: fallbackOrderNum,
+        items: [...items],
+        total: totalPrice(),
+        shippingInfo: { ...shippingInfo },
+        date: new Date().toLocaleDateString("en-NG", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        }),
+      };
+      setCompletedOrder(orderData);
+      clearCart();
+      toast.error("Payment received, but error syncing with store. Reference: " + fallbackOrderNum);
     } finally {
       setIsProcessing(false);
     }

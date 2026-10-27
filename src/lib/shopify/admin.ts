@@ -21,16 +21,42 @@ export interface CreateOrderPayload {
   }[];
 }
 
+function formatE164Phone(rawPhone?: string): string | undefined {
+  if (!rawPhone) return undefined;
+  const cleaned = rawPhone.trim().replace(/[^0-9+]/g, "");
+  if (!cleaned) return undefined;
+
+  if (cleaned.startsWith("+")) {
+    return cleaned.length >= 10 ? cleaned : undefined;
+  }
+
+  if (cleaned.startsWith("0") && cleaned.length === 11) {
+    return "+234" + cleaned.slice(1);
+  }
+
+  if (cleaned.startsWith("234") && cleaned.length === 13) {
+    return "+" + cleaned;
+  }
+
+  if (cleaned.length === 10) {
+    return "+234" + cleaned;
+  }
+
+  return undefined;
+}
+
 export async function createShopifyAdminOrder(payload: CreateOrderPayload) {
   const domain =
     process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN ||
     process.env.SHOPIFY_STORE_DOMAIN ||
-    "home-of-korean-beauty.myshopify.com";
-  const accessToken = process.env.SHOPIFY_ADMIN_ACCESS_TOKEN;
+    "homeofkoreanbeauty.myshopify.com";
+  const accessToken =
+    process.env.SHOPIFY_ADMIN_ACCESS_TOKEN ||
+    process.env.SHOPIFY_CUSTOM_APP_ADMIN_API_ACCESS_TOKEN;
 
   if (!accessToken) {
     console.warn(
-      "[Shopify Admin API] SHOPIFY_ADMIN_ACCESS_TOKEN is missing. Order logged locally."
+      "[Shopify Admin API] SHOPIFY_ADMIN_ACCESS_TOKEN or SHOPIFY_CUSTOM_APP_ADMIN_API_ACCESS_TOKEN is missing. Order logged locally."
     );
     return {
       success: true,
@@ -53,26 +79,31 @@ export async function createShopifyAdminOrder(payload: CreateOrderPayload) {
       }
     }
 
+    const cleanPrice = item.price ? item.price.replace(/[^0-9.]/g, "") : "0";
+
     return {
       title: item.title,
-      price: item.price,
+      price: cleanPrice,
       quantity: item.quantity,
       ...(numericVariantId ? { variant_id: numericVariantId } : {}),
     };
   });
 
+  const rawPhone = payload.phone ? payload.phone.trim() : "";
+  const validPhone = formatE164Phone(rawPhone);
+
   const orderData = {
     order: {
       email: payload.email,
-      phone: payload.phone,
+      ...(validPhone ? { phone: validPhone } : {}),
       financial_status: "paid",
       tags: "Paystack, Headless Custom Checkout",
-      note: `Paid via Paystack. Ref: ${payload.paystackReference}`,
+      note: `Paid via Paystack. Ref: ${payload.paystackReference}${rawPhone ? ` | Phone: ${rawPhone}` : ""}`,
       customer: {
         first_name: payload.firstName,
         last_name: payload.lastName,
         email: payload.email,
-        phone: payload.phone,
+        ...(validPhone ? { phone: validPhone } : {}),
       },
       shipping_address: {
         first_name: payload.firstName,
@@ -82,7 +113,7 @@ export async function createShopifyAdminOrder(payload: CreateOrderPayload) {
         city: payload.city,
         province: payload.state,
         country: payload.country || "Nigeria",
-        phone: payload.phone,
+        phone: validPhone || rawPhone || undefined,
       },
       billing_address: {
         first_name: payload.firstName,
@@ -92,7 +123,7 @@ export async function createShopifyAdminOrder(payload: CreateOrderPayload) {
         city: payload.city,
         province: payload.state,
         country: payload.country || "Nigeria",
-        phone: payload.phone,
+        phone: validPhone || rawPhone || undefined,
       },
       line_items: lineItems,
       transactions: [
