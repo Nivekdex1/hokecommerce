@@ -12,6 +12,11 @@ export interface CreateOrderPayload {
   country: string;
   totalPrice: string;
   paystackReference: string;
+  shippingMethod?: {
+    title: string;
+    amount: string | number;
+    code?: string;
+  };
   items: {
     productId: string;
     variantId?: string;
@@ -98,7 +103,18 @@ export async function createShopifyAdminOrder(payload: CreateOrderPayload) {
       ...(validPhone ? { phone: validPhone } : {}),
       financial_status: "paid",
       tags: "Paystack, Headless Custom Checkout",
-      note: `Paid via Paystack. Ref: ${payload.paystackReference}${rawPhone ? ` | Phone: ${rawPhone}` : ""}`,
+      note: `Paid via Paystack. Ref: ${payload.paystackReference}${payload.shippingMethod ? ` | Shipping: ${payload.shippingMethod.title} (₦${payload.shippingMethod.amount})` : ""}${rawPhone ? ` | Phone: ${rawPhone}` : ""}`,
+      ...(payload.shippingMethod
+        ? {
+            shipping_lines: [
+              {
+                title: payload.shippingMethod.title,
+                price: String(payload.shippingMethod.amount).replace(/[^0-9.]/g, ""),
+                code: payload.shippingMethod.code || payload.shippingMethod.title,
+              },
+            ],
+          }
+        : {}),
       customer: {
         first_name: payload.firstName,
         last_name: payload.lastName,

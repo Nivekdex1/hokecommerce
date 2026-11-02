@@ -45,6 +45,7 @@ export async function POST(request: Request) {
           country: metadata.shippingInfo.country || "Nigeria",
           totalPrice: (data.amount / 100).toString(),
           paystackReference: data.reference,
+          shippingMethod: metadata.shippingMethod,
           items: metadata.items,
         });
       }

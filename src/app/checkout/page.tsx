@@ -23,6 +23,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { initializePaystackPayment } from "@/lib/paystack";
+import { ShippingRateOption } from "@/lib/shopify/shipping";
 
 type CheckoutStep = "bag" | "shipping" | "confirmation";
 
@@ -74,9 +75,14 @@ export default function CheckoutPage() {
     country: "Nigeria",
   });
   const [errors, setErrors] = useState<Partial<Record<keyof ShippingInfo, string>>>({});
+  const [shippingRates, setShippingRates] = useState<ShippingRateOption[]>([]);
+  const [selectedShippingMethod, setSelectedShippingMethod] = useState<ShippingRateOption | null>(null);
+  const [isLoadingShipping, setIsLoadingShipping] = useState(false);
   const [completedOrder, setCompletedOrder] = useState<{
     orderNumber: string;
     items: typeof items;
+    subtotal: string;
+    shippingMethod?: ShippingRateOption;
     total: string;
     shippingInfo: ShippingInfo;
     date: string;
@@ -86,6 +92,59 @@ export default function CheckoutPage() {
     setMounted(true);
     useCartStore.persist.rehydrate();
   }, []);
+
+  // Dynamically fetch shipping rates whenever the selected state changes
+  useEffect(() => {
+    if (!shippingInfo.state) {
+      setShippingRates([]);
+      setSelectedShippingMethod(null);
+      return;
+    }
+
+    let isMounted = true;
+    setIsLoadingShipping(true);
+
+    fetch("/api/checkout/shipping-rates", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        country: shippingInfo.country || "Nigeria",
+        state: shippingInfo.state,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (isMounted && data.success && Array.isArray(data.rates)) {
+          setShippingRates(data.rates);
+          if (data.rates.length > 0) {
+            setSelectedShippingMethod((prev) => {
+              const exists = data.rates.find((r: ShippingRateOption) => r.id === prev?.id);
+              return exists || data.rates[0];
+            });
+          } else {
+            setSelectedShippingMethod(null);
+          }
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to load shipping rates:", err);
+      })
+      .finally(() => {
+        if (isMounted) setIsLoadingShipping(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [shippingInfo.state, shippingInfo.country]);
+
+  // Price computations
+  const rawItemsTotal = items.reduce(
+    (sum, item) => sum + (parseFloat(item.price) || 0) * item.quantity,
+    0
+  );
+  const shippingFee = selectedShippingMethod ? selectedShippingMethod.amount : 0;
+  const finalGrandTotal = rawItemsTotal + shippingFee;
 
   if (!mounted) {
     return (
@@ -148,8 +207,25 @@ export default function CheckoutPage() {
               </div>
             </div>
 
+            <div className="pt-3 border-t border-hok-mist/60 space-y-2">
+              <div className="flex justify-between items-center text-xs text-hok-stone">
+                <span>Subtotal</span>
+                <span className="font-medium text-hok-espresso">{completedOrder.subtotal}</span>
+              </div>
+              {completedOrder.shippingMethod && (
+                <div className="flex justify-between items-center text-xs text-hok-stone">
+                  <span>Delivery ({completedOrder.shippingMethod.title})</span>
+                  <span className="font-medium text-hok-espresso">
+                    {formatPrice(completedOrder.shippingMethod.amount.toString(), {
+                      currencyCode: completedOrder.shippingMethod.currencyCode || "NGN",
+                    })}
+                  </span>
+                </div>
+              )}
+            </div>
+
             <div className="flex justify-between items-center pt-3 border-t border-hok-mist/60 font-bold text-base">
-              <span className="text-hok-espresso">Total Paid / Due</span>
+              <span className="text-hok-espresso">Total Paid</span>
               <span className="text-hok-walnut">{completedOrder.total}</span>
             </div>
           </div>
@@ -206,7 +282,14 @@ export default function CheckoutPage() {
     if (!shippingInfo.city.trim()) newErrors.city = "City is required";
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    if (Object.keys(newErrors).length > 0) return false;
+
+    if (!selectedShippingMethod) {
+      toast.error("Please select a delivery method");
+      return false;
+    }
+
+    return true;
   };
 
   const handleNext = () => {
@@ -232,14 +315,18 @@ export default function CheckoutPage() {
 
   const finalizeOrderCreation = async (paystackRef: string) => {
     try {
+      const formattedSubtotal = formatPrice(rawItemsTotal.toString(), { currencyCode: "NGN" });
+      const formattedGrandTotal = formatPrice(finalGrandTotal.toString(), { currencyCode: "NGN" });
+
       const res = await fetch("/api/checkout/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           reference: paystackRef,
           shippingInfo,
+          shippingMethod: selectedShippingMethod,
           items,
-          totalPrice: totalPrice(),
+          totalPrice: finalGrandTotal.toFixed(2),
         }),
       });
 
@@ -254,7 +341,9 @@ export default function CheckoutPage() {
       const orderData = {
         orderNumber: orderNum,
         items: [...items],
-        total: totalPrice(),
+        subtotal: formattedSubtotal,
+        shippingMethod: selectedShippingMethod || undefined,
+        total: formattedGrandTotal,
         shippingInfo: { ...shippingInfo },
         date: new Date().toLocaleDateString("en-NG", {
           day: "numeric",
@@ -268,12 +357,18 @@ export default function CheckoutPage() {
       toast.success(`Order #${orderNum} placed successfully!`);
     } catch (err) {
       console.error("Failed to finalize order creation:", err);
-      // Fallback: If payment went through on Paystack, present the Paystack reference to the customer
-      const fallbackOrderNum = paystackRef.startsWith("demo-") ? `${Math.floor(100000 + Math.random() * 900000)}` : paystackRef;
+      const formattedSubtotal = formatPrice(rawItemsTotal.toString(), { currencyCode: "NGN" });
+      const formattedGrandTotal = formatPrice(finalGrandTotal.toString(), { currencyCode: "NGN" });
+      const fallbackOrderNum = paystackRef.startsWith("demo-")
+        ? `${Math.floor(100000 + Math.random() * 900000)}`
+        : paystackRef;
+
       const orderData = {
         orderNumber: fallbackOrderNum,
         items: [...items],
-        total: totalPrice(),
+        subtotal: formattedSubtotal,
+        shippingMethod: selectedShippingMethod || undefined,
+        total: formattedGrandTotal,
         shippingInfo: { ...shippingInfo },
         date: new Date().toLocaleDateString("en-NG", {
           day: "numeric",
@@ -293,10 +388,8 @@ export default function CheckoutPage() {
     setIsProcessing(true);
 
     try {
-      // Calculate amount in kobo
-      const cleanTotal = totalPrice().replace(/[^0-9.]/g, "");
-      const numericTotal = parseFloat(cleanTotal) || 0;
-      const amountInKobo = Math.round(numericTotal * 100);
+      // Calculate total amount in kobo including shipping
+      const amountInKobo = Math.round(finalGrandTotal * 100);
 
       // Try Paystack Popup payment
       try {
@@ -306,6 +399,7 @@ export default function CheckoutPage() {
           currency: "NGN",
           metadata: {
             shippingInfo,
+            shippingMethod: selectedShippingMethod,
             items: items.map((i) => ({
               productId: i.productId,
               variantId: i.variantId,
@@ -563,7 +657,7 @@ export default function CheckoutPage() {
 
             {/* Order Summary Sidebar */}
             <OrderSummary
-              totalPrice={totalPrice()}
+              subtotalAmount={rawItemsTotal}
               itemCount={itemCount}
               onContinue={handleNext}
               buttonText="Proceed to Shipping"
@@ -683,6 +777,78 @@ export default function CheckoutPage() {
                     placeholder="City"
                   />
                 </div>
+
+                {/* Delivery Method (Fetched dynamically from Shopify) */}
+                <div className="pt-6 border-t border-hok-mist/60">
+                  <div className="flex items-center justify-between mb-3">
+                    <label className="block text-sm font-outfit font-semibold text-hok-espresso uppercase tracking-wider">
+                      Delivery Method <span className="text-hok-error">*</span>
+                    </label>
+                    {isLoadingShipping && (
+                      <span className="text-xs text-hok-champagne flex items-center gap-1.5 font-outfit">
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        Fetching Shopify rates...
+                      </span>
+                    )}
+                  </div>
+
+                  {!shippingInfo.state ? (
+                    <div className="p-4 bg-hok-ivory border border-hok-mist/70 text-xs text-hok-stone font-outfit flex items-center gap-2">
+                      <Truck className="w-4 h-4 text-hok-champagne shrink-0" />
+                      Please select your <strong>State</strong> above to view available delivery options.
+                    </div>
+                  ) : shippingRates.length === 0 && !isLoadingShipping ? (
+                    <div className="p-4 bg-hok-ivory border border-hok-mist/70 text-xs text-hok-stone font-outfit">
+                      No delivery methods found for this state. Please contact store support.
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {shippingRates.map((rate) => {
+                        const isSelected = selectedShippingMethod?.id === rate.id;
+                        return (
+                          <div
+                            key={rate.id}
+                            onClick={() => setSelectedShippingMethod(rate)}
+                            className={`p-4 border cursor-pointer transition-all ${
+                              isSelected
+                                ? "border-hok-espresso bg-hok-ivory/60 shadow-sm"
+                                : "border-hok-mist hover:border-hok-champagne/70 bg-white"
+                            }`}
+                          >
+                            <div className="flex items-start justify-between gap-3">
+                              <div className="flex items-start gap-3">
+                                <div
+                                  className={`w-4 h-4 rounded-full mt-0.5 border flex items-center justify-center shrink-0 ${
+                                    isSelected
+                                      ? "border-hok-espresso bg-hok-espresso text-white"
+                                      : "border-hok-stone/40"
+                                  }`}
+                                >
+                                  {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+                                </div>
+                                <div>
+                                  <p className="font-outfit font-semibold text-sm text-hok-espresso">
+                                    {rate.title}
+                                  </p>
+                                  {rate.description && (
+                                    <p className="text-xs text-hok-stone font-outfit mt-1 leading-relaxed">
+                                      {rate.description}
+                                    </p>
+                                  )}
+                                </div>
+                              </div>
+                              <span className="font-outfit font-bold text-sm text-hok-walnut shrink-0">
+                                {formatPrice(rate.amount.toString(), {
+                                  currencyCode: rate.currencyCode || "NGN",
+                                })}
+                              </span>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="mt-6 flex flex-col sm:flex-row gap-4">
@@ -705,12 +871,15 @@ export default function CheckoutPage() {
 
             {/* Order Summary */}
             <OrderSummary
-              totalPrice={totalPrice()}
+              subtotalAmount={rawItemsTotal}
               itemCount={itemCount}
               items={items}
               showItems
               showShipping
               shippingState={shippingInfo.state}
+              shippingFee={shippingFee}
+              shippingTitle={selectedShippingMethod?.title}
+              isLoadingShipping={isLoadingShipping}
             />
           </div>
         )}
@@ -756,6 +925,19 @@ export default function CheckoutPage() {
                       , {shippingInfo.city}, {shippingInfo.state}, {shippingInfo.country}
                     </p>
                   </div>
+                  {selectedShippingMethod && (
+                    <div className="sm:col-span-2 pt-3 border-t border-hok-mist/40">
+                      <p className="text-hok-stone text-xs uppercase tracking-wider mb-1">Delivery Method</p>
+                      <p className="text-hok-espresso font-medium flex items-center justify-between">
+                        <span>{selectedShippingMethod.title}</span>
+                        <span className="font-semibold text-hok-walnut">
+                          {formatPrice(selectedShippingMethod.amount.toString(), {
+                            currencyCode: selectedShippingMethod.currencyCode || "NGN",
+                          })}
+                        </span>
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -844,10 +1026,13 @@ export default function CheckoutPage() {
 
             {/* Order Summary */}
             <OrderSummary
-              totalPrice={totalPrice()}
+              subtotalAmount={rawItemsTotal}
               itemCount={itemCount}
               showShipping
               shippingState={shippingInfo.state}
+              shippingFee={shippingFee}
+              shippingTitle={selectedShippingMethod?.title}
+              isLoadingShipping={isLoadingShipping}
             />
           </div>
         )}
@@ -904,7 +1089,7 @@ function FormField({
 }
 
 function OrderSummary({
-  totalPrice,
+  subtotalAmount,
   itemCount,
   items,
   showItems,
@@ -912,8 +1097,11 @@ function OrderSummary({
   buttonText,
   showShipping,
   shippingState,
+  shippingFee,
+  shippingTitle,
+  isLoadingShipping,
 }: {
-  totalPrice: string;
+  subtotalAmount: number;
   itemCount: number;
   items?: any[];
   showItems?: boolean;
@@ -921,7 +1109,12 @@ function OrderSummary({
   buttonText?: string;
   showShipping?: boolean;
   shippingState?: string;
+  shippingFee?: number;
+  shippingTitle?: string;
+  isLoadingShipping?: boolean;
 }) {
+  const finalTotal = subtotalAmount + (shippingFee || 0);
+
   return (
     <div className="w-full lg:w-1/3">
       <div className="bg-white border border-hok-mist rounded-md p-6 sticky top-28">
@@ -966,23 +1159,45 @@ function OrderSummary({
         <div className="space-y-3 text-sm font-outfit">
           <div className="flex justify-between text-hok-stone">
             <span>Subtotal ({itemCount} items)</span>
-            <span className="font-medium text-hok-espresso">{totalPrice}</span>
+            <span className="font-medium text-hok-espresso">
+              {formatPrice(subtotalAmount.toString(), { currencyCode: "NGN" })}
+            </span>
           </div>
 
           {showShipping && (
-            <div className="flex justify-between text-hok-stone">
-              <span>Shipment</span>
-              <span className="text-xs text-right max-w-[180px]">
-                {shippingState
-                  ? "Enter your address to view shipping options."
-                  : "Enter your address to view shipping options."}
-              </span>
+            <div className="flex justify-between text-hok-stone items-start">
+              <span>Delivery</span>
+              <div className="text-right">
+                {isLoadingShipping ? (
+                  <span className="text-xs text-hok-champagne flex items-center gap-1 font-outfit">
+                    <Loader2 className="w-3 h-3 animate-spin" />
+                    Calculating...
+                  </span>
+                ) : shippingTitle && shippingFee !== undefined ? (
+                  <div>
+                    <span className="font-medium text-hok-espresso">
+                      {formatPrice(shippingFee.toString(), { currencyCode: "NGN" })}
+                    </span>
+                    <span className="block text-[11px] text-hok-stone line-clamp-1">
+                      {shippingTitle}
+                    </span>
+                  </div>
+                ) : (
+                  <span className="text-xs text-hok-stone">
+                    {shippingState
+                      ? "Select delivery method"
+                      : "Enter address to view fee"}
+                  </span>
+                )}
+              </div>
             </div>
           )}
 
           <div className="flex justify-between pt-4 border-t border-hok-mist">
             <span className="text-base font-bold text-hok-espresso uppercase tracking-wider">Total</span>
-            <span className="text-xl font-bold text-hok-walnut">{totalPrice}</span>
+            <span className="text-xl font-bold text-hok-walnut">
+              {formatPrice(finalTotal.toString(), { currencyCode: "NGN" })}
+            </span>
           </div>
         </div>
 

@@ -4,7 +4,7 @@ import { createShopifyAdminOrder } from "@/lib/shopify/admin";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { reference, shippingInfo, items, totalPrice } = body;
+    const { reference, shippingInfo, items, totalPrice, shippingMethod } = body;
 
     if (!shippingInfo || !items || items.length === 0) {
       return NextResponse.json(
@@ -49,6 +49,7 @@ export async function POST(request: Request) {
       country: shippingInfo.country || "Nigeria",
       totalPrice: totalPrice ? totalPrice.replace(/[^0-9.]/g, "") : "0",
       paystackReference: reference || `REF-${Date.now()}`,
+      shippingMethod,
       items,
     });
 
